@@ -1,0 +1,165 @@
+﻿#dnb {
+    float: right;
+}
+
+#help {
+    color: #ccc;
+    margin: 2px 15px 0 0;
+}
+
+#profile {
+    float: right;
+    background: #ccc;
+    border-radius: 100%;
+    padding: 14px;
+}
+
+#notification {
+    float: right;
+    background: #ccc;
+    border-radius: 100%;
+    padding: 10px;
+    margin: 3px 15px 0 0;
+}
+
+.split {
+    position: fixed;
+    float: left;
+    min-height: 800px;
+    height: calc(100vh - 56px);
+}
+
+aside.split {
+    position: relative;
+    width: 120px;
+    padding: 45px 35px;
+}
+
+section.split {
+    position: relative;
+    width: calc(100% - 150px);
+    padding: 20px 0 0 0;
+}
+
+aside.split .db-v-split {
+    height: 50px;
+    padding: 0;
+    margin: 0 0 25px 0;
+    background: #e0e0e0;
+    border-radius: 100%;
+    font-family: consolas;
+    font-size: 14px;
+    text-align: center;
+}
+
+section.split .db-v-split {
+    min-height: 310px;
+    margin: 20px 10px 40px 10px;
+    font-family: consolas;
+    font-size: 15px;
+}
+
+.db-v-split .db-h-split {
+    float: left;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.15);
+    min-height: 310px;
+    width: 480px;
+    max-width: 480px;
+    border-radius: 10px;
+    background: #fff;
+    margin: 0 40px 40px 0;
+}
+
+.h-header {
+    width: 100%;
+    background: #e8e8e8;
+    padding: 10px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.h-body {
+    padding: 20px;
+}
+
+@media screen and (max-width: 1230px) {
+    #profile {
+        margin-right: 25px;
+    }
+
+    aside.split {
+        width: 100%;
+        min-height: 80px;
+        height: 80px;
+        padding: 25px 20px;
+        text-align: center;
+    }
+
+        aside.split .db-v-split {
+            display: inline-block;
+            height: 40px;
+            padding: 6px 15px;
+            margin: 6px 0 0 5px;
+            width: 40px;
+            max-width: 150px;
+            background: #e0e0e0;
+            border-radius: 100%;
+            font-family: consolas;
+            font-size: 14px;
+            text-align: center;
+        }
+
+    section.split {
+        margin: auto;
+        width: 100%;
+        padding: 0 20px;
+        align-content: center;
+    }
+
+        section.split .db-h-split {
+            float: none;
+            margin: 20px auto 50px auto;
+            width: 480px;
+        }
+}
+
+@media screen and (max-width: 575px) {
+    #profile {
+        margin-right: 25px;
+    }
+
+    aside.split {
+        width: 100%;
+        min-height: 70px;
+        height: 70px;
+        padding: 25px 20px;
+        background: #fbfbfb;
+        text-align: center;
+    }
+
+        aside.split .db-v-split {
+            display: inline-block;
+            height: 30px;
+            padding: 6px 15px;
+            margin: 6px 0 0 5px;
+            width: 30px;
+            max-width: 150px;
+            background: #e0e0e0;
+            border-radius: 100%;
+            font-family: consolas;
+            font-size: 14px;
+            text-align: center;
+        }
+
+    section.split {
+        margin: 0;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+        section.split .db-h-split {
+            width: 100%;
+            margin: 20px auto 40px auto;
+            min-height: 280px;
+        }
+}

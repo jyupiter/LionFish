@@ -1,0 +1,38 @@
+﻿@model LionFishWeb.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<main>
+    <section id="logsign">
+        <div class="ungriddy">
+            <div id="block-sign" class="block-logsign">
+                <h1>Get started with a new account<span style="color:#EDA831;">.</span></h1>
+                <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "" })
+                    <div>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { id = "input-sign-email", @class = "input-email", placeholder = "Email address" } })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                    <div class="block-password">
+                        @Html.PasswordFor(model => model.Password, new { id = "input-sign-password", @class = "input-password", placeholder = "Password" })
+                        <div class="show-password hide">Show</div>
+                    </div>
+                    <div>
+                        <input type="submit" id="submit-sign" class="button-blue" value="Register">
+                    </div>
+                }
+            </div>
+            <div>
+                Already have an account? @Html.ActionLink("Log in.", "LogIn", new { id = "", @class = "" })
+            </div>
+        </div>
+        <div class="griddy"></div>
+    </section>
+</main>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

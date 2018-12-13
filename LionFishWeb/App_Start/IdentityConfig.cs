@@ -1,25 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using LionFishWeb.Models;
+using System.Net;
+using SendGrid;
+using System.Configuration;
+using System.Diagnostics;
+using SendGrid.Helpers.Mail;
 
 namespace LionFishWeb
 {
+
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            await ConfigSendGridasync(message);
+        }
+        
+        private async Task ConfigSendGridasync(IdentityMessage message)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("LIONFISH");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("fnytxt@gmail.com", "LionFish");
+            var subject = message.Subject;
+            var to = new EmailAddress(message.Destination);
+            var plainTextContent = message.Body;
+            var htmlContent = message.Body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
+            try
+            {
+                await client.SendEmailAsync(msg);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
         }
     }
 

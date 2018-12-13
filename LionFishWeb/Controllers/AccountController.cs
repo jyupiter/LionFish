@@ -177,7 +177,7 @@ namespace LionFishWeb.Controllers
                     // return RedirectToAction("Index", "Home");
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
 
-                    return View();
+                    return View(model);
                 }
                 AddErrors(result);
             }

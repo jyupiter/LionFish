@@ -3,7 +3,9 @@
     ViewBag.Title = "Phone Number";
 }
 
-<h2>@ViewBag.Title.</h2>
+@section Nav {
+    @Html.Partial("_NavApp");
+}
 
 @using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {

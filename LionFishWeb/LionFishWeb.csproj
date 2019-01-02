@@ -202,6 +202,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -286,10 +287,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper.min.js.map" />
-    <Content Include="Views\Shared\_LayoutU.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
     <Content Include="Views\App\Dashboard.cshtml" />
-    <Content Include="Views\App\SidebarPartial.cshtml" />
+    <Content Include="Views\Shared\_NavHome.cshtml" />
+    <Content Include="Views\Shared\_NavApp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

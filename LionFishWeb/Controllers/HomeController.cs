@@ -10,6 +10,7 @@ namespace LionFishWeb.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.IsHome = true;
             return View();
         }
 

@@ -3,5 +3,37 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2>
+@section Nav {
+    @Html.Partial("_NavApp");
+}
 
+<main>
+    <aside class="split">
+        <div class="db-v-split"></div>
+        <div class="db-v-split"></div>
+        <div class="db-v-split"></div>
+        <div class="db-v-split"></div>
+        <div class="db-v-split"></div>
+        <div class="db-v-split"></div>
+    </aside>
+    <section class="split">
+        <div class="db-v-split">
+            <div class="db-h-split">
+                <div class="h-header">hmm</div>
+                <div class="h-body">aa</div>
+            </div>
+            <div class="db-h-split">
+                <div class="h-header">hmmm</div>
+                <div class="h-body">a</div>
+            </div>
+            <div class="db-h-split">
+                <div class="h-header">hmmm</div>
+                <div class="h-body">a</div>
+            </div>
+            <div class="db-h-split">
+                <div class="h-header">hm</div>
+                <div class="h-body">aaa</div>
+            </div>
+        </div>
+    </section>
+</main>

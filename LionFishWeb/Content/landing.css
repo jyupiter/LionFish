@@ -23,25 +23,23 @@
 }
 
 .split {
-    position: fixed;
+    position: relative;
     float: left;
     min-height: 800px;
     height: calc(100vh - 56px);
 }
 
-aside.split {
-    position: relative;
+#as {
     width: 120px;
     padding: 45px 35px;
 }
 
-section.split {
-    position: relative;
+#ss {
     width: calc(100% - 150px);
     padding: 20px 0 0 0;
 }
 
-aside.split .db-v-split {
+#as .db-v-split {
     height: 50px;
     padding: 0;
     margin: 0 0 25px 0;
@@ -52,7 +50,7 @@ aside.split .db-v-split {
     text-align: center;
 }
 
-section.split .db-v-split {
+#ss .db-v-split {
     min-height: 310px;
     margin: 20px 10px 40px 10px;
     font-family: consolas;
@@ -82,65 +80,84 @@ section.split .db-v-split {
     padding: 20px;
 }
 
-@media screen and (max-width: 1210px) {
+@media screen and (max-width: 1230px) {
     #profile {
         margin-right: 25px;
     }
 
-    aside.split {
-        width:100px;
-        padding: 40px 25px;
-    }
-
-    section.split {
-        margin: auto;
-        padding: 20px 0 0 0;
-        align-content: center;
-    }
-
-    section.split .db-h-split {
-        float: none;
-        margin: 20px auto 50px auto;
-        width: 480px;
-    }
-}
-
-@media screen and (max-width: 605px) {
-    #profile {
-        margin-right: 25px;
-    }
-
-    aside.split {
+    #as {
         width: 100%;
-        min-height: 52px;
-        max-height: 52px;
-        padding: 10px 0 10px 25px;
-        background: #555;
-    }
-
-    aside.split .db-v-split {
-        display: inline-block;
-        height: 30px;
-        padding: 4px;
-        margin: 0 4px;
-        min-width: 30px;
-        max-width: 30px;
-        background: #888;
-        border-radius: 100%;
-        font-family: consolas;
-        font-size: 14px;
+        min-height: 80px;
+        height: 80px;
+        padding: 25px 20px;
         text-align: center;
     }
 
-    section.split {
-        margin: 0;
+        #as .db-v-split {
+            display: inline-block;
+            height: 40px;
+            padding: 6px 15px;
+            margin: 6px 0 0 5px;
+            width: 40px;
+            max-width: 150px;
+            background: #e0e0e0;
+            border-radius: 100%;
+            font-family: consolas;
+            font-size: 14px;
+            text-align: center;
+        }
+
+    #ss {
+        margin: auto;
         width: 100%;
-        padding: 0 5px;
+        padding: 0 20px;
+        align-content: center;
     }
 
-    section.split .db-h-split {
-        width: 100%;
-        margin: 20px auto 20px auto;
-        min-height: 280px;
+        #ss .db-h-split {
+            float: none;
+            margin: 20px auto 50px auto;
+            width: 480px;
+        }
+}
+
+@media screen and (max-width: 575px) {
+    #profile {
+        margin-right: 25px;
     }
+
+    #as {
+        width: 100%;
+        min-height: 70px;
+        height: 70px;
+        padding: 25px 20px;
+        background: #fbfbfb;
+        text-align: center;
+    }
+
+        #as .db-v-split {
+            display: inline-block;
+            height: 30px;
+            padding: 6px 15px;
+            margin: 6px 0 0 5px;
+            width: 30px;
+            max-width: 150px;
+            background: #e0e0e0;
+            border-radius: 100%;
+            font-family: consolas;
+            font-size: 14px;
+            text-align: center;
+        }
+
+    #ss {
+        margin: 0;
+        width: 100%;
+        padding: 0 20px;
+    }
+
+        #ss .db-h-split {
+            width: 100%;
+            margin: 20px auto 40px auto;
+            min-height: 280px;
+        }
 }

@@ -16,5 +16,13 @@ namespace LionFishWeb.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+        // GET: /App/Settings
+        [AllowAnonymous]
+        public ActionResult Settings(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
     }
 }

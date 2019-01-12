@@ -42,7 +42,8 @@
     });
 
     $(".slider").on("click", function () {
-        $.post('/App/UpdatePrivacy', { privacy: true }, function (data, status) {
+        var private = $(this).prev().is(":checked");
+        $.post('/App/UpdatePrivacy', { privacy: private }, function (data, status) {
             console.log("Data: " + data + "\nStatus: " + status);
         });
     });

@@ -25,8 +25,6 @@
     width: 100%;
     height: 100%;
     background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     overflow-y: scroll;
 }
 
@@ -34,7 +32,6 @@
     width: 100%;
     height: 40px;
     padding: 10px 15px;
-    border-top-left-radius: 10px;
     background: #dadada;
     color: #111;
     font-size: 18px;
@@ -52,26 +49,179 @@
 }
 
 .bc {
-    padding: 15px;
+    padding: 20px;
+    overflow:auto;
+}
+
+.bcinfo {
+    background:#fafafa;
+    float:left;
+    clear:both;
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    font-family:consolas;
+    border:1px dashed #ccc;
 }
 
 .pc {
     font-size: 16px;
-    width: 260px;
+    width: 240px;
     padding: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    cursor:pointer;
 }
 
-    .pc:not(:last-child) {
-        border-bottom: 1px solid #ddd;
-    }
+.pc:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
 
-    .pc:first-child {
-        padding-top: 0;
-    }
+.pc:first-child {
+    padding-top: 0;
+}
 
-    .pc:last-child {
-        padding-bottom: 0;
-    }
+.pc:last-child {
+    padding-bottom: 0;
+}
+
+#prv, #nprv {
+    float: left;
+}
+
+#prv {
+    margin-right: 20px;
+    width: 100px;
+    height: 100px;
+    background: #eee;
+    border-radius: 100%;
+}
+
+#nprv {
+    width: calc(100% - 120px);
+    height: 100%;
+}
+
+#nme, #bio, #email, #currentp, #newp {
+    display: block;
+    max-width: 100%;
+}
+
+#nme, #bio, #email {
+    background: #fff;
+    border:none;
+}
+
+#currentp, #newp {
+    max-width:250px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+#email {
+    width: 250px;
+}
+
+.show-password {
+    position: absolute;
+    bottom: 29%;
+    right: 250px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #aaa;
+    cursor: pointer;
+}
+
+#nme {
+    height: 20px;
+    min-width: 150px;
+    margin-bottom: 20px;
+}
+
+#bio {
+    min-width: 100%;
+    resize:none;
+}
+
+.editable {
+    border: 1px solid #ccc!important;
+    border-radius:4px;
+    padding:3px;
+}
+
+.switch {
+    float:left;
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 20px;
+    clear:left;
+    margin:0 10px 10px 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 34px;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: darkseagreen;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px darkseagreen;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.swides {
+    float:left;
+    clear:right;
+    font-size:14px;
+    line-height:1.4em;
+}
+
+.e {
+    width: 10px;
+    height: 15px;
+    margin: 0 0 0 5px;
+    font-size:11px;
+    text-transform:uppercase;
+    color: palevioletred;
+    font-weight:bold;
+    cursor:pointer;
+}

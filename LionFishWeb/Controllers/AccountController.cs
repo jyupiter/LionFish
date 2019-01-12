@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using LionFishWeb.Models;
 using LionFishWeb.Utility;
 using System.Diagnostics;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace LionFishWeb.Controllers
 {
@@ -68,7 +70,14 @@ namespace LionFishWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            var response = Request["g-recaptcha-response"];
+            string secretKey = "6LcPQ30UAAAAABFqqSAazpaMGWObvP6lCuSZggbR";
+            var client = new WebClient();
+            var r = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            var obj = JObject.Parse(r);
+            var status = (bool)obj.SelectToken("success");
+
+            if (!ModelState.IsValid || !status)
             {
                 return View(model);
             }

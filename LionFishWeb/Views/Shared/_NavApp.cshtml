@@ -1,7 +1,8 @@
 ﻿<nav id="sitenav">
     @Html.ActionLink("LionFish", "Index", "Home", new { area = "" }, new { id = "lionfish", @class = "" })
     <div id="snb">
-        @Html.ActionLink("About", "About", "Home", null, new { @class = "button" })
-        @Html.ActionLink("NavApp", "Login", "Account", new { area = "" }, new { id = "getstarted", @class = "button" })
+        @Html.ActionLink("Settings", "Settings", "App", null, new { @class = "button" })
+        <div id="profile"></div>
+        <div id="notification"></div>
     </div>
 </nav>

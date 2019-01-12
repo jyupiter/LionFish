@@ -10,6 +10,7 @@ namespace LionFishWeb.Models
     {
        public string ProfileImg { get; set; }
         public string ProfileBio { get; set; }
+        public string Private { get; set; }
 
         public virtual ICollection<Note> Notes { get; set; }
         public virtual ICollection<Group> Groups { get; set; }

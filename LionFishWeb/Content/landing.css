@@ -135,19 +135,19 @@
         text-align: center;
     }
 
-        #as .db-v-split {
-            display: inline-block;
-            height: 30px;
-            padding: 6px 15px;
-            margin: 6px 0 0 5px;
-            width: 30px;
-            max-width: 150px;
-            background: #e0e0e0;
-            border-radius: 100%;
-            font-family: consolas;
-            font-size: 14px;
-            text-align: center;
-        }
+    #as .db-v-split {
+        display: inline-block;
+        height: 30px;
+        padding: 6px 15px;
+        margin: 6px 0 0 5px;
+        width: 30px;
+        max-width: 150px;
+        background: #e0e0e0;
+        border-radius: 100%;
+        font-family: consolas;
+        font-size: 14px;
+        text-align: center;
+    }
 
     #ss {
         margin: 0;

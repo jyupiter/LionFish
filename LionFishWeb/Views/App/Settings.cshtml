@@ -1,4 +1,6 @@
-﻿@{
+﻿@model LionFishWeb.Models.User
+
+@{
     ViewBag.Title = "Settings";
 }
 
@@ -6,47 +8,95 @@
     @Html.Partial("_NavApp");
 }
 
+@Scripts.Render("~/Scripts/Content.js")
+
 <main>
     <aside class="split" id="lf">
         <div id="sb">
-            <div class="tt">Sidebar</div>
-            <div class="stt">Subtitle a</div>
+            <div class="tt">Settings</div>
+            <div class="stt">Account</div>
             <div class="bc">
-                <div class="pc">never gonna give you up</div>
-                <div class="pc">never gonna let you down</div>
-                <div class="pc">never gonna make this line so long it breaks into the next line</div>
-            </div>
-            <div class="stt">Subtitle b</div>
-            <div class="bc">
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
-            </div>
-            <div class="stt">Subtitle c</div>
-            <div class="bc">
-                <div class="pc">overflow</div>
-                <div class="pc">overflow</div>
+                <div class="pc">General</div>
+                <div class="pc">Security</div>
+                <div class="pc">Notifications</div>
             </div>
         </div>
     </aside>
     <section class="split" id="rt">
         <div id="ct">
-            <div class="tt">Content</div>
-            <div class="stt">Subtitle 1</div>
-            <div class="bc"></div>
-            <div class="stt">Subtitle 2</div>
-            <div class="bc"></div>
-            <div class="stt">Subtitle 3</div>
-            <div class="bc"></div>
+            <div class="tt">Account</div>
+            <div id="gentab">
+                <div class="stt">Profile</div>
+                <div class="bc">
+                    <div id="prv"></div>
+                    <div id="nprv">
+                        <label for="nme">Display Name</label>
+                        <span class="e">Edit</span>
+                        <input id="nme" maxlength="20" value="assmaster3000abcde" disabled />
+                        <label for="bio">Description</label>
+                        <span class="e">Edit</span>
+                        <textarea id="bio" rows="3" disabled>If you are a new user/trying to submit in a subreddit you have not submitted to before, please take some time to first participate in that subreddit (browse, upvote content/comments etc).</textarea>
+                    </div>
+                </div>
+                <div class="stt">Privacy</div>
+                <div class="bc">
+                    <label class="switch">
+                        <input type="checkbox" id="pshow" name="pshow" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Make me visible</span>
+                    <div class="bcinfo">
+                        Turning this on allows other users to find you on LionFish. Disabling it hides you from searches.
+                    </div>
+                </div>
+            </div>
+            <div id="sectab">
+                <div class="stt">Security</div>
+                <div class="bc">
+                    <label for="nme">Email</label>
+                    <span class="e" style="width:10px;height:15px;margin:0 0 0 5px;">Edit</span>
+                    <input id="email" maxlength="20" value="uhuhummm@gmail.com" disabled /><br />
+                    <a id="chpass" style="float:left;" class="button button-gray" role="button">show password settings</a>
+                    <div id="dgr" class="bcinfo" style="display:none;">
+                        <form>
+                            <div style="position:relative;">
+                                <input id="currentp" type="password" placeholder="Current password" />
+                                <div class="show-password hide">Show</div>
+                            </div>
+                            <div style="position:relative;">
+                                <input id="newp" type="password" placeholder="New password" />
+                                <div class="show-password hide">Show</div>
+                            </div>
+                            <a id="spass" style="float:left;" class="button button-black" role="button">Save new password</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="nottab">
+                <div class="stt">General</div>
+                <div class="bc">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 1</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 2</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 3</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 4</span>
+                </div>
+            </div>
         </div>
     </section>
 </main>

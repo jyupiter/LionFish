@@ -150,6 +150,19 @@ input[type="submit"] {
     background: blue !important;
 }
 
+.button-gray {
+    background: #888 !important;
+    color: #fff !important;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+.button-gray:hover {
+    background:#999 !important;
+}
+
 /* Navigation bar */
 
 #sitenav {
@@ -432,11 +445,11 @@ input[type=text], input[type=email], input[type=password], select {
     vertical-align: middle;
 }
 
-    #tip-strength p {
-        float: left;
-        padding: 0;
-        margin: 0;
-    }
+#tip-strength p {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
 
 #strength-color {
     float: left;
@@ -450,6 +463,14 @@ input[type=text], input[type=email], input[type=password], select {
 #strength-title {
     float: left;
     margin: 3px 0 0 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-family: consolas;
+    font-size: 13px;
+}
+
+#strength-desc {
+    float: left;
     padding: 0;
     text-transform: uppercase;
     font-family: consolas;

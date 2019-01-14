@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LionFishWeb.Models
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+
     public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
@@ -30,7 +30,7 @@ namespace LionFishWeb.Models
         }
     }
 
-    public class ApplicationDbContextInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class ApplicationDbContextInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
     }
 }

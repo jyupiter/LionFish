@@ -13,7 +13,7 @@ namespace LionFishWeb.Models
         public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        
+
         public DbSet<Note> Notes { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Event> Events { get; set; }

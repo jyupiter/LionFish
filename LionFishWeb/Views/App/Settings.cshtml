@@ -1,5 +1,4 @@
 ﻿@model LionFishWeb.Models.User
-
 @{
     ViewBag.Title = "Settings";
 }
@@ -28,21 +27,24 @@
             <div id="gentab">
                 <div class="stt">Profile</div>
                 <div class="bc">
-                    <div id="prv"></div>
+                    <div id="prv">
+                        <img src="http://lindsaywildlife.org/wp-content/uploads/2016/01/PEFA-03-Paul-Hara-07.31.15.jpg" />
+                        <div id="upimg">Upload</div>
+                    </div>
                     <div id="nprv">
                         <label for="nme">Display Name</label>
                         <span class="e">Edit</span>
-                        <input id="nme" maxlength="20" value="assmaster3000abcde" disabled />
+                        <input id="nme" maxlength="20" value="hmmm3000abcde" disabled />
                         <label for="bio">Description</label>
                         <span class="e">Edit</span>
-                        <textarea id="bio" rows="3" disabled>If you are a new user/trying to submit in a subreddit you have not submitted to before, please take some time to first participate in that subreddit (browse, upvote content/comments etc).</textarea>
+                        <textarea id="bio" disabled>"Full fathom five" is a catchphrase deriving from a verse passage, beginning with those words, in Shakespeare's The Tempest. Its original context, during a storm and shipwreck, is the drowning, in water about 30 feet (five fathoms) deep, of the father of the character to whom the lines are addressed.</textarea>
                     </div>
                 </div>
                 <div class="stt">Privacy</div>
                 <div class="bc">
                     <label class="switch">
                         <input type="checkbox" id="pshow" name="pshow" checked>
-                        <span class="slider round"></span>
+                        <span id="pshows" class="slider round"></span>
                     </label>
                     <span class="swides">Make me visible</span>
                     <div class="bcinfo">

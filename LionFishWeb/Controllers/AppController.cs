@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace LionFishWeb.Controllers
 {
@@ -56,8 +59,13 @@ namespace LionFishWeb.Controllers
         [AllowAnonymous]
         public ActionResult Settings(string returnUrl)
         {
+            User user = db.Users.Find(User.Identity.GetUserId());
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(user);
         }
 
         // POST: /Account/Login
@@ -68,11 +76,11 @@ namespace LionFishWeb.Controllers
             if (ModelState.IsValid)
             {
                 User user = db.Users.Find(User.Identity.GetUserId());
-                // user.Private = Json(model).ToString();
-                /*
-                db.Entry(model).State = EntityState.Modified;
+                string json = new JavaScriptSerializer().Serialize(model);
+                UpdatePrivacyViewModel data = JsonConvert.DeserializeObject<UpdatePrivacyViewModel>(json);
+                user.Private = data.Private;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                */
             }
             return Json(model);
         }

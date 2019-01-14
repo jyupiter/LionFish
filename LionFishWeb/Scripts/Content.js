@@ -41,7 +41,7 @@
         $(this).text(ds ? 'Save' : 'Edit');
     });
 
-    $(".slider").on("click", function () {
+    $("#pshows").on("click", function () {
         var private = $(this).prev().is(":checked");
         $.post('/App/UpdatePrivacy', { privacy: private }, function (data, status) {
             console.log("Data: " + data + "\nStatus: " + status);

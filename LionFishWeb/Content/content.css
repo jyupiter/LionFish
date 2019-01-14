@@ -91,11 +91,41 @@
 }
 
 #prv {
+    position:relative;
     margin-right: 20px;
     width: 100px;
     height: 100px;
     background: #eee;
     border-radius: 100%;
+    overflow:hidden;
+}
+
+#prv img {
+    width: auto;
+    height:100px;
+}
+
+#upimg {
+    position: absolute;
+    top: 38%;
+    left: 24%;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    z-index: 999999;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    background: #eee;
+    opacity: 0;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+#prv img:hover + #upimg, #upimg:hover {
+    opacity:1;
 }
 
 #nprv {

@@ -14,4 +14,9 @@ namespace LionFishWeb.Models
     {
         public string Private { get; set; }
     }
+
+    public class UpdatePasswordViewModel
+    {
+        public string Password { get; set; }
+    }
 }

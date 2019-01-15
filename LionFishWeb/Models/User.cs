@@ -8,7 +8,7 @@ namespace LionFishWeb.Models
 {
     public class User : IdentityUser
     {
-       public string ProfileImg { get; set; }
+        public string ProfileImg { get; set; }
         public string ProfileBio { get; set; }
         public string Private { get; set; }
 

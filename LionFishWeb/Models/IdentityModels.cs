@@ -17,6 +17,7 @@ namespace LionFishWeb.Models
         public DbSet<Note> Notes { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -19,6 +19,7 @@ namespace LionFishWeb.Controllers
     [Authorize]
     public class AppController : Controller
     {
+        private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -26,9 +27,22 @@ namespace LionFishWeb.Controllers
         {
         }
 
-        public AppController(ApplicationUserManager userManager)
+        public AppController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
         }
 
         public ApplicationUserManager UserManager
@@ -100,6 +114,27 @@ namespace LionFishWeb.Controllers
                         }
                     }
                 }
+            }
+        }
+
+        // POST: /App/UpdatePassword
+        [HttpPost]
+        [AllowAnonymous]
+        public async System.Threading.Tasks.Task UpdatePasswordAsync(UpdatePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return;
+            }
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
         }
 

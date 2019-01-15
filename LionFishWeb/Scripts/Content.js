@@ -147,4 +147,13 @@
         animation: 'fade'
     });
 
+    $("#spass").on("click", function () {
+        var password = $("newp").val();
+        if ($("#currentp").val() == $("#newp").val()) {
+            $.post('/App/UpdatePassword', { password: password }, function () { });
+        } else {
+
+        }
+    });
+
 });

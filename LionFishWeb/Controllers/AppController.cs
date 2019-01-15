@@ -91,7 +91,7 @@ namespace LionFishWeb.Controllers
                                 " WHERE Id = '" + User.Identity.GetUserId() + "'"
                                 );
 
-                            context.SaveChanges();
+							context.SaveChanges();
                             dbContextTransaction.Commit();
                         }
                         catch (Exception)

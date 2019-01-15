@@ -42,10 +42,18 @@
     });
 
     $("#pshows").on("click", function () {
-        var private = $(this).prev().is(":checked");
-        $.post('/App/UpdatePrivacy', { privacy: private }, function (data, status) {
-            console.log("Data: " + data + "\nStatus: " + status);
-        });
+        var private = $(this).prev().prop("checked");
+        $.post('/App/UpdatePrivacy', { private: private }, function () {});
+    });
+
+    // autosave here //
+    //
+    //
+    //
+
+    $("#upimg").on("change", function (e) {
+        var fileName = e.target.files[0].name;
+        alert('The file "' + fileName + '" has been selected.');
     });
 
     $("#chpass").on("click", function () {

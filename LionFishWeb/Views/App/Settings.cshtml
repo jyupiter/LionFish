@@ -28,22 +28,37 @@
                 <div class="stt">Profile</div>
                 <div class="bc">
                     <div id="prv">
-                        <img src="http://lindsaywildlife.org/wp-content/uploads/2016/01/PEFA-03-Paul-Hara-07.31.15.jpg" />
-                        <div id="upimg">Upload</div>
+                        @if (Model != null && Model.ProfileImg == null)
+                        {
+                            <img src="http://lindsaywildlife.org/wp-content/uploads/2016/01/PEFA-03-Paul-Hara-07.31.15.jpg" />
+                        }
+                        else
+                        {
+                            <img src=@Model.ProfileImg />
+                        }
+                        <label for="upimg">edit</label>
+                        <input type="file" id="upimg" name="upimg"/>
                     </div>
                     <div id="nprv">
                         <label for="nme">Display Name</label>
                         <span class="e">Edit</span>
-                        <input id="nme" maxlength="20" value="hmmm3000abcde" disabled />
+                        <input id="nme" data-dirty="false" type="text" maxlength="20" value=@Model.UserName disabled />
                         <label for="bio">Description</label>
                         <span class="e">Edit</span>
-                        <textarea id="bio" disabled>"Full fathom five" is a catchphrase deriving from a verse passage, beginning with those words, in Shakespeare's The Tempest. Its original context, during a storm and shipwreck, is the drowning, in water about 30 feet (five fathoms) deep, of the father of the character to whom the lines are addressed.</textarea>
+                        <textarea id="bio" data-dirty="false" disabled>@Model.ProfileBio</textarea>
                     </div>
                 </div>
                 <div class="stt">Privacy</div>
                 <div class="bc">
                     <label class="switch">
-                        <input type="checkbox" id="pshow" name="pshow" checked>
+                        @if (Model != null && Model.Private.Equals("false"))
+                        {
+                            <input type="checkbox" id="pshow" name="pshow" checked>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="pshow" name="pshow">
+                        }
                         <span id="pshows" class="slider round"></span>
                     </label>
                     <span class="swides">Make me visible</span>
@@ -57,7 +72,7 @@
                 <div class="bc">
                     <label for="nme">Email</label>
                     <span class="e" style="width:10px;height:15px;margin:0 0 0 5px;">Edit</span>
-                    <input id="email" maxlength="20" value="uhuhummm@gmail.com" disabled /><br />
+                    <input id="email" data-dirty="false" type="text" maxlength="20" value=@Model.Email disabled /><br />
                     <a id="chpass" style="float:left;" class="button button-gray" role="button">show password settings</a>
                     <div id="dgr" class="bcinfo" style="display:none;">
                         <form>

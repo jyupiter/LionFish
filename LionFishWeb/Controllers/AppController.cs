@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -68,21 +69,38 @@ namespace LionFishWeb.Controllers
             return View(user);
         }
 
-        // POST: /Account/Login
+        // POST: /App/UpdatePrivacy
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult UpdatePrivacy(UpdatePrivacyViewModel model)
+        public void UpdatePrivacy(UpdatePrivacyViewModel model)
         {
             if (ModelState.IsValid)
             {
-                User user = db.Users.Find(User.Identity.GetUserId());
                 string json = new JavaScriptSerializer().Serialize(model);
                 UpdatePrivacyViewModel data = JsonConvert.DeserializeObject<UpdatePrivacyViewModel>(json);
-                user.Private = data.Private;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+
+                using (var context = new ApplicationDbContext())
+                {
+                    using (var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand(
+                                @"UPDATE AspNetUsers" +
+                                " SET Private = '" + data.Private + "'" +
+                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
+                                );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
             }
-            return Json(model);
         }
 
         #region Helpers

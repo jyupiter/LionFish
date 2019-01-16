@@ -1,5 +1,9 @@
 ﻿$(function () {
 
+    $(".notifclose").on("click", function () {
+        $(this).parent().hide();
+    });
+
     $(".input-email").on("keyup", function () {
         $('span.error-invalid-email').hide();
         var v = $(this).val();

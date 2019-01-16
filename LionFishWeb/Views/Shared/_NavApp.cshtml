@@ -1,8 +1,22 @@
-﻿<nav id="sitenav">
+﻿@Scripts.Render("~/Scripts/NavA.js")
+
+<nav id="sitenav">
     @Html.ActionLink("LionFish", "Index", "Home", new { area = "" }, new { id = "lionfish", @class = "" })
     <div id="snb">
-        @Html.ActionLink("Settings", "Settings", "App", null, new { @class = "button" })
-        <div id="profile"></div>
+        <div id="profile">
+            <img src=@Model />
+            <div id="navdrop">
+                @Html.ActionLink("hmmmmmmmmm", "LogOff", "Account", null, new { @class = "navdroplink" })
+                @Html.ActionLink("aaaahhh", "LogOff", "Account", null, new { @class = "navdroplink" })
+                @Html.ActionLink("Notes", "Index", "Note", null, new { @class = "navdroplink" })
+                <hr style="margin:8px 0;"/>
+                @Html.ActionLink("Settings", "Settings", "App", null, new { @class = "navdroplink" })
+                <form method="post" action="@Url.Action("LogOff", "Account")" id="logform" style="display:none;">
+                    @Html.AntiForgeryToken()
+                </form>
+                <a href="" class="navdroplink" onclick="$('#logform').submit(); return false;">Log Out</a>
+            </div>
+        </div>
         <div id="notification"></div>
     </div>
 </nav>

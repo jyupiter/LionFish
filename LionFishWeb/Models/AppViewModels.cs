@@ -15,8 +15,20 @@ namespace LionFishWeb.Models
         public string Private { get; set; }
     }
 
+    public class UpdateProfileImgViewModel
+    {
+        public string ProfileImg { get; set; }
+    }
+
+    public class UpdateProfileInfoViewModel
+    {
+        public string Name { get; set; }
+        public string Info { get; set; }
+    }
+
     public class UpdatePasswordViewModel
     {
-        public string Password { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }

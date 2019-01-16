@@ -1,10 +1,11 @@
-﻿
+﻿@model LionFishWeb.Models.DashboardViewModel
+
 @{
     ViewBag.Title = "Dashboard";
 }
 
 @section Nav {
-    @Html.Partial("_NavApp");
+    @Html.Partial("_NavApp", Model.ProfileImg);
 }
 
 <main>

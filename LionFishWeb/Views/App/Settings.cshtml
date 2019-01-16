@@ -1,13 +1,19 @@
 ﻿@model LionFishWeb.Models.User
+
 @{
     ViewBag.Title = "Settings";
 }
 
 @section Nav {
-    @Html.Partial("_NavApp");
+    @Html.Partial("_NavApp", Model.ProfileImg);
 }
 
 @Scripts.Render("~/Scripts/Content.js")
+
+@if (Model == null)
+{
+    Response.Redirect("~/Account/Login");
+}
 
 <main>
     <aside class="split" id="lf">
@@ -28,7 +34,7 @@
                 <div class="stt">Profile</div>
                 <div class="bc">
                     <div id="prv">
-                        @if (Model != null && Model.ProfileImg == null)
+                        @if (Model.ProfileImg == null)
                         {
                             <img src="http://lindsaywildlife.org/wp-content/uploads/2016/01/PEFA-03-Paul-Hara-07.31.15.jpg" />
                         }
@@ -37,7 +43,7 @@
                             <img src=@Model.ProfileImg />
                         }
                         <label for="upimg">edit</label>
-                        <input type="file" id="upimg" name="upimg"/>
+                        <input type="file" accept="image/*" id="upimg" name="upimg" data-max-size="5000" />
                     </div>
                     <div id="nprv">
                         <label for="nme">Display Name</label>
@@ -51,7 +57,7 @@
                 <div class="stt">Privacy</div>
                 <div class="bc">
                     <label class="switch">
-                        @if (Model != null && Model.Private.Equals("false"))
+                        @if (Model.Private == null)
                         {
                             <input type="checkbox" id="pshow" name="pshow" checked>
                         }

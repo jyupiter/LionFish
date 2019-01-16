@@ -8,10 +8,47 @@
 }
 
 #profile {
+    position:relative;
     float: right;
     background: #ccc;
     border-radius: 100%;
-    padding: 14px;
+    height:27px;
+    width:27px;
+}
+
+#profile img {
+    border-radius: 100%;
+    height: 27px;
+    width: 27px;
+    cursor:pointer;
+}
+
+#navdrop {
+    position:absolute;
+    top:41px;
+    right:-10px;
+    width:150px;
+    height:auto;
+    background:#fff;
+    border-radius:7px;
+    padding:10px;
+    box-shadow:0 0 2px 2px rgba(0,0,0,0.12);
+}
+
+#navdrop:before {
+    content:'';
+    position: absolute;
+    top: -16px;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border:8px solid transparent;
+    border-bottom-color:#fff;
+}
+
+.navdroplink {
+    display:block;
+    color:#111;
 }
 
 #notification {
@@ -155,9 +192,9 @@
         padding: 0 20px;
     }
 
-        #ss .db-h-split {
-            width: 100%;
-            margin: 20px auto 40px auto;
-            min-height: 280px;
-        }
+    #ss .db-h-split {
+        width: 100%;
+        margin: 20px auto 40px auto;
+        min-height: 280px;
+    }
 }

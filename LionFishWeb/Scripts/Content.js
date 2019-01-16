@@ -39,6 +39,14 @@
         nx.prop("disabled", !ds).focus();
         nx.toggleClass("editable");
         $(this).text(ds ? 'Save' : 'Edit');
+
+        if ($(this).text() != "save") {
+            $.post('/App/UpdateProfileInfo',
+                {
+                    name: nx.attr("id"),
+                    info: nx.val()
+                }, function () { });
+        }
     });
 
     $("#pshows").on("click", function () {
@@ -46,15 +54,41 @@
         $.post('/App/UpdatePrivacy', { private: private }, function () {});
     });
 
-    // autosave here //
-    //
-    //
-    //
-
     $("#upimg").on("change", function (e) {
-        var fileName = e.target.files[0].name;
-        alert('The file "' + fileName + '" has been selected.');
-    });
+        var $files = $(this).get(0).files;
+        if($files[0].size > $(this).data("max-size") * 1024) {
+            console.log("Please select a smaller file");
+            return false;
+        }
+        console.log("Uploading file to Imgur..");
+        
+        var apiUrl = 'https://api.imgur.com/3/image';
+        var apiKey = 'e76d8888df0f805';
+
+        var settings = {
+            async: false,
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            url: apiUrl,
+            headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json'
+            },
+            mimeType: 'multipart/form-data'
+        };
+
+        var formData = new FormData();
+        formData.append("image", $files[0]);
+        settings.data = formData;
+        
+        $.ajax(settings).done(function (response) {
+            var resp = JSON.parse(response);
+            $("#prv img").attr("src", resp.data.link);
+            $.post('/App/UpdateProfileImg', { profileimg: resp.data.link }, function () { });
+        });
+     });
 
     $("#chpass").on("click", function () {
         if ($(this).text() == "show password settings") {
@@ -148,12 +182,12 @@
     });
 
     $("#spass").on("click", function () {
-        var password = $("newp").val();
-        if ($("#currentp").val() == $("#newp").val()) {
-            $.post('/App/UpdatePassword', { password: password }, function () { });
-        } else {
-
-        }
+        var o = $("#currentp").val();
+        var n = $("#newp").val();
+        $.post('/App/UpdatePasswordAsync', {
+            oldPassword: o,
+            newPassword: n
+        }, function () { });
     });
 
 });

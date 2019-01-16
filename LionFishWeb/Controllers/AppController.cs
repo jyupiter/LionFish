@@ -74,12 +74,8 @@ namespace LionFishWeb.Controllers
         [AllowAnonymous]
         public ActionResult Settings(string returnUrl)
         {
-            User user = db.Users.Find(User.Identity.GetUserId());
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
             ViewBag.ReturnUrl = returnUrl;
+            User user = db.Users.Find(User.Identity.GetUserId());
             return View(user);
         }
 
@@ -116,6 +112,81 @@ namespace LionFishWeb.Controllers
                 }
             }
         }
+        
+        // POST: /App/UpdateProfileImg
+        [HttpPost]
+        [AllowAnonymous]
+        public void UpdateProfileImg(UpdateProfileImgViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string json = new JavaScriptSerializer().Serialize(model);
+                UpdateProfileImgViewModel data = JsonConvert.DeserializeObject<UpdateProfileImgViewModel>(json);
+
+                using (var context = new ApplicationDbContext())
+                {
+                    using (var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand(
+                                @"UPDATE AspNetUsers" +
+                                " SET ProfileImg = '" + data.ProfileImg + "'" +
+                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
+                                );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
+            }
+        }
+
+        // POST: /App/UpdateProfileInfo
+        [HttpPost]
+        [AllowAnonymous]
+        public void UpdateProfileInfo(UpdateProfileInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string json = new JavaScriptSerializer().Serialize(model);
+                UpdateProfileInfoViewModel data = JsonConvert.DeserializeObject<UpdateProfileInfoViewModel>(json);
+
+                using (var context = new ApplicationDbContext())
+                {
+                    using (var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            if (data.Name.Equals("nme"))
+                                context.Database.ExecuteSqlCommand(
+                                    @"UPDATE AspNetUsers" +
+                                    " SET UserName = '" + data.Info + "'" +
+                                    " WHERE Id = '" + User.Identity.GetUserId() + "'"
+                                    );
+                            else
+                                context.Database.ExecuteSqlCommand(
+                                @"UPDATE AspNetUsers" +
+                                " SET ProfileBio = '" + data.Info + "'" +
+                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
+                                );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
+            }
+        }
 
         // POST: /App/UpdatePassword
         [HttpPost]
@@ -126,7 +197,12 @@ namespace LionFishWeb.Controllers
             {
                 return;
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+
+            string json = new JavaScriptSerializer().Serialize(model);
+            UpdatePasswordViewModel data = JsonConvert.DeserializeObject<UpdatePasswordViewModel>(json);
+
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), data.OldPassword, data.NewPassword);
+
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -134,7 +210,6 @@ namespace LionFishWeb.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
         }
 

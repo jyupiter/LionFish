@@ -1,0 +1,49 @@
+﻿@model LionFishWeb.Models.Note
+
+@{
+    ViewBag.Title = "Notes";
+}
+
+@section Nav {
+    @Html.Partial("_NavApp");
+}
+
+@Scripts.Render("~/Scripts/Note.js")
+
+<main>
+    <div id="creator">
+        <div class="tt" style="position:relative;">Add a new folder</div>
+        <div class="stt">Details</div>
+        <div class="bc">
+            Folder name
+            <input type="text" placeholder="Eg.: Shopping lists" />
+        </div>
+    </div>
+    <aside class="split" id="lf">
+        <div id="sb">
+            <div class="tt" style="position:relative;">
+                Notes
+                <div id="newnf">
+                    +
+                    <div id="newnfc">
+                        <div id="newnote" class="newfco">Note</div>
+                        <div id="newfolder" class="newfco">Folder</div>
+                    </div>
+                </div>
+            </div>
+            <div class="stt">Folder</div>
+            <div class="bc">
+                <div class="pc">---</div>
+            </div>
+        </div>
+    </aside>
+    <section class="split" id="rt">
+        <div id="ct">
+            <div class="tt">Title</div>
+            <div class="stt"></div>
+            <div class="bc">
+                
+            </div>
+        </div>
+    </section>
+</main>

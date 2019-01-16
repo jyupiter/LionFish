@@ -8,7 +8,19 @@
     @Html.Partial("_NavHome");
 }
 
+@Scripts.Render("~/Scripts/Index.js")
+
 <main>
+    @if (@Html.ValidationSummary(true, "", new { @class = "" }) != null)
+    {
+        <div class="notifbar">
+            <div class="notifmsg">
+                @Html.ValidationSummary(true, "", new { @class = "" })
+            </div>
+            <div class="notifclose">Close</div>
+        </div>
+    }
+
     <section id="logsign">
         <div class="ungriddy">
             <div id="block-log" class="block-logsign">
@@ -17,7 +29,6 @@
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "" })
                     <div>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { id = "input-log-email", @class = "input-email", placeholder = "Email address" } })
                     </div>
@@ -44,9 +55,6 @@
             </div>
         </div>
         <div class="griddy"></div>
-    </section>
-    <section id="socialLoginForm">
-        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
     </section>
 </main>
 @section Scripts {

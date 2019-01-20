@@ -40,7 +40,7 @@ p {
 }
 
 main {
-    margin-top: 56px;
+    margin-top: 36px;
     min-height: calc(100vh - 231px);
 }
 
@@ -150,6 +150,19 @@ input[type="submit"] {
     background: blue !important;
 }
 
+.button-gray {
+    background: #888 !important;
+    color: #fff !important;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+.button-gray:hover {
+    background:#999 !important;
+}
+
 /* Navigation bar */
 
 #sitenav {
@@ -161,7 +174,6 @@ input[type="submit"] {
     background: black;
     z-index: 99999;
     padding: 15px 25px;
-    border-bottom: 1px solid #e8e8e8;
     transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
@@ -197,11 +209,11 @@ input[type="submit"] {
     float: right;
 }
 
-    #snb a {
-        margin: 0 0 0 10px;
-        border-radius: 15px;
-        font-weight: bold;
-    }
+#snb a {
+    margin: 0 0 0 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
 
 /* Index/login page */
 
@@ -255,18 +267,18 @@ input[type="submit"] {
     background: -o-linear-gradient(45deg, rgba(216,226,243,1) 0%, rgba(255,242,204,1) 100%);
     background: linear-gradient(45deg, rgba(216,226,243,1) 0%, rgba(255,242,204,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8e2f3', endColorstr='#fff2cc', GradientType=1 );
-    padding: 30vh 25px 50px 25px;
+    padding: 30vh 25px 50px 50px;
     margin-bottom: 25px;
 }
 
-    #huge h1 {
-        font-size: 80px;
-    }
+#huge h1 {
+    font-size: 80px;
+}
 
-    #huge p {
-        font-size: 30px;
-        max-width: 800px;
-    }
+#huge p {
+    font-size: 30px;
+    max-width: 800px;
+}
 
 @media screen and (max-width: 1000px) {
     #huge {
@@ -411,6 +423,10 @@ input[type=text], input[type=email], input[type=password], select {
     cursor: pointer;
 }
 
+.checkbox {
+    margin:10px 0 10px 0;
+}
+
 @media screen and (max-width: 1200px) {
 }
 
@@ -429,11 +445,11 @@ input[type=text], input[type=email], input[type=password], select {
     vertical-align: middle;
 }
 
-    #tip-strength p {
-        float: left;
-        padding: 0;
-        margin: 0;
-    }
+#tip-strength p {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
 
 #strength-color {
     float: left;
@@ -447,6 +463,14 @@ input[type=text], input[type=email], input[type=password], select {
 #strength-title {
     float: left;
     margin: 3px 0 0 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-family: consolas;
+    font-size: 13px;
+}
+
+#strength-desc {
+    float: left;
     padding: 0;
     text-transform: uppercase;
     font-family: consolas;
@@ -473,7 +497,68 @@ input[type=text], input[type=email], input[type=password], select {
     max-width: 330px;
 }
 
-    #conf-email img, #conf-reset img {
-        max-width: 100%;
-        height: auto;
-    }
+#conf-email img, #conf-reset img {
+    max-width: 100%;
+    height: auto;
+}
+
+#rememberme {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#rememberme input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border:1px solid #ccc;
+    background-color: #eee;
+}
+
+#rememberme:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+#rememberme input:checked ~ .checkmark {
+    background-color: darkseagreen;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#rememberme input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#rememberme .checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

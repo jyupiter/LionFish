@@ -1,0 +1,297 @@
+﻿@model LionFishWeb.Models.Event
+
+<!DOCTYPE html>
+<main>
+	@section Scripts
+        {
+		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/jquery-3.3.1.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/en-gb.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")"></script>
+		<link rel="stylesheet" href="~/css/calendar.css" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" type="text/css" />
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
+		<link rel="stylesheet" href="~/css/scheduler.min.css" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" type="text/css" />
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/scripts/scheduler.min.js")"></script>
+		@*<script type="text/javascript" src="@Url.Content("~/scripts/CalendarJS.js")"></script>*@
+		<script>
+			$(document).ready(function () {
+
+				var selectedEvent; //Move to controller
+
+				$("#closePopup").click(function () {
+					$('#popup').css('display', 'none');
+				});
+				$("#closeEditor").click(function () {
+					$('#editor').css('display', 'none');
+				});
+				$("#closeCreator").click(function () {
+					$('#createEvent').css('display', 'none');
+				});
+				//$("#deleteDis").click(function () {
+				//	$('#calendar').fullCalendar('removeEvents', eventObj.id)
+				//	$('#calendar').fullCalendar('updateEvent', eventObj);
+				//	$('#popup').css('display', 'none');
+				//});
+				//$("#applyEdit").click(function () {
+				//	eventObj.title = $('#chName').val();
+				//	eventObj.color = $('#chColor').val();
+				//	eventObj.description = $('#chDesc').val();
+				//	$('#calendar').fullCalendar('updateEvent', eventObj);
+				//	$('#popuptext').text(eventObj.title);
+				//	$("#popuptext").append("<p id=\"id\">" + eventObj.id + "</p>");
+				//	$("#popuptext").append("<p id=\"date\">" + moment(eventObj.start).format('h:mm:ss a') + "</p>");
+				//	$("#popuptext").append("<p id=\"desc\">" + eventObj.description + "</p>");
+				//	$('#editor').css('display', 'none');
+				//});
+				$("#modEvent").click(function () {
+					$('#chID').val(eventObj.id);
+					$('#chName').val(eventObj.title);
+					$('#chColor').val(eventObj.color);
+					$('#chDesc').val(eventObj.description);
+					console.log(moment(eventObj.start).format('YYYY-MM-DD'));
+					$('#chStart').val(moment(eventObj.start).format('YYYY-MM-DD'));
+					$('#chEnd').val("2019-01-15");
+					$('#editor').css('display', 'inline');
+					$("#editor").css("position", "absolute");
+				});
+				/* initialize the external events
+				-----------------------------------------------------------------*/
+
+				$('#external-events .fc-event').each(function () {
+
+					// store data so the calendar knows to render an event upon drop
+					$(this).data('event', {
+						title: $.trim($(this).text()), // use the element's text as the event title
+						stick: true // maintain when user navigates (see docs on the renderEvent method)
+					});
+
+					// make the event draggable using jQuery UI
+					$(this).draggable({
+						zIndex: 999,
+						revert: true,      // will cause the event to go back to its
+						revertDuration: 0  //  original position after the drag
+					});
+
+				});
+
+
+				/* initialize the calendar
+				-----------------------------------------------------------------*/
+
+				$('#calendar').fullCalendar({
+					header: {
+						left: 'prev,next today addEventButton',
+						center: 'title ',
+						right: 'timeline,month,agendaWeek,agendaDay'
+					},
+					eventLimit: true, // for all non-agenda views
+					eventLimitClick: "popover",
+					views: {
+						agenda: {
+							eventLimit: 6// adjust to 6 only for agendaWeek/agendaDay
+						}
+					},
+					schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+					editable: true,
+					navLinks: true,
+					selectable: true,
+					droppable: true, // this allows things to be dropped onto the calendar
+					dragRevertDuration: 0,
+					drop: function () {
+						// is the "remove after drop" checkbox checked?
+						if ($('#drop-remove').is(':checked')) {
+							// if so, remove the element from the "Draggable Events" list
+							$(this).remove();
+						}
+					},
+					dayClick: function (date, jsEvent, view) {
+						$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
+						$('#createEvent').css('top', event.pageY);
+						$('#createEvent').css('display', 'inline');
+						$("#createEvent").css("position", "absolute");
+					},
+					customButtons: {
+						addEventButton: {
+							text: 'add event...',
+							click: function () {
+								$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
+								$('#createEvent').css('top', event.pageY);
+								$('#createEvent').css('display', 'inline');
+								$("#createEvent").css("position", "absolute");
+							}
+						}
+					},
+					eventClick: function (calEvent, jsEvent, view) {
+						eventObj = calEvent;
+						//eventObj = $("#calendar").fullCalendar('clientEvents', selectedEvent.id)[0];
+						$('#popuptext').text(calEvent.title);
+						$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
+						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
+						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
+						//$('#popuptext').append(calEvent.id).attr(id="id");
+						//console.log(calEvent.id);
+						$('#popup').css('left', event.pageX);      // <<< use pageX and pageY
+						$('#popup').css('top', event.pageY);
+						$('#popup').css('display', 'inline');
+						$("#popup").css("position", "absolute");  // <<< also make it absolute!
+
+					},
+					eventDragStop: function (event, jsEvent, ui, view) {
+
+						if (isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
+							$('#calendar').fullCalendar('removeEvents', event._id);
+							var el = $("<div class='fc-event'>").appendTo('#external-events-listing').text(event.title);
+							el.draggable({
+								zIndex: 999,
+								revert: true,
+								revertDuration: 0
+							});
+							el.data('event', { title: event.title, id: event.id, stick: true });
+						}
+					},
+					eventRender: function (event, element) {
+						events = $("#calendar").fullCalendar('clientEvents');
+						console.log("eventrender called!, saving events");
+
+						@*$.ajax({
+							url: @Url.Action("Action", "Controller"),
+							data: { events:events }
+						}).done(function () {
+							alert('Added');
+						});*@
+
+						element.qtip({
+							content: event.description
+						});
+					}
+
+				});
+
+
+				var isEventOverDiv = function (x, y) {
+
+					var external_events = $('#external-events');
+					var offset = external_events.offset();
+					offset.right = external_events.width() + offset.left;
+					offset.bottom = external_events.height() + offset.top;
+
+					// Compare
+					if (x >= offset.left
+						&& y >= offset.top
+						&& x <= offset.right
+						&& y <= offset.bottom) { return true; }
+					return false;
+
+				};
+
+				var loadEvents = function () {
+					var listOfEvents = @Html.Raw(Json.Encode(ViewData["Events"]));
+
+					for (var i = 0; i < listOfEvents.length; i++) {
+
+						console.log(listOfEvents[i].Title);
+						$('#calendar').fullCalendar('renderEvent', {
+							title: listOfEvents[i].Title,
+							start: listOfEvents[i].Start,
+							end: listOfEvents[i].End,
+							id: listOfEvents[i].ID,
+							color: listOfEvents[i].Color,
+							editable: true,
+							description: listOfEvents[i].Description,
+							allDay: true
+						}, true);
+					}
+				};
+				loadEvents();
+			}
+			);
+		</script>
+	}
+
+	<div id='wrap'>
+		<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
+			<div id="popuptext"></div>
+			<button id="modEvent">Modify event</button>
+			<div style="display:none;padding:10px;background-color: lightblue;  z-index:9999;" id="editor">
+				@using (Html.BeginForm())
+				{
+					@Html.AntiForgeryToken()
+					<p>ID</p>
+					@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
+					<p>Title</p>
+					@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+					<p>Color</p>
+					@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+					<p>Description</p>
+					@Html.TextBox("Description", new { htmlAttributes = new { id = "chDesc" } })
+					<p>All day?</p>
+					@Html.CheckBox("AllDay", true)
+					<p>Start date</p>
+					@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+					<p>End date</p>
+					@Html.TextBox("End", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+
+
+					<button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
+					<button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
+				}
+				<button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
+			</div>
+			
+			<button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
+		</div>
+
+		<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="createEvent">
+			<div id="creatorText"></div>
+			@using (Html.BeginForm())
+			{
+				@Html.AntiForgeryToken()
+				<p>ID</p>
+				@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
+				<p>Title</p>
+				@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+				<p>Color</p>
+				@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+				<p>Description</p>
+				@Html.TextBox("Description", new { htmlAttributes = new { id = "chDesc" } })
+				<p>All day?</p>
+				@Html.CheckBox("AllDay", true)
+				<p>Start date</p>
+				@Html.TextBox("Start", "2019-11-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+				<p>End date</p>
+				@Html.TextBox("End", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+
+
+				<button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
+			}
+			<button style="padding:5px;background-color:orange;" id="closeCreator">Close</button>
+		</div>
+	</div>
+
+
+	<div id='external-events'>
+
+		<div id='external-events-listing'>
+			<h4>Draggable Events</h4>
+			<div class='fc-event'>My Event 1</div>
+			<div class='fc-event'>My Event 2</div>
+			<div class='fc-event'>My Event 3</div>
+			<div class='fc-event'>My Event 4</div>
+			<div class='fc-event'>My Event 5</div>
+		</div>
+		<p>
+			<input type='checkbox' id='drop-remove' checked='checked' />
+			<label for='drop-remove'>remove after drop</label>
+		</p>
+	</div>
+
+
+	<div id='calendar' style="z-index:-1"></div>
+
+	<div style='clear:both'></div>
+</main>

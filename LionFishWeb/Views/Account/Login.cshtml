@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Log in";
 }
+
+@section Nav {
+    @Html.Partial("_NavHome");
+}
+
 <main>
     <section id="logsign">
         <div class="ungriddy">
@@ -20,12 +25,15 @@
                         @Html.PasswordFor(model => model.Password, new { id = "input-log-password", @class = "input-password", placeholder = "Password" })
                         <div class="show-password hide">Show</div>
                     </div>
-                    <div class="checkbox">
-                        @Html.CheckBoxFor(m => m.RememberMe)
-                        @Html.LabelFor(m => m.RememberMe)
-                    </div>
                     <div>
                         <div class="g-recaptcha" data-sitekey="6LcPQ30UAAAAAFRDS6_hR4jehjr1-PliyM1R5HLG"></div>
+                        <div class="checkbox">
+                            <label id="rememberme">
+                                Remember me
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
                         <input type="submit" id="submit-log" class="button-black" value="Log in">
                         @Html.ActionLink("Forgot password", "ForgotPassword", new { id = "", @class = "" })
                     </div>

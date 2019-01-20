@@ -1,0 +1,119 @@
+﻿@model LionFishWeb.Models.User
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section Nav {
+    @Html.Partial("_NavApp");
+}
+
+@Scripts.Render("~/Scripts/Content.js")
+
+<main>
+    <aside class="split" id="lf">
+        <div id="sb">
+            <div class="tt">Settings</div>
+            <div class="stt">Account</div>
+            <div class="bc">
+                <div class="pc">General</div>
+                <div class="pc">Security</div>
+                <div class="pc">Notifications</div>
+            </div>
+        </div>
+    </aside>
+    <section class="split" id="rt">
+        <div id="ct">
+            <div class="tt">Account</div>
+            <div id="gentab">
+                <div class="stt">Profile</div>
+                <div class="bc">
+                    <div id="prv">
+                        @if (Model != null && Model.ProfileImg == null)
+                        {
+                            <img src="http://lindsaywildlife.org/wp-content/uploads/2016/01/PEFA-03-Paul-Hara-07.31.15.jpg" />
+                        }
+                        else
+                        {
+                            <img src=@Model.ProfileImg />
+                        }
+                        <label for="upimg">edit</label>
+                        <input type="file" id="upimg" name="upimg"/>
+                    </div>
+                    <div id="nprv">
+                        <label for="nme">Display Name</label>
+                        <span class="e">Edit</span>
+                        <input id="nme" data-dirty="false" type="text" maxlength="20" value=@Model.UserName disabled />
+                        <label for="bio">Description</label>
+                        <span class="e">Edit</span>
+                        <textarea id="bio" data-dirty="false" disabled>@Model.ProfileBio</textarea>
+                    </div>
+                </div>
+                <div class="stt">Privacy</div>
+                <div class="bc">
+                    <label class="switch">
+                        @if (Model != null && Model.Private.Equals("false"))
+                        {
+                            <input type="checkbox" id="pshow" name="pshow" checked>
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="pshow" name="pshow">
+                        }
+                        <span id="pshows" class="slider round"></span>
+                    </label>
+                    <span class="swides">Make me visible</span>
+                    <div class="bcinfo">
+                        Turning this on allows other users to find you on LionFish. Disabling it hides you from searches.
+                    </div>
+                </div>
+            </div>
+            <div id="sectab">
+                <div class="stt">Security</div>
+                <div class="bc">
+                    <label for="nme">Email</label>
+                    <span class="e" style="width:10px;height:15px;margin:0 0 0 5px;">Edit</span>
+                    <input id="email" data-dirty="false" type="text" maxlength="20" value=@Model.Email disabled /><br />
+                    <a id="chpass" style="float:left;" class="button button-gray" role="button">show password settings</a>
+                    <div id="dgr" class="bcinfo" style="display:none;">
+                        <form>
+                            <div style="position:relative;">
+                                <input id="currentp" type="password" placeholder="Current password" />
+                                <div class="show-password hide">Show</div>
+                            </div>
+                            <div style="position:relative;">
+                                <input id="newp" type="password" placeholder="New password" />
+                                <div class="show-password hide">Show</div>
+                            </div>
+                            <a id="spass" style="float:left;" class="button button-black" role="button">Save new password</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="nottab">
+                <div class="stt">General</div>
+                <div class="bc">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 1</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 2</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 3</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="swides">Option 4</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

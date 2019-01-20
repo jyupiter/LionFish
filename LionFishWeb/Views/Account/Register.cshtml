@@ -3,6 +3,10 @@
     ViewBag.Title = "Register";
 }
 
+@section Nav {
+    @Html.Partial("_NavHome");
+}
+
 <main>
     <section id="logsign">
         <div class="ungriddy">
@@ -13,6 +17,7 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary("", new { @class = "" })
+                    @ViewBag.Text
                     <div>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { id = "input-sign-email", @class = "input-email", placeholder = "Email address" } })
                         @Html.ValidationMessageFor(model => model.Email)

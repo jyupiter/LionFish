@@ -1,0 +1,7 @@
+﻿<nav id="sitenav">
+    @Html.ActionLink("LionFish", "Index", "Home", new { area = "" }, new { id = "lionfish", @class = "" })
+    <div id="snb">
+        @Html.ActionLink("About", "About", "Home", null, new { @class = "button" })
+        @Html.ActionLink("Get started", "Login", "Account", new { area = "" }, new { id = "getstarted", @class = "button" })
+    </div>
+</nav>

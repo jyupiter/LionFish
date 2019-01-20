@@ -13,6 +13,23 @@
     display:none;
 }
 
+#actcreate {
+    margin: 15px 0 0 0;
+}
+
+#actcreate a {
+    float:right;
+}
+
+.cancel {
+    color: #000;
+    margin:0 5px 0 0;
+}
+
+.cancel:hover {
+    color: #fff;
+}
+
 .split {
     padding: 25px;
 }

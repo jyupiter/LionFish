@@ -22,6 +22,8 @@ namespace LionFishWeb.Models
 
         public Note(User user)
         {
+            Title = "New note";
+            Content = "";
             UserID = user.Id;
         }
     }

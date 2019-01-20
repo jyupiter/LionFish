@@ -20,6 +20,7 @@ namespace LionFishWeb.Models
 
         public Folder(User user)
         {
+            Name = "New folder";
             UserID = user.Id;
         }
     }

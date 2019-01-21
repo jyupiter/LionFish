@@ -5,7 +5,13 @@ using System.Web;
 
 namespace LionFishWeb.Models
 {
-    public class NoteViewModel
+    public class CreateNoteViewModel
     {
+        public string Title { get; set; }
+    }
+
+    public class CreateFolderViewModel
+    {
+        public string Name { get; set; }
     }
 }

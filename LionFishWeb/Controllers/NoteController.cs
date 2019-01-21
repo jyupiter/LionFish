@@ -3,10 +3,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace LionFishWeb.Controllers
 {
@@ -57,6 +58,71 @@ namespace LionFishWeb.Controllers
             return View();
         }
 
+        // POST: /Note/CreateNote
+        [HttpPost]
+        [AllowAnonymous]
+        public void CreateNote(CreateNoteViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string json = new JavaScriptSerializer().Serialize(model);
+                CreateNoteViewModel data = JsonConvert.DeserializeObject<CreateNoteViewModel>(json);
+
+                using (var context = new ApplicationDbContext())
+                {
+                    using (var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand(
+                                @"INSERT INTO Folder (Title, UserID) " +
+                                 "VALUES ('" + model.Title + "', '" + User.Identity.GetUserId() + "');"
+                                );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
+            }
+        }
+
+        // POST: /Note/CreateFolder
+        [HttpPost]
+        [AllowAnonymous]
+        public void CreateFolder(CreateFolderViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string json = new JavaScriptSerializer().Serialize(model);
+                CreateFolderViewModel data = JsonConvert.DeserializeObject<CreateFolderViewModel>(json);
+
+                using (var context = new ApplicationDbContext())
+                {
+                    using (var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand(
+                                @"INSERT INTO Folder (Name, UserID) " +
+                                 "VALUES ('" + model.Name + "', '" + User.Identity.GetUserId() + "');"
+                                );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
+            }
+        }
 
         #region Helpers
         private IAuthenticationManager AuthenticationManager

@@ -19,9 +19,21 @@
 
     $("#create").on("click", function () {
         if (!$(this).hasClass("folder")) {
-            // post
+            try {
+                $.post('/Note/CreateNote',
+                    {
+                        title: $("#creator input").val(),
+                    }, function () { });
+                // add item to sidebar
+            } catch (e) { }
         } else {
-            // post
+            try {
+                $.post('/Note/CreateFolder',
+                    {
+                        name: $("#creator input").val(),
+                    }, function () { });
+                // add item to sidebar
+            } catch (e) {}
         }
     });
 

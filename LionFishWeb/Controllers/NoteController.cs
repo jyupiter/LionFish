@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LionFishWeb.Controllers
 {
@@ -74,9 +75,11 @@ namespace LionFishWeb.Controllers
                     {
                         try
                         {
+                            var query = context.Folders.Where(p => p.Name == model.Folder);
+                            var q = query.ToArray();
                             context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Folder (Title, UserID) " +
-                                 "VALUES ('" + model.Title + "', '" + User.Identity.GetUserId() + "');"
+                                @"INSERT INTO Note (Name, FolderID, UserID) " +
+                                 "VALUES ('" + model.Title + "', '" + q[0].ID + "', '" + User.Identity.GetUserId() + "');"
                                 );
 
                             context.SaveChanges();

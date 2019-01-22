@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using LionFishWeb.Models;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace LionFishWeb.Controllers
 {
@@ -162,6 +163,29 @@ namespace LionFishWeb.Controllers
                 if (result.Succeeded)
                 {
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
+                    using (var context = new ApplicationDbContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                var query = context.Users.Where(p => p.Email == model.Email);
+                                var q = query.ToArray();
+                                context.Database.ExecuteSqlCommand(
+                                    @"UPDATE AspNetUsers" +
+                                    " SET User_Id = '" + q[0].Id + "'" +
+                                    " WHERE Id = '" + q[0].Id + "'"
+                                );
+
+                                context.SaveChanges();
+                                dbContextTransaction.Commit();
+                            }
+                            catch (Exception)
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                        }
+                    }
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
 
                     return View(model);
@@ -208,7 +232,7 @@ namespace LionFishWeb.Controllers
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);		
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }

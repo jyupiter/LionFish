@@ -7,7 +7,7 @@
     left: 0;
     background: #fff;
     width: 400px;
-    height: 230px;
+    height: 300px;
     z-index:999999;
     box-shadow: 0 2px 2px rgba(0,0,0,0.4);
     display:none;
@@ -31,16 +31,15 @@
 }
 
 .split {
-    padding: 25px;
+    position:relative;
 }
 
 #lf {
-    width: 350px;
-    padding-bottom: 105px;
+    width: 300px;
 }
 
 #rt {
-    width: calc(100% - 350px);
+    width: calc(100% - 300px);
     padding-left: 0;
 }
 
@@ -54,15 +53,34 @@
 }
 
 #sb, #ct {
+    position:relative;
     width: 100%;
     height: 100%;
     background: #fff;
-    overflow-y: scroll;
+}
+
+#sb {
+    position:relative;
+    background: #444;
+}
+
+#ned {
+    padding: 0 !important;
+}
+
+#ned, #editor {
+    position: relative;
+    height: calc(100% - 42px);
+    border:0;
+}
+
+.ql-toolbar.ql-snow {
+    border: 0 solid #fff!important;
 }
 
 .tt {
     width: 100%;
-    height: 40px;
+    height: 42px;
     padding: 10px 15px;
     background: #dadada;
     color: #111;
@@ -70,38 +88,47 @@
     font-weight: bold;
 }
 
-.ttb {
+#lf .tt {
+    background-color:#111;
+    color:#eee;
+}
+
+#lf .stt {
+    background: #555;
+    color: #eee;
 }
 
 #newnf {
     position: absolute;
     width: auto;
-    height: 40px;
+    height: 42px;
     top: 0;
     right: 0;
     padding: 7px 18px;
     text-align: center;
-    background-color: #bbb;
+    background-color: salmon;
+    color:#fff;
     cursor:pointer;
 }
 
 #newnfc {
     position: absolute;
-    background:#bbb;
+    background: salmon;
     width:150px;
     height:auto;
     right: 0;
-    top:40px;
+    top:42px;
     text-align:left;
     display:none;
+    z-index:999;
 }
 
 .newfco {
-    width:100%;
-    height:auto;
-    padding:10px 15px;
-    font-weight:normal;
-    font-size:15px;
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    font-weight: bolder;
+    font-size: 15px;
 }
 
 .newfco:hover {
@@ -119,8 +146,14 @@
 }
 
 .bc {
-    padding: 20px;
-    overflow:auto;
+    padding: 30px;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+#sb .bc {
+    position: relative;
+    height: calc(100% - 82px);
 }
 
 .bcinfo {
@@ -142,10 +175,11 @@
     white-space: nowrap;
     overflow: hidden;
     cursor:pointer;
+    color:#fff;
 }
 
 .pc:not(:last-child) {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #888;
 }
 
 .pc:first-child {
@@ -349,4 +383,19 @@ input:checked + .slider:before {
     text-transform: uppercase;
     color: #aaa;
     cursor: pointer;
+}
+
+#swap1 .bc {
+    text-align:center;
+    font-size:16px;
+    padding-top:50px;
+}
+
+#swap2 {
+    display:none;
+}
+
+.defrost {
+    color:royalblue;
+    cursor:pointer;
 }

@@ -10,6 +10,16 @@
 @Scripts.Render("~/Scripts/Index.js")
 
 <main>
+    @if (@Html.ValidationSummary(true, "", new { @class = "" }) != null)
+    {
+        <div class="notifbar">
+            <div class="notifmsg">
+                @Html.ValidationSummary(true, "", new { @class = "" })
+            </div>
+            <div class="notifclose">Close</div>
+        </div>
+    }
+
     <section id="logsign">
         <div class="ungriddy">
             <div id="block-sign" class="block-logsign">
@@ -18,7 +28,6 @@
                 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary("", new { @class = "" })
                     @ViewBag.Text
                     <div>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { id = "input-sign-email", @class = "input-email", placeholder = "Email address" } })

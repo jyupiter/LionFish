@@ -72,16 +72,6 @@ namespace LionFishWeb
                 RequireUniqueEmail = true
             };
 
-            // Configure validation logic for passwords
-            //manager.passwordvalidator = new passwordvalidator
-            //{
-            //    requiredlength = 6,
-            //    requirenonletterordigit = true,
-            //    requiredigit = true,
-            //    requirelowercase = true,
-            //    requireuppercase = true,
-            //};
-
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);

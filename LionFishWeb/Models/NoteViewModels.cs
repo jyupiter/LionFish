@@ -8,6 +8,7 @@ namespace LionFishWeb.Models
     public class CreateNoteViewModel
     {
         public string Title { get; set; }
+        public string Folder { get; set; }
     }
 
     public class CreateFolderViewModel

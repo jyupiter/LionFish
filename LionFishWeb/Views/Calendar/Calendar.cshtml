@@ -52,10 +52,11 @@
 					$('#chID').val(eventObj.id);
 					$('#chName').val(eventObj.title);
 					$('#chColor').val(eventObj.color);
+					console.log(eventObj.description);
 					$('#chDesc').val(eventObj.description);
 					console.log(moment(eventObj.start).format('YYYY-MM-DD'));
-					$('#chStart').val(moment(eventObj.start).format('YYYY-MM-DD'));
-					$('#chEnd').val("2019-01-15");
+					$('#chStart').val(moment(eventObj.start).format("YYYY-MM-DD HH:mm"));
+					$('#chEnd').val(moment(eventObj.end).format("YYYY-MM-DD HH:mm"));
 					$('#editor').css('display', 'inline');
 					$("#editor").css("position", "absolute");
 				});
@@ -133,6 +134,7 @@
 						$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
 						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
+						$("#popuptext").append("<p id=\"notes\">" + calEvent.notes + "</p>");
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
 						$('#popup').css('left', event.pageX);      // <<< use pageX and pageY
@@ -156,18 +158,25 @@
 					},
 					eventRender: function (event, element) {
 						events = $("#calendar").fullCalendar('clientEvents');
-						console.log("eventrender called!, saving events");
+						console.log(" eventrender called!, saving events");
+						for (var i = 0; i < events.length; i++) {
 
-						@*$.ajax({
-							url: @Url.Action("Action", "Controller"),
-							data: { events:events }
-						}).done(function () {
-							alert('Added');
-						});*@
-
-						element.qtip({
-							content: event.description
-						});
+							var event = {
+								title: events[i].title,
+								start: moment(events[i].start).format("YYYY-MM-DD HH:mm"),
+								end: moment(events[i].end).format("YYYY-MM-DD HH:mm"),
+								id: events[i].id,
+								color: events[i].color,
+								notes: events[i].notes,
+								editable: true,
+								description: events[i].description,
+								allDay: events[i].allDay
+							}
+							console.log(event);
+							//var myJSON = JSON.stringify(event)
+							//console.log(myJSON);
+							$.post('/Calendar/AutoSave',event, function () { });
+						};
 					}
 
 				});
@@ -193,17 +202,19 @@
 					var listOfEvents = @Html.Raw(Json.Encode(ViewData["Events"]));
 
 					for (var i = 0; i < listOfEvents.length; i++) {
-
-						console.log(listOfEvents[i].Title);
+						var start = moment(listOfEvents[i].Start).format("YYYY-MM-DD HH:mm");
+						var end = moment(listOfEvents[i].End).format("YYYY-MM-DD HH:mm");
+						console.log(listOfEvents[i]);
 						$('#calendar').fullCalendar('renderEvent', {
 							title: listOfEvents[i].Title,
-							start: listOfEvents[i].Start,
-							end: listOfEvents[i].End,
+							start: moment(start, "YYYY-MM-DD HH:mm").add(1, 'days'),
+							end: moment(end, "YYYY-MM-DD HH:mm").add(1, 'days'),
 							id: listOfEvents[i].ID,
 							color: listOfEvents[i].Color,
+							notes: listOfEvents[i].Notes,
 							editable: true,
 							description: listOfEvents[i].Description,
-							allDay: true
+							allDay: listOfEvents[i].AllDay
 						}, true);
 					}
 				};
@@ -228,9 +239,9 @@
 					<p>Color</p>
 					@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 					<p>Description</p>
-					@Html.TextBox("Description", new { htmlAttributes = new { id = "chDesc" } })
+					@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
 					<p>All day?</p>
-					@Html.CheckBox("AllDay", true)
+					@Html.CheckBox("AllDay", false)
 					<p>Start date</p>
 					@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
 					<p>End date</p>
@@ -242,7 +253,7 @@
 				}
 				<button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
 			</div>
-			
+
 			<button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
 		</div>
 
@@ -258,14 +269,13 @@
 				<p>Color</p>
 				@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 				<p>Description</p>
-				@Html.TextBox("Description", new { htmlAttributes = new { id = "chDesc" } })
+				@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
 				<p>All day?</p>
-				@Html.CheckBox("AllDay", true)
+				@Html.CheckBox("AllDay", false)
 				<p>Start date</p>
-				@Html.TextBox("Start", "2019-11-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+				@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
 				<p>End date</p>
 				@Html.TextBox("End", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chEnd" } })
-
 
 				<button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
 			}

@@ -20,9 +20,11 @@ namespace LionFishWeb.Models
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public string Color { get; set; }
+		public string Notes { get; set; }
 		public Event()
 		{
 			ID = username + index++;
+			Notes = "";
 		}
 		public Event(string title, string color, string desc)
 		{

@@ -2,55 +2,23 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
 
 namespace LionFishWeb.Controllers
 {
-    public class CalendarController : Controller
+	public class CalendarController : Controller
 	{
-		private ApplicationSignInManager _signInManager;
-		private ApplicationUserManager _userManager;
-
-		public CalendarController()
-		{
-		}
-
-		public CalendarController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-		{
-			UserManager = userManager;
-			SignInManager = signInManager;
-		}
-
-		public ApplicationSignInManager SignInManager
-		{
-			get
-			{
-				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-			}
-			private set
-			{
-				_signInManager = value;
-			}
-		}
-
-		public ApplicationUserManager UserManager
-		{
-			get
-			{
-				return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-			}
-			private set
-			{
-				_userManager = value;
-			}
-		}
 
 		// GET: Calendar
 		public const string path = "D:\\Github\\LionFishWeb\\Events";
@@ -59,8 +27,8 @@ namespace LionFishWeb.Controllers
 		{
 			List<Event> listOfEvents = new List<Event>();
 			listOfEvents = Load();
-			ViewData["Events"] = listOfEvents;
-			Debug.WriteLine("calendar() called");
+			ViewData["Events"] = Load();
+			//Debug.WriteLine("calendar() called");
 			return View();
 
 			//string[] filePaths = Directory.GetFiles(path);
@@ -79,7 +47,7 @@ namespace LionFishWeb.Controllers
 		public ActionResult Apply([Bind(Include = "ID, Title, Color, Description, AllDay, Start, End")] Event events)
 		{
 			Debug.WriteLine(events.Title);
-			Save(events, "update", events.ID);
+			Save(events, "update");
 			return RedirectToAction("Calendar");
 		}
 
@@ -88,7 +56,7 @@ namespace LionFishWeb.Controllers
 		public ActionResult Create([Bind(Include = "Title, Color, Description, AllDay, Start, End")] Event events)
 		{
 			Debug.WriteLine(events.Title);
-			Save(events, "create", "0");
+			Save(events, "create");
 			return RedirectToAction("Calendar");
 		}
 
@@ -97,8 +65,49 @@ namespace LionFishWeb.Controllers
 		public ActionResult Delete([Bind(Include = "ID")] Event events)
 		{
 			Debug.WriteLine(events.ID);
-			Save(events, "delete", events.ID);
+			Save(events, "delete");
 			return RedirectToAction("Calendar");
+		}
+
+		public ActionResult Note([Bind(Include = "ID, Notes")] Event events)
+		{
+			Debug.WriteLine(events.ID);
+			Debug.WriteLine(events.Notes);
+			string user = SetUser();
+			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
+			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
+			using (var context = new ApplicationDbContext())
+			{
+				using (var dbContextTransaction = context.Database.BeginTransaction())
+				{
+					try
+					{
+						context.Database.ExecuteSqlCommand(
+								"UPDATE Event SET Notes = '" + events.Notes + "' WHERE ID = '" + events.ID + "'"
+							);
+						context.SaveChanges();
+						dbContextTransaction.Commit();
+					}
+					catch (Exception e)
+					{
+						dbContextTransaction.Rollback();
+					}
+				}
+			}
+
+
+			return RedirectToAction("Calendar");
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public void AutoSave(Event stuff)
+		{
+			string json = new JavaScriptSerializer().Serialize(stuff);
+			Debug.WriteLine("savng... " + json);
+			Event events = JsonConvert.DeserializeObject<Event>(json);
+			Save(events, "update");
+
 		}
 
 		public static List<Event> Load()
@@ -109,7 +118,7 @@ namespace LionFishWeb.Controllers
 				{
 					try
 					{
-						var query = context.Events.SqlQuery("SELECT ID,Title,Description,AllDay,\"Start\",\"end\",Color FROM Event").ToList<Event>();
+						var query = context.Events.SqlQuery("SELECT ID,Title,Description,AllDay,\"Start\",\"end\",Color,Notes FROM Event").ToList<Event>();
 						return query;
 					}
 					catch (Exception e)
@@ -120,8 +129,8 @@ namespace LionFishWeb.Controllers
 			}
 			return null;
 		}
-
-		public static void Save(Event events , string mode, string id) {
+		public static string SetUser()
+		{
 			using (var context = new ApplicationDbContext())
 			{
 				using (var dbContextTransaction = context.Database.BeginTransaction())
@@ -137,28 +146,53 @@ namespace LionFishWeb.Controllers
 								" SET User_Id = '" + query2[0].Id + "'" +
 								" WHERE Id = '" + query2[0].Id + "'"
 								);
+						return query2[0].Id;
+					}
+					catch (Exception e)
+					{
+						return "";
+					}
+				}
+			}
+		}
+		public static void Save(Event events, string mode)
+		{
 
-						if (mode == "create"){
-							Debug.WriteLine("INSERT INTO Event (ID,Title,Description,AllDay,Start,\"end\",Color,User_Id) VALUES ('" + events.ID + "','" + events.Title + "','" + events.Description + "'," + events.AllDay + "," + events.Start + "," + events.End + ",'" + events.Color + "', '" + query2[0].Id + "')");
-							context.Database.ExecuteSqlCommand(
-							"INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,User_Id) VALUES ('" + events.ID + "','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + events.Start + "','" + events.End + "','" + events.Color + "', '" + query2[0].Id+"')"
-							);
-						}
-						else if(mode == "update")
-						{
-							Debug.WriteLine("UPDATE Event SET ID = '" + events.ID + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', Start = '" + events.Start + "', End = '" + events.End + "', Color = '" + events.Color + "', User_ID = '" + query2[0].Id + "' WHERE ID = '" + id + "'");
-							context.Database.ExecuteSqlCommand(
-								"UPDATE Event SET ID = '" + events.ID + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + events.Start + "', \"End \"= '" + events.End + "', Color = '" + events.Color + "', User_ID = '" + query2[0].Id +"' WHERE ID = '"+ id + "'"
-							);
-						}
-						else if(mode == "delete")
-						{
-							context.Database.ExecuteSqlCommand(
-								"DELETE FROM Event WHERE ID = '"+ events.ID + "'"
-							);
-						}
-						
+			Debug.WriteLine(events.Start);
+			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
+			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
+			string user = SetUser();
 
+			if (mode == "create")
+			{
+
+				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,User_Id) VALUES ('" + events.ID + "','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', '" + user + "')");
+			}
+			else if (mode == "update")
+			{
+				Debug.WriteLine("UPDATE Event SET ID = '" + events.ID + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', Start = '" + start + "', End = '" + end + "', Color = '" + events.Color + "', User_ID = '" + user + "' WHERE ID = '" + events.ID + "'");
+
+				CallDB("UPDATE Event SET ID = '" + events.ID + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', User_ID = '" + user + "' WHERE ID = '" + events.ID + "'");
+			}
+			else if (mode == "delete")
+			{
+
+				CallDB("DELETE FROM Event WHERE ID = '" + events.ID + "'");
+			}
+
+
+		}
+
+		public static void CallDB(string command)
+		{
+			using (var context = new ApplicationDbContext())
+			{
+				using (var dbContextTransaction = context.Database.BeginTransaction())
+				{
+					try
+					{
+						Debug.WriteLine(command);
+						context.Database.ExecuteSqlCommand(command);
 						context.SaveChanges();
 						dbContextTransaction.Commit();
 					}
@@ -172,31 +206,6 @@ namespace LionFishWeb.Controllers
 		}
 
 		#region Helpers
-		private IAuthenticationManager AuthenticationManager
-		{
-			get
-			{
-				return HttpContext.GetOwinContext().Authentication;
-			}
-		}
-
-		private void AddErrors(IdentityResult result)
-		{
-			foreach (var error in result.Errors)
-			{
-				ModelState.AddModelError("", error);
-			}
-		}
-
-		private bool HasPassword()
-		{
-			var user = UserManager.FindById(User.Identity.GetUserId());
-			if (user != null)
-			{
-				return user.PasswordHash != null;
-			}
-			return false;
-		}
 		#endregion
 	}
 }

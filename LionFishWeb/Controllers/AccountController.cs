@@ -57,8 +57,12 @@ namespace LionFishWeb.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if(User.Identity.GetUserId() == null)
+            {
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
+            return RedirectToAction("Dashboard", "App");
         }
         
         // POST: /Account/Login

@@ -17,7 +17,8 @@ using System.Web.Script.Serialization;
 
 namespace LionFishWeb.Controllers
 {
-	public class CalendarController : Controller
+    [Authorize]
+    public class CalendarController : Controller
 	{
 
 		// GET: Calendar

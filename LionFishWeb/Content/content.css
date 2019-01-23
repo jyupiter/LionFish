@@ -70,12 +70,16 @@
 
 #ned, #editor {
     position: relative;
-    height: calc(100% - 42px);
     border:0;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+    padding: 5px 2px;
 }
 
 .ql-toolbar.ql-snow {
     border: 0 solid #fff!important;
+    background:#eee;
 }
 
 .tt {
@@ -86,6 +90,15 @@
     color: #111;
     font-size: 18px;
     font-weight: bold;
+}
+
+#rt .tt {
+    padding:1px 18px;
+}
+
+#rt .tt input {
+    padding:0 5px;
+    max-width:250px;
 }
 
 #lf .tt {

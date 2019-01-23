@@ -14,18 +14,20 @@ namespace LionFishWeb.Models
         public string Title { get; set; }
         public string Content { get; set; }
 
-        public string FolderID { get; set; }
+        public int FolderID { get; set; }
         public string UserID { get; set; }
-        public int EventID { get; set; }
+        public int? EventID { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual Event Event { get; set; }
+        public Note()
+        {
+            Title = "New note";
+        }
 
-        public Note(User user)
+        public Note(string Id)
         {
             Title = "New note";
             Content = "";
-            UserID = user.Id;
+            UserID = Id;
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace LionFishWeb.Controllers
 {
@@ -56,7 +57,50 @@ namespace LionFishWeb.Controllers
         // GET: Note
         public ActionResult Index()
         {
-            return View();
+            NoteFolderViewModel NFVM = new NoteFolderViewModel();
+            NFVM.NVM.Notes = Load();
+            NFVM.FVM.Folders = Load("");
+            return View(NFVM);
+        }
+
+        public static List<Note> Load()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                using (var dbContextTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = context.Notes.SqlQuery("SELECT * FROM Note").ToList<Note>();
+                        return query;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static List<Folder> Load(string placeholder)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                using (var dbContextTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = context.Folders.SqlQuery("SELECT * FROM Folder").ToList<Folder>();
+                        return query;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+            }
+            return null;
         }
 
         // POST: /Note/CreateNote
@@ -75,10 +119,12 @@ namespace LionFishWeb.Controllers
                     {
                         try
                         {
-                            var query = context.Folders.Where(p => p.Name == model.Folder);
+                            var query = context.Folders.Where(p => p.Name == model.Name);
+                            Debug.WriteLine(query.ToArray());
+                            
                             var q = query.ToArray();
                             context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Note (Name, FolderID, UserID) " +
+                                @"INSERT INTO Note (Title, FolderID, UserID) " +
                                  "VALUES ('" + model.Title + "', '" + q[0].ID + "', '" + User.Identity.GetUserId() + "');"
                                 );
 

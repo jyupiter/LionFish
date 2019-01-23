@@ -57,7 +57,6 @@
     $("#upimg").on("change", function (e) {
         var $files = $(this).get(0).files;
         if($files[0].size > $(this).data("max-size") * 1024) {
-            console.log("Please select a smaller file");
             return false;
         }
         console.log("Uploading file to Imgur..");

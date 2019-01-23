@@ -9,6 +9,7 @@ using LionFishWeb.Models;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 
 namespace LionFishWeb.Controllers
 {
@@ -169,12 +170,9 @@ namespace LionFishWeb.Controllers
                         {
                             try
                             {
-                                var query = context.Users.Where(p => p.Email == model.Email);
-                                var q = query.ToArray();
                                 context.Database.ExecuteSqlCommand(
-                                    @"UPDATE AspNetUsers" +
-                                    " SET User_Id = '" + q[0].Id + "'" +
-                                    " WHERE Id = '" + q[0].Id + "'"
+                                @"INSERT INTO Folder (Name, UserID) " +
+                                 "VALUES ('Folder', '" + User.Identity.GetUserId() + "');"
                                 );
 
                                 context.SaveChanges();

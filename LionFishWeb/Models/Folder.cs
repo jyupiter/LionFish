@@ -18,10 +18,15 @@ namespace LionFishWeb.Models
         public virtual ICollection<Note> Notes { get; set; }
         public virtual User User { get; set; }
 
-        public Folder(User user)
+        public Folder()
         {
             Name = "New folder";
-            UserID = user.Id;
+        }
+
+        public Folder(string Id)
+        {
+            Name = "New folder";
+            UserID = Id;
         }
     }
 }

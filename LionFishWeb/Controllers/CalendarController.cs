@@ -35,6 +35,7 @@ namespace LionFishWeb.Controllers
 					foreach (Note notes in note)
 					{
 						notesList.Add(notes.ID, notes.Title);
+                        Debug.WriteLine(notes.ID);
 					}
 				}
 				catch (Exception e)

@@ -122,7 +122,8 @@
 						//$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
 						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
-						$("#popuptext").append("<p id=\"notes\">Notes: " + calEvent.notes + "</p>");
+                        $("#popuptext").append("<p id=\"notes\">Notes: " + calEvent.notes + "</p>");
+                       // $("#popuptext").append(" @Html.ActionLink(\"Notes\", \"Index\", \"Note\", null, new { @class = \"navdroplink\" })");
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
 						console.log(event.pageX);
@@ -290,7 +291,13 @@
 				<div class="bc">
 					<div id='wrap'>
 						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
-							<div id="popuptext"></div>
+                            <div id="popuptext">
+                               
+
+
+
+
+                            </div>
 							<button id="modEvent">Modify event</button>
 							<div style="display:none;padding:10px;height:auto;background-color: lightblue;  z-index:9999;" id="editor">
 								@using (Html.BeginForm())

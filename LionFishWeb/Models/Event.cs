@@ -19,7 +19,7 @@ namespace LionFishWeb.Models
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public string Color { get; set; }
-		public Dictionary<string, string> Notes { get; set; }
+		public string Notes { get; set; }
 		public string UserID { get; set; }
 		public bool Public { get; set; }
 		public Event()
@@ -27,7 +27,6 @@ namespace LionFishWeb.Models
 			UserID = "";
 			ID = UserID + Guid.NewGuid();
 			Public = false;
-			Notes = new Dictionary<string, string>();
 		}
 		public Event(string title, string color, string desc)
 		{

@@ -93,7 +93,7 @@ namespace LionFishWeb.Controllers
                                 @"UPDATE AspNetUsers" +
                                 " SET Private = '" + data.Private + "'" +
                                 " WHERE Id = '" + User.Identity.GetUserId() + "'"
-                                );
+                            );
 
                             context.SaveChanges();
                             dbContextTransaction.Commit();

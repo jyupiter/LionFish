@@ -89,7 +89,8 @@
             switch (String.fromCharCode(event.which).toLowerCase()) {
                 case 's':
                     event.preventDefault();
-                    console.log('ctrl + s pressed. saving current note.');
+                    console.log("ctrl + s pressed. saving current note.");
+                    console.log(quill.getContents())
                     break;
             }
         }

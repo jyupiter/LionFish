@@ -16,6 +16,15 @@ namespace LionFishWeb.Models
         public string Name { get; set; }
     }
 
+    public class UpdateNoteViewModel
+    {
+        public string ID { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string FolderID { get; set; }
+        public string EventID { get; set; }
+    }
+
     public class NoteViewModel {
         public List<Note> Notes { get; set; }
     }

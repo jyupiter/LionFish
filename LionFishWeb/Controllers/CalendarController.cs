@@ -37,7 +37,7 @@ namespace LionFishWeb.Controllers
                 { 
                 foreach(Note notes in note)
                 {
-                    events.Notes.Add(""+notes.ID,notes.Title);
+                    events.Notes.Add(notes.ID,notes.Title);
                 }
                 }
                 catch(Exception e)

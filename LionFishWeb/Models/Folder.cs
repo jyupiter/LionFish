@@ -10,7 +10,7 @@ namespace LionFishWeb.Models
     public class Folder
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string Name { get; set; }
 
         public string UserID { get; set; }
@@ -21,12 +21,7 @@ namespace LionFishWeb.Models
         public Folder()
         {
             Name = "New folder";
-        }
-
-        public Folder(string Id)
-        {
-            Name = "New folder";
-            UserID = Id;
+            ID = "" + Guid.NewGuid();
         }
     }
 }

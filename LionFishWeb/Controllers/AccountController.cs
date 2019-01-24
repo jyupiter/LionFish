@@ -174,9 +174,10 @@ namespace LionFishWeb.Controllers
                         {
                             try
                             {
+                                Folder f = new Folder();
                                 context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Folder (Name, UserID) " +
-                                 "VALUES ('Folder', '" + user.Id + "');"
+                                    @"INSERT INTO Folder (ID, Name, UserID) " +
+                                    "VALUES ('" + f.ID + "', '" + f.Name + "', '" + user.Id + "');"
                                 );
 
                                 context.SaveChanges();

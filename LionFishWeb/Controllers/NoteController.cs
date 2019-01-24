@@ -103,7 +103,7 @@ namespace LionFishWeb.Controllers
             return null;
         }
 
-        public JsonResult GetNoteDetails(int ID)
+        public JsonResult GetNoteDetails(string ID)
         {
             Note n = new Note();
             List<Note> notes = Load(User.Identity.GetUserId());
@@ -135,13 +135,14 @@ namespace LionFishWeb.Controllers
                         {
                             string uid = User.Identity.GetUserId();
                             var query = context.Folders.Where(p => p.Name == model.Name && p.UserID == uid);
-                            Debug.WriteLine(query.ToArray());
-                            
+
+
+                            Note n = new Note();
                             var q = query.ToArray();
                             context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Note (Title, FolderID, UserID) " +
-                                 "VALUES ('" + model.Title + "', '" + q[0].ID + "', '" + uid + "');"
-                                );
+                                @"INSERT INTO Note (ID, Title, Content, FolderID, UserID) " +
+                                 "VALUES ('" + n.ID + "', '" + model.Title + "', '" + n.Content + "', '" + q[0].ID + "', '" + uid + "');"
+                            );
 
                             context.SaveChanges();
                             dbContextTransaction.Commit();
@@ -171,15 +172,50 @@ namespace LionFishWeb.Controllers
                     {
                         try
                         {
+                            Folder f = new Folder();
                             context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Folder (Name, UserID) " +
-                                 "VALUES ('" + model.Name + "', '" + User.Identity.GetUserId() + "');"
-                                );
+                                @"INSERT INTO Folder (ID, Name, UserID) " +
+                                "VALUES ('" + f.ID + "', '" + f.Name + "', '" + User.Identity.GetUserId() + "');"
+                            );
 
                             context.SaveChanges();
                             dbContextTransaction.Commit();
                         }
                         catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                        }
+                    }
+                }
+            }
+        }
+
+        // POST: /Note/CreateFolder
+        [HttpPost]
+        [AllowAnonymous]
+        public void UpdateNote(UpdateNoteViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                string json = new JavaScriptSerializer().Serialize(model);
+                CreateFolderViewModel data = JsonConvert.DeserializeObject<CreateFolderViewModel>(json);
+
+                using(var context = new ApplicationDbContext())
+                {
+                    using(var dbContextTransaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand(
+                                @"UPDATE Note" +
+                                " SET Title = '" + model.Title + "', Content = '" + model.Content + "', FolderID = '" + model.FolderID + "', EventID = '" + model.EventID + "'" +
+                                " WHERE Id = '" + model.ID + "'"
+                            );
+
+                            context.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch(Exception)
                         {
                             dbContextTransaction.Rollback();
                         }

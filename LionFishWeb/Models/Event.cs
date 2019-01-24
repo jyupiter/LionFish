@@ -27,7 +27,7 @@ namespace LionFishWeb.Models
 			UserID = "";
 			ID = UserID + Guid.NewGuid();
 			Public = false;
-			Notes = new List<string>();
+			Notes = new Dictionary<string, string>();
 		}
 		public Event(string title, string color, string desc)
 		{

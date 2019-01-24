@@ -176,7 +176,7 @@ namespace LionFishWeb.Controllers
                             {
                                 context.Database.ExecuteSqlCommand(
                                 @"INSERT INTO Folder (Name, UserID) " +
-                                 "VALUES ('Folder', '" + User.Identity.GetUserId() + "');"
+                                 "VALUES ('Folder', '" + user.Id + "');"
                                 );
 
                                 context.SaveChanges();
@@ -187,10 +187,10 @@ namespace LionFishWeb.Controllers
                                 dbContextTransaction.Rollback();
                             }
                         }
-                    }
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
 
                     return View(model);
+                    }
                 }
                 AddErrors(result);
             }

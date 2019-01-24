@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Nav {
+    @Html.Partial("_NavHome");
+}
+
+<h2>feedback</h2>
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.4.0.js"></script>
+    <script src="~/signalr/js"></script>
+    <script src="~/Scripts/feedbackjs.js"></script>
+    <script src="~/"></script>
+    <!--<script src="~/Scripts/signalr/hubs"></script>
+    -->
+}
+
+<p>Please rate your experience with us</p>
+<section id="rating">
+    <div class="field">
+        <label for="rate">1</label>
+        <input class="rate" type="radio" name="rating" value="1" />
+    </div>
+    <div class="field">
+        <label for="rate">2</label>
+        <input class="rate" type="radio" name="rating" value="2" />
+    </div>
+    <div class="field">
+        <label for="rate">3</label>
+        <input class="rate" type="radio" name="rating" value="3" checked />
+    </div>
+    <div class="field">
+        <label for="rate">4</label>
+        <input class="rate" type="radio" name="rating" value="4" />
+    </div>
+    <div class="field">
+        <label for="rate">5</label>
+        <input class="rate" type="radio" name="rating" value="5" />
+    </div>
+</section>
+<p>Please describe how we can better serve your needs.</p>
+
+<input type="text" style="height:50px;width:200px;" placeholder="your pain" id="feedbackMessage" />
+<p style="font-size:10px;visibility:hidden;" id="CharRight"></p>
+<input type="button" id="feedbackBtn" value="Send" />
+<h2 id="sendFeed"></h2>

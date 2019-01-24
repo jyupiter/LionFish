@@ -8,6 +8,7 @@ namespace LionFishWeb
     {
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
             ConfigureAuth(app);
         }
     }

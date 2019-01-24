@@ -106,7 +106,11 @@ namespace LionFishWeb.Controllers
                 }
             }
         }
-        
+        public ActionResult Feedback()
+        {
+            ViewBag.Message = "gib thee knowledge";
+            return View();
+        }
         // POST: /App/UpdateProfileImg
         [HttpPost]
         [AllowAnonymous]

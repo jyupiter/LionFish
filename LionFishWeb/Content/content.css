@@ -68,9 +68,10 @@
     padding: 0 !important;
 }
 
-#ned, #editor {
+#ned, #editor, .ql-editor {
     position: relative;
-    border:0;
+    border: 0;
+    min-height: 300px;
 }
 
 .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -411,4 +412,11 @@ input:checked + .slider:before {
 .defrost {
     color:royalblue;
     cursor:pointer;
+}
+
+#save-out {
+    float: right;
+    margin: 10px 10px 0 0;
+    font-size: 14px;
+    font-weight: normal;
 }

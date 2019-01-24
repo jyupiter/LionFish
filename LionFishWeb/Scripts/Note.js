@@ -46,6 +46,7 @@
         } else {
             try {
                 $("#sb .tt").after("<div class='stt'>" + v + "</div>");
+                $("#creator select").append("<option>" + v + "</option>");
                 $.post('/Note/CreateFolder',
                     {
                         name: v
@@ -54,16 +55,18 @@
                 console.log("[!!!] folder creation");
             }
         }
+        $("#creator input").val("");
     });
 
     $(".cancel").on("click", function () {
         $("#creator").toggle();
+        $("#creator input").val("");
     });
 
     $("#sb").on("click", ".pc", function () {
         $.ajax({
             type: "GET",
-            url: "GetNoteDetails",
+            url: "/Note/GetNoteDetails",
             data: { ID: $(this).attr('id') },
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -81,4 +84,14 @@
         });
     });
 
+    $(window).bind('keydown', function (event) {
+        if (event.ctrlKey || event.metaKey) {
+            switch (String.fromCharCode(event.which).toLowerCase()) {
+                case 's':
+                    event.preventDefault();
+                    console.log('ctrl + s pressed. saving current note.');
+                    break;
+            }
+        }
+    });
 });

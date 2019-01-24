@@ -19,6 +19,7 @@ namespace LionFishWeb.Models
         public DbSet<Event> Events { get; set; }
         public DbSet<Folder> Folders { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

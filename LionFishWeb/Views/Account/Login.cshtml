@@ -1,5 +1,4 @@
-﻿@using LionFishWeb.Models
-@model LoginViewModel
+﻿@model LionFishWeb.Models.LoginViewModel
 @{
     ViewBag.Title = "Log in";
 }
@@ -11,7 +10,7 @@
 @Scripts.Render("~/Scripts/Index.js")
 
 <main>
-    @if (@Html.ValidationSummary(true, "", new { @class = "" }) != null)
+    @if(@Html.ValidationSummary(true, "", new { @class = "" }) != null)
     {
         <div class="notifbar">
             <div class="notifmsg">
@@ -26,7 +25,7 @@
             <div id="block-log" class="block-logsign">
                 <h1>Existing user? Log in<span style="color:#EDA831;">.</span></h1>
                 <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                @using(Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
                     <div>
@@ -37,7 +36,14 @@
                         <div class="show-password hide">Show</div>
                     </div>
                     <div>
-                        <div class="g-recaptcha" data-sitekey="6LcPQ30UAAAAAFRDS6_hR4jehjr1-PliyM1R5HLG"></div>
+                        <script type="text/javascript">
+                            function enableBtn() {
+                                $("#submit-log").removeAttr("disabled");
+                                $("#submit-log").addClass("button-black");
+                                $("#submit-log").removeClass("button-gray");
+                            }
+                        </script>
+                        <div class="g-recaptcha" data-callback="enableBtn" data-sitekey="6LcPQ30UAAAAAFRDS6_hR4jehjr1-PliyM1R5HLG"></div>
                         <div class="checkbox">
                             <label id="rememberme">
                                 Remember me
@@ -45,7 +51,7 @@
                                 <span class="checkmark"></span>
                             </label>
                         </div>
-                        <input type="submit" id="submit-log" class="button-black" value="Log in">
+                        <input type="submit" id="submit-log" class="button-gray" value="Log in" disabled>
                         @Html.ActionLink("Forgot password", "ForgotPassword", new { id = "", @class = "" })
                     </div>
                 }

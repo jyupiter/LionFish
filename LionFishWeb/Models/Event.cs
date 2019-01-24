@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace LionFishWeb.Models
 {
     public class Event
@@ -21,9 +22,13 @@ namespace LionFishWeb.Models
 		public DateTime End { get; set; }
 		public string Color { get; set; }
 		public string Notes { get; set; }
+		public string UserID { get; set; }
+		public bool Public { get; set; }
 		public Event()
 		{
-			ID = username + index++;
+			UserID = "";
+			ID = UserID + index++;
+			Public = false;
 			Notes = "";
 		}
 		public Event(string title, string color, string desc)

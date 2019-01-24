@@ -1,4 +1,6 @@
 ﻿$(function () {
+    $("#swap1").hide();
+    $("#swap2").show();
 
     var quill = new Quill('#editor', {
         theme: 'snow'
@@ -32,7 +34,6 @@
         if (!$(this).hasClass("folder")) {
             try {
                 $("#sb .stt:contains('" + v1 + "')").eq(0).after("<div class='pc'>" + v + "</div>");
-                console.log(v1);
                 $.post('/Note/CreateNote',
                     {
                         title: v,
@@ -57,6 +58,27 @@
 
     $(".cancel").on("click", function () {
         $("#creator").toggle();
+    });
+
+    $("#sb").on("click", ".pc", function () {
+        $.ajax({
+            type: "GET",
+            url: "GetNoteDetails",
+            data: { ID: $(this).attr('id') },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $("#swap1").hide();
+                $("#swap2").show();
+                $("#rt .tt input").val(result.Title);
+                if(result.Content != null)
+                    quill.setText(result.Content);
+                else
+                    quill.setText("");
+                console.log(result);
+            },
+            error: function (response) { }
+        });
     });
 
 });

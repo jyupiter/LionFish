@@ -119,10 +119,10 @@
 						eventObj = calEvent;
 						//eventObj = $("#calendar").fullCalendar('clientEvents', selectedEvent.id)[0];
 						$('#popuptext').text(calEvent.title);
-						$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
+						//$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
 						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
-						$("#popuptext").append("<p id=\"notes\">" + calEvent.notes + "</p>");
+						$("#popuptext").append("<p id=\"notes\">Notes: " + calEvent.notes + "</p>");
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
 						console.log(event.pageX);

@@ -37,7 +37,7 @@ namespace LionFishWeb.Controllers
                 { 
                 foreach(Note notes in note)
                 {
-                    events.Notes.Add("" + notes.ID);
+                    events.Notes.Add(""+notes.ID,notes.Title);
                 }
                 }
                 catch(Exception e)
@@ -48,9 +48,8 @@ namespace LionFishWeb.Controllers
                 DebugEvents(events);
             }
 
-           // :    ) this is so sad alexa play despacito
-            ViewData["Events"] = LoadPrivate(User.Identity.GetUserId());
-            ViewData["EventsPublic"] = LoadPublic(User.Identity.GetUserId());
+			ViewData["Events"] = listOfEvents;
+			ViewData["EventsPublic"] = LoadPublic(User.Identity.GetUserId());
             //Debug.WriteLine("calendar() called");
             return View();
 
@@ -122,7 +121,7 @@ namespace LionFishWeb.Controllers
                 {
                     try
                     {
-                        var query = context.Notes.SqlQuery("SELECT ID FROM Event WHERE EventID = '" + EID + "'").ToList<Note>();
+                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
                         return query;
                     }
                     catch(Exception e)
@@ -206,7 +205,8 @@ namespace LionFishWeb.Controllers
             Debug.WriteLine("desc: " + events.Description);
             Debug.WriteLine("start: " + start);
             Debug.WriteLine("End: " + end);
-            Debug.WriteLine("\n --------------------- \n");
+			Debug.WriteLine("Notes: " + events.Notes.Count);
+			Debug.WriteLine("\n --------------------- \n");
         }
 
         public static bool Save(Event events, string mode, string user)

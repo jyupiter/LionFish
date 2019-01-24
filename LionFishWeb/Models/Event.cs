@@ -13,21 +13,19 @@ namespace LionFishWeb.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string ID { get; set; }
-		public static string username = "root"; //placeholder - replace with actual username 
-		public static int index = 0; // placholder - each user have their own index 
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public bool AllDay { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public string Color { get; set; }
-		public List<string> Notes { get; set; }
+		public Dictionary<string, string> Notes { get; set; }
 		public string UserID { get; set; }
 		public bool Public { get; set; }
 		public Event()
 		{
 			UserID = "";
-			ID = UserID + index++;
+			ID = UserID + Guid.NewGuid();
 			Public = false;
 			Notes = new List<string>();
 		}

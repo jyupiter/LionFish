@@ -21,7 +21,7 @@ namespace LionFishWeb.Models
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
 		public string Color { get; set; }
-		public string Notes { get; set; }
+		public List<string> Notes { get; set; }
 		public string UserID { get; set; }
 		public bool Public { get; set; }
 		public Event()
@@ -29,7 +29,7 @@ namespace LionFishWeb.Models
 			UserID = "";
 			ID = UserID + index++;
 			Public = false;
-			Notes = "";
+			Notes = new List<string>();
 		}
 		public Event(string title, string color, string desc)
 		{

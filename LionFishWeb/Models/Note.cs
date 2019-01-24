@@ -16,7 +16,7 @@ namespace LionFishWeb.Models
 
         public int FolderID { get; set; }
         public string UserID { get; set; }
-        public int? EventID { get; set; }
+        public string EventID { get; set; }
 
         public Note()
         {

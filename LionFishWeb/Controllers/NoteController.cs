@@ -83,7 +83,7 @@ namespace LionFishWeb.Controllers
             return null;
         }
 
-        public static List<Folder> Load(string id, string placeholder)
+        public static List<Folder> Load(string id, string _)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -95,6 +95,26 @@ namespace LionFishWeb.Controllers
                         return query;
                     }
                     catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static List<Event> Load(string id, string _, string __)
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                using(var dbContextTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = context.Events.SqlQuery("SELECT * FROM Event WHERE ID ='" + id + "'").ToList<Event>();
+                        return query;
+                    }
+                    catch(Exception e)
                     {
                         Debug.WriteLine(e);
                     }
@@ -115,6 +135,26 @@ namespace LionFishWeb.Controllers
                 }
             }
             return Json(n, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetFolderName(string ID)
+        {
+            Folder f = new Folder();
+            List<Folder> folders = Load(User.Identity.GetUserId(), "");
+            foreach(Folder fl in folders)
+            {
+                if(fl.ID == ID)
+                {
+                    f = fl;
+                }
+            }
+            return Json(f.Name, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEventTitle(string ID)
+        {
+            List<Event> events = Load(ID, "", "");
+            return Json(events[0].Title, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Note/CreateNote
@@ -208,7 +248,7 @@ namespace LionFishWeb.Controllers
                         {
                             context.Database.ExecuteSqlCommand(
                                 @"UPDATE Note" +
-                                " SET Title = '" + model.Title + "', Content = '" + model.Content + "', FolderID = '" + model.FolderID + "', EventID = '" + model.EventID + "'" +
+                                " SET Title = '" + model.Title + "', Content = '" + model.Content + "'" +
                                 " WHERE Id = '" + model.ID + "'"
                             );
 

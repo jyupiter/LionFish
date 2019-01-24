@@ -21,8 +21,6 @@ namespace LionFishWeb.Models
         public string ID { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public string FolderID { get; set; }
-        public string EventID { get; set; }
     }
 
     public class NoteViewModel {

@@ -39,7 +39,6 @@
                         title: v,
                         name: v1
                     }, function () { });
-                
             } catch (e) {
                 console.log("[!!!] note creation");
             }
@@ -73,7 +72,38 @@
             success: function (result) {
                 $("#swap1").hide();
                 $("#swap2").show();
-                $("#rt .tt input").val(result.Title);
+                $("#ntitle").val(result.Title);
+                $("#selected").removeClass();
+                $("#selected").addClass(result.ID);
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Note/GetFolderName",
+                    data: { ID: result.FolderID },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result1) {
+                        $("#note-folder").text(result1.Name);
+                    },
+                    error: function (response) { }
+                });
+
+                if (result.EventID != null) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Note/GetEventTitle",
+                        data: { ID: result.EventID },
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result2) {
+                            $("#note-event").text(result2.Title);
+                        },
+                        error: function (response) { }
+                    });
+                } else {
+                    $("#note-event").text("Not linked from an event");
+                }
+                
                 if(result.Content != null)
                     quill.setText(result.Content);
                 else
@@ -90,7 +120,14 @@
                 case 's':
                     event.preventDefault();
                     console.log("ctrl + s pressed. saving current note.");
-                    console.log(quill.getContents())
+                    var nid = $("#selected").attr("class");
+                    if(nid != "empty")
+                        $.post('/Note/UpdateNote',
+                            {
+                                ID: nid,
+                                title: $("#ntitle").val(),
+                                content: quill.getContents()
+                            }, function () { });
                     break;
             }
         }

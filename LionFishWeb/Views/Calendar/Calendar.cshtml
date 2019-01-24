@@ -1,33 +1,33 @@
 ﻿@model LionFishWeb.Models.Event
 @{
-    ViewBag.Title = "Events";
+	ViewBag.Title = "Events";
 }
 
 @section Nav {
-    @Html.Partial("_NavApp");
+	@Html.Partial("_NavApp");
 }
 <!DOCTYPE html>
 <main>
-    @section Scripts
+	@section Scripts
         {
-        <script type="text/javascript" src="@Url.Content("https://code.jquery.com/jquery-3.3.1.min.js")"></script>
-        <script type="text/javascript" src="@Url.Content("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js")"></script>
-        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js")"></script>
-        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/en-gb.js")"></script>
-        <script type="text/javascript" src="@Url.Content("https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")"></script>
-        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")"></script>
-        <link rel="stylesheet" href="~/css/calendar.css" type="text/css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" type="text/css" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
-        <link rel="stylesheet" href="~/css/scheduler.min.css" type="text/css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" type="text/css" />
-        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js")"></script>
-        <script type="text/javascript" src="@Url.Content("~/scripts/scheduler.min.js")"></script>
-        @*<script type="text/javascript" src="@Url.Content("~/scripts/CalendarJS.js")"></script>*@
-        <script>
+		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/jquery-3.3.1.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/en-gb.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")"></script>
+		<link rel="stylesheet" href="~/css/calendar.css" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" type="text/css" />
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
+		<link rel="stylesheet" href="~/css/scheduler.min.css" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" type="text/css" />
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js")"></script>
+		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/1.9.4/scheduler.min.js")"></script>
+		@*<script type="text/javascript" src="@Url.Content("~/scripts/CalendarJS.js")"></script>*@
+		<script>
 			$(document).ready(function () {
 
-				var selectedEvent; //Move to controller
+				//var selectedEvent; //Move to controller
 
 				$("#closePopup").click(function () {
 					$('#popup').css('display', 'none');
@@ -55,36 +55,18 @@
 				//	$('#editor').css('display', 'none');
 				//});
 				$("#modEvent").click(function () {
-					$('#chID').val(eventObj.id);
+
 					$('#chName').val(eventObj.title);
 					$('#chColor').val(eventObj.color);
-					console.log(eventObj.description);
 					$('#chDesc').val(eventObj.description);
-					console.log(moment(eventObj.start).format('YYYY-MM-DD'));
-					$('#chStart').val(moment(eventObj.start).format("YYYY-MM-DD HH:mm"));
-					$('#chEnd').val(moment(eventObj.end).format("YYYY-MM-DD HH:mm"));
+					$('#chStart').val('2019 - 01 - 01');
+					$('#chEnd').val(moment(eventObj.end).format("YYYY-MM-DD"));
 					$('#editor').css('display', 'inline');
 					$("#editor").css("position", "absolute");
 				});
 				/* initialize the external events
 				-----------------------------------------------------------------*/
 
-				$('#external-events .fc-event').each(function () {
-
-					// store data so the calendar knows to render an event upon drop
-					$(this).data('event', {
-						title: $.trim($(this).text()), // use the element's text as the event title
-						stick: true // maintain when user navigates (see docs on the renderEvent method)
-					});
-
-					// make the event draggable using jQuery UI
-					$(this).draggable({
-						zIndex: 999,
-						revert: true,      // will cause the event to go back to its
-						revertDuration: 0  //  original position after the drag
-					});
-
-				});
 
 
 				/* initialize the calendar
@@ -117,22 +99,22 @@
 						}
 					},
 					dayClick: function (date, jsEvent, view) {
-						$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
-						$('#createEvent').css('top', event.pageY);
+						$('#createEvent').css('left', event.pageX - 240);      // <<< use pageX and pageY
+						$('#createEvent').css('top', event.pageY - 50);
 						$('#createEvent').css('display', 'inline');
 						$("#createEvent").css("position", "absolute");
 					},
-					customButtons: {
-						addEventButton: {
-							text: 'add event...',
-							click: function () {
-								$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
-								$('#createEvent').css('top', event.pageY);
-								$('#createEvent').css('display', 'inline');
-								$("#createEvent").css("position", "absolute");
-							}
-						}
-					},
+					//customButtons: {
+					//	addEventButton: {
+					//		text: 'add event...',
+					//		click: function () {
+					//			$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
+					//			$('#createEvent').css('top', event.pageY);
+					//			$('#createEvent').css('display', 'inline');
+					//			$("#createEvent").css("position", "absolute");
+					//		}
+					//	}
+					//},
 					eventClick: function (calEvent, jsEvent, view) {
 						eventObj = calEvent;
 						//eventObj = $("#calendar").fullCalendar('clientEvents', selectedEvent.id)[0];
@@ -143,10 +125,12 @@
 						$("#popuptext").append("<p id=\"notes\">" + calEvent.notes + "</p>");
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
-						$('#popup').css('left', event.pageX);      // <<< use pageX and pageY
-						$('#popup').css('top', event.pageY);
+						console.log(event.pageX);
+						$('#popup').css('left', event.pageX - 240);      // <<< use pageX and pageY
+						$('#popup').css('top', event.pageY - 50);
 						$('#popup').css('display', 'inline');
 						$("#popup").css("position", "absolute");  // <<< also make it absolute!
+						$('#chID').val(eventObj.id);
 
 					},
 					eventDragStop: function (event, jsEvent, ui, view) {
@@ -164,7 +148,7 @@
 					},
 					eventRender: function (event, element) {
 						events = $("#calendar").fullCalendar('clientEvents');
-						console.log(" eventrender called!, saving events");
+
 						for (var i = 0; i < events.length; i++) {
 
 							var event = {
@@ -178,10 +162,10 @@
 								description: events[i].description,
 								allDay: events[i].allDay
 							}
-							console.log(event);
+							console.log("saving " + event.id);
 							//var myJSON = JSON.stringify(event)
 							//console.log(myJSON);
-							$.post('/Calendar/AutoSave',event, function () { });
+							$.post('/Calendar/AutoSave', event, function () { });
 						};
 					}
 
@@ -210,7 +194,6 @@
 					for (var i = 0; i < listOfEvents.length; i++) {
 						var start = moment(listOfEvents[i].Start).format("YYYY-MM-DD HH:mm");
 						var end = moment(listOfEvents[i].End).format("YYYY-MM-DD HH:mm");
-						console.log(listOfEvents[i]);
 						$('#calendar').fullCalendar('renderEvent', {
 							title: listOfEvents[i].Title,
 							start: moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours'),
@@ -224,106 +207,156 @@
 						}, true);
 					}
 				};
+				var loadPublicEvents = function () {
+					var listOfEvents = @Html.Raw(Json.Encode(ViewData["EventsPublic"]));
+					
+					for (var i = 0; i < listOfEvents.length; i++) {
+						
+						
+
+						var html = '<div style="z-index:99999"class="fc-event" id=' + listOfEvents[i].ID + 'IMPORTED>' + listOfEvents[i].Title + '</div>' // '<li>' + listOfEvents[i].Title + '</li>' +
+						//'<li>' + moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours') + '</li>' +
+						//'<li>' + moment(end, "YYYY-MM-DD HH:mm").add(8, 'hours') + '</li>' +
+						//'<li>' + listOfEvents[i].Description + '</li>' +
+						//'<li>' + listOfEvents[i].Color + '</li>' +
+						//'<li>' + listOfEvents[i].AllDay + '</li>' +
+						//'<li>' + listOfEvents[i].Notes + '</li>' +
+						//'</ul>'
+						$('#external-events-listing').append(html);
+
+						//$('#external-events-listing').html('<div class="fc-event' + listOfEvents[i].ID+'" id='+listOfEvents[i].ID+'IMPORTED>'+listOfEvents[i].Title+'</div>');
+
+					}
+				};
 				loadEvents();
-			}
-			);
-        </script>
-    }
+				loadPublicEvents();
+				$('#external-events .fc-event').each(function () {
+					var listOfEvents = @Html.Raw(Json.Encode(ViewData["EventsPublic"]));
+					// store data so the calendar knows to render an event upon drop
+					for (var i = 0; i < listOfEvents.length; i++) {
+						if ($(this).attr("id") == listOfEvents[i].ID + "IMPORTED") {
+							var start = moment(listOfEvents[i].Start).format("YYYY-MM-DD HH:mm");
+							var end = moment(listOfEvents[i].End).format("YYYY-MM-DD HH:mm");
+							console.log("Public evets: " + listOfEvents[i].ID);
+							$(this).data('event', {
+								title: listOfEvents[i].Title,
+								start: moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours'),
+								end: moment(end, "YYYY-MM-DD HH:mm").add(8, 'hours'),
+								id: listOfEvents[i].ID + listOfEvents[i].UserID,
+								color: listOfEvents[i].Color,
+								notes: listOfEvents[i].Notes,
+								editable: true,
+								description: listOfEvents[i].Description,
+								allDay: listOfEvents[i].AllDay
+							});
+						}
+					}
+						// make the event draggable using jquery ui
+					$(this).draggable({
+						zindex: 999,
+						revert: true,      // will cause the event to go back to its
+						revertduration: 0  //  original position after the drag
+					});
+				});
+			});
+		</script>
+	}
 
 
-    <aside class="split" id="lf">
-        <div id="sb">
-            <div class="tt" style="position:relative;">
-                Calendar
-                <div id="newnf" style="background:mediumslateblue;">+</div>
-            </div>
-            <div class="bc" style="padding:0;">
-                <div id='external-events'>
-                    <div id='external-events-listing'>
-                        <h4>Draggable Events</h4>
-                        <div class='fc-event'>My Event 1</div>
-                        <div class='fc-event'>My Event 2</div>
-                        <div class='fc-event'>My Event 3</div>
-                        <div class='fc-event'>My Event 4</div>
-                        <div class='fc-event'>My Event 5</div>
-                    </div>
-                    <p>
-                        <input type='checkbox' id='drop-remove' checked='checked' />
-                        <label for='drop-remove'>remove after drop</label>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </aside>
-    <section class="split" id="rt">
-        <div id="ct">
-            <div id="swap1">
-                <div class="tt"></div>
-                <div class="bc">
-                    <div id='wrap'>
-                        <div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
-                            <div id="popuptext"></div>
-                            <button id="modEvent">Modify event</button>
-                            <div style="display:none;padding:10px;background-color: lightblue;  z-index:9999;" id="editor">
-                                @using (Html.BeginForm())
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <p>ID</p>
-                                    @Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-                                    <p>Title</p>
-                                    @Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
-                                    <p>Color</p>
-                                    @Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
-                                    <p>Description</p>
-                                    @Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
-                                    <p>All day?</p>
-                                    @Html.CheckBox("AllDay", false)
-                                    <p>Start date</p>
-                                    @Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
-                                    <p>End date</p>
-                                    @Html.TextBox("End", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+	<aside class="split" id="lf">
+		<div id="sb">
+			<div class="tt" style="position:relative;">
+				Calendar
+				<div id="newnf" style="background:mediumslateblue;">+</div>
+			</div>
+			<div class="bc" style="padding:0;">
+				<div id='external-events'>
+					<div id='external-events-listing'>
+						<h4>Imported Events</h4>
+
+					</div>
+					<p @*style=" display:none"*@>
+						<input type='checkbox' id='drop-remove' checked='checked' />
+
+					</p>
+				</div>
+			</div>
+		</div>
+	</aside>
+	<section class="split" id="rt">
+		<div id="ct">
+			<div id="swap1">
+				<div class="tt"></div>
+				<div class="bc">
+					<div id='wrap'>
+						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
+							<div id="popuptext"></div>
+							<button id="modEvent">Modify event</button>
+							<div style="display:none;padding:10px;height:auto;background-color: lightblue;  z-index:9999;" id="editor">
+								@using (Html.BeginForm())
+								{
+									@Html.AntiForgeryToken()
+									<p>
+										ID
+										@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
+									</p>
+									<p>Title</p>
+									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+									<p>Color</p>
+									@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+									<p>Description</p>
+									@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
+									<p>All day?</p>
+									@Html.CheckBox("AllDay", false)
+									<p>Start date</p>
+									@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+									<p>End date</p>
+									@Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+									<p>Make this event public?</p>
+									@Html.CheckBox("Public", false)
+									<button formaction=@Url.Action("Publish") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Publish this event?</button>
+									<button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
+									<button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
+								}
+								<button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
+							</div>
+							<button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
+						</div>
+						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="createEvent">
+							<div id="creatorText"></div>
+							@using (Html.BeginForm())
+							{
+								@Html.AntiForgeryToken()
+								<p>
+									ID
+									@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
+								</p>
+								<p>Title</p>
+								@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+								<p>Color</p>
+								@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+								<p>Description</p>
+								@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
+								<p>All day?</p>
+								@Html.CheckBox("AllDay", false)
+								<p>Start date</p>
+								@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+								<p>End date</p>
+								@Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+
+								<button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
+							}
+							<button style="padding:5px;background-color:orange;" id="closeCreator">Close</button>
+						</div>
+					</div>
 
 
-                                    <button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
-                                    <button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
-                                }
-                                <button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
-                            </div>
-                            <button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
-                        </div>
-                        <div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="createEvent">
-                            <div id="creatorText"></div>
-                            @using (Html.BeginForm())
-                            {
-                                @Html.AntiForgeryToken()
-                                <p>ID</p>
-                                @Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-                                <p>Title</p>
-                                @Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
-                                <p>Color</p>
-                                @Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
-                                <p>Description</p>
-                                @Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
-                                <p>All day?</p>
-                                @Html.CheckBox("AllDay", false)
-                                <p>Start date</p>
-                                @Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
-                                <p>End date</p>
-                                @Html.TextBox("End", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chEnd" } })
 
-                                <button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
-                            }
-                            <button style="padding:5px;background-color:orange;" id="closeCreator">Close</button>
-                        </div>
-                    </div>
-
-                    
-
-                    <div id='calendar' style="z-index:-1"></div>
-                    <div style='clear:both'></div>
-                </div>
-            </div>
-        </div>
-    </section>
+					<div id='calendar' style="z-index:-1"></div>
+					<div style='clear:both'></div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 </main>

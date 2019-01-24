@@ -237,7 +237,7 @@
 						if ($(this).attr("id") == listOfEvents[i].ID + "IMPORTED") {
 							var start = moment(listOfEvents[i].Start).format("YYYY-MM-DD HH:mm");
 							var end = moment(listOfEvents[i].End).format("YYYY-MM-DD HH:mm");
-							console.log("Public evets: " + listOfEvents[i].ID);
+							console.log("Public events: " + listOfEvents[i].Notes);
 							$(this).data('event', {
 								title: listOfEvents[i].Title,
 								start: moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours'),

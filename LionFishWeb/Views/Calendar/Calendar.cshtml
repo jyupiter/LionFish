@@ -29,9 +29,18 @@
 
 				//var selectedEvent; //Move to controller
 
-				$(".notesLink").click(function () {
+				//$(".notesLink").click(function () {
+				//	var noteID = $(this).attr("id");
+				//	console.log("requiesting note" + noteID);
+				//	$.post('/Note/IndexRequested', noteID, function () { });
+				//});
+
+				$(document).on("click", ".notesLink", function () {
 					var noteID = $(this).attr("id");
-					$.post('/Note/Index', noteID, function () { });
+					
+					noteID = JSON.stringify(noteID);
+					console.log("requiesting note " + noteID);
+					$.post('/Note/IndexRequested', {Id:noteID}, function () { });
 				});
 
 				$("#closePopup").click(function () {
@@ -132,7 +141,8 @@
 						for (var key in eventNotes) {
 							if (eventNotes.hasOwnProperty(key)) {
 								console.log(key + " -> " + eventNotes[key]);
-								var link = "<a class=\"notesLink\" id=\"" + key + "\" href=\"/Note\">" + eventNotes[key]+"</a>";
+								var link = "<button class=\"notesLink\" id=\"" + key + "\">" + eventNotes[key] + "</button>";
+								console.log(link);
 								$("#popuptext").append(link);
 							}
 							

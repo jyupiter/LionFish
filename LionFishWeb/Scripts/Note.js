@@ -119,14 +119,30 @@
             {
                 ID: nid,
                 title: $("#ntitle").val(),
-                content: quill.getContents()
+                content: JSON.stringify(quill.getContents())
             }, function () { });
     }
 
+    function autosave() {
+        if ($("#editor").attr("data-dirty") == true) {
+            var nid = $("#selected").attr("class");
+            save(nid);
+        }
+    }
+
+    $("#ntitle").on("keyup", function () {
+        $("#editor").attr("data-dirty", "true");
+    });
+
+    quill.on('text-change', function () {
+        $("#editor").attr("data-dirty", "true");
+    });
+
     $("#save-out").on("click", function () {
         var nid = $("#selected").attr("class");
-        if (nid != "empty" && nid != null)
-            save(nid);
+        if (nid != null)
+            if (nid != "empty")
+                save(nid);
     });
 
     $(window).bind('keydown', function (event) {
@@ -136,10 +152,13 @@
                     event.preventDefault();
                     console.log("ctrl + s pressed. saving current note.");
                     var nid = $("#selected").attr("class");
-                    if (nid != "empty" && nid != null)
-                        save(nid);
+                    if (nid != null)
+                        if(nid != "empty")
+                            save(nid);
                     break;
             }
         }
     });
+
+    setInterval(autosave, 2500);
 });

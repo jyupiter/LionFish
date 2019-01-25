@@ -36,6 +36,7 @@ namespace LionFishWeb.Models
     {
         public NoteViewModel NVM { get; set; }
         public FolderViewModel FVM { get; set; }
+        public string Requested { get; set; }
 
         public NoteFolderViewModel()
         {

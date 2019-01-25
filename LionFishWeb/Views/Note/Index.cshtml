@@ -54,7 +54,7 @@
             $("#note-event").on("click", function () {
                 $.post('/Calendar/SetEventByID',
                     {
-                        id: $(this).attr("class");
+                        id: $(this).attr("class")
                     }, function () { });
 
             });

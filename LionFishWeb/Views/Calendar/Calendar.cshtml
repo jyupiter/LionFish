@@ -1,4 +1,4 @@
-﻿@model LionFishWeb.Models.Event
+﻿@model LionFishWeb.Models.CalendarViewModel
 @{
 	ViewBag.Title = "Events";
 }
@@ -284,7 +284,8 @@
 						revert: true,      // will cause the event to go back to its
 						revertduration: 0  //  original position after the drag
 					});
-				});
+                });
+                $('#calendar').fullCalendar('gotoDate',@Model.ID );
 			});
 		</script>
 	}

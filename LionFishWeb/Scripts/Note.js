@@ -99,8 +99,9 @@
                         contentType: "application/json;charset=utf-8",
                         dataType: "json",
                         success: function (result2) {
-                            console.log(result2);
                             $("#note-event").text(result2);
+                            $("#note-event").removeClass();
+                            $("#note-event").addClass(result.EventID);
                         },
                         error: function (response) { }
                     });

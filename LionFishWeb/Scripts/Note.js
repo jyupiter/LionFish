@@ -62,6 +62,14 @@
         $("#creator input").val("");
     });
 
+    function changeSelectedNote(result) {
+        $("#swap1").hide();
+        $("#swap2").show();
+        $("#ntitle").val(result.Title);
+        $("#selected").removeClass();
+        $("#selected").addClass(result.ID);
+    }
+
     $("#sb").on("click", ".pc", function () {
         $.ajax({
             type: "GET",
@@ -70,11 +78,7 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                $("#swap1").hide();
-                $("#swap2").show();
-                $("#ntitle").val(result.Title);
-                $("#selected").removeClass();
-                $("#selected").addClass(result.ID);
+                changeSelectedNote(result);
 
                 $.ajax({
                     type: "GET",
@@ -161,4 +165,18 @@
     });
 
     setInterval(autosave, 2500);
+
+    function setSelectedNote(id) {
+        $.ajax({
+            type: "GET",
+            url: "/Note/GetNoteDetails",
+            data: { ID: id },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                changeSelectedNote(result);
+            },
+            error: function (response) { }
+        });
+    }
 });

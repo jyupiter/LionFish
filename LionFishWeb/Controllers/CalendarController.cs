@@ -1,4 +1,5 @@
 ﻿using LionFishWeb.Models;
+using LionFishWeb.Utility;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -27,9 +28,11 @@ namespace LionFishWeb.Controllers
 			listOfEvents = LoadPrivate(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
 			{
+
 				Dictionary<string, string> notesList = new Dictionary<string, string>();
 				List<Note> note = new List<Note>();
 				note = GetNotes(events.ID);
+				events.ID = events.ID.GetIndirectReference();
 				try
 				{
 					foreach (Note notes in note)
@@ -44,11 +47,18 @@ namespace LionFishWeb.Controllers
 					Debug.WriteLine("No notes found!");
 				}
 				events.Notes = JsonConvert.SerializeObject(notesList);
-				Debug.WriteLine(events.Notes);
+			}
+			ViewData["Events"] = listOfEvents;
+
+			listOfEvents = LoadPublic(User.Identity.GetUserId());
+			foreach (Event events in listOfEvents)
+			{
+				events.ID = events.ID.GetIndirectReference();
 			}
 
-			ViewData["Events"] = listOfEvents;
-			ViewData["EventsPublic"] = LoadPublic(User.Identity.GetUserId());
+			
+
+			ViewData["EventsPublic"] = listOfEvents;
 			//Debug.WriteLine("calendar() called");
 			return View();
 
@@ -90,13 +100,12 @@ namespace LionFishWeb.Controllers
 		public ActionResult Note([Bind(Include = "ID, Notes")] Event events)
 		{
 
-			CallDB("UPDATE Event SET Notes = '" + events.Notes + "' WHERE ID = '" + events.ID + "'");
+			CallDB("UPDATE Event SET Notes = '" + events.Notes + "' WHERE ID = '" + events.ID.GetDirectReference() + "'");
 			return RedirectToAction("Calendar");
 		}
 
 		public ActionResult Publish([Bind(Include = "Title, Color, Description, AllDay, Start, End")] Event events)
 		{
-			Debug.WriteLine("Publishing " + events.ID);
 			Save(events, "publish", User.Identity.GetUserId());
 			return RedirectToAction("Calendar");
 		}
@@ -221,16 +230,16 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "update")
 			{
-				CallDB("UPDATE Event SET ID = '" + events.ID + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', UserID = '" + user + "' WHERE ID = '" + events.ID + "'");
+				CallDB("UPDATE Event SET ID = '" + events.ID.GetDirectReference() + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', UserID = '" + user + "' WHERE ID = '" + events.ID + "'");
 			}
 			else if (mode == "delete")
 			{
 
-				CallDB("DELETE FROM Event WHERE ID = '" + events.ID + "'");
+				CallDB("DELETE FROM Event WHERE ID = '" + events.ID.GetDirectReference() + "'");
 			}
 			else if (mode == "publish")
 			{
-				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "PUBLICEVENT','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
+				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID.GetDirectReference() + user + "PUBLICEVENT','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
 
 			}
 			else

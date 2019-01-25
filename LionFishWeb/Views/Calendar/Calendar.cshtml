@@ -74,7 +74,7 @@
 					$('#chName').val(eventObj.title);
 					$('#chColor').val(eventObj.color);
 					$('#chDesc').val(eventObj.description);
-					$('#chStart').val('2019 - 01 - 01');
+					console.log($('#chStart').val());
 					$('#chEnd').val(moment(eventObj.end).format("YYYY-MM-DD"));
 					$('#editor').css('display', 'inline');
 					$("#editor").css("position", "absolute");
@@ -361,10 +361,10 @@
 							@using (Html.BeginForm())
 							{
 								@Html.AntiForgeryToken()
-								<p>
+								@*<p>
 									ID
 									@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-								</p>
+								</p>*@
 								<p>Title</p>
 								@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
 								<p>Color</p>

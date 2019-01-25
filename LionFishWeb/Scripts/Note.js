@@ -1,10 +1,12 @@
 ﻿$(function () {
-    $("#swap1").show();
-    $("#swap2").hide();
+    $("#swap1").hide();
+    $("#swap2").show();
 
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
+
+    $('<div id="editor">').data('quill', quill);
 
     $("#newnf").on("click", function () {
         $("#newnfc").toggle();
@@ -64,7 +66,17 @@
         $("#swap1").hide();
         $("#swap2").show();
         $("#ntitle").val(result.Title);
-        quill.setText(result.Content);
+        if (result.Content != "") {
+            //quill.setContents($.parseJSON(result.Content).ops);
+            quill.setContents([
+                { insert: 'Hello ' },
+                { insert: 'World!', attributes: { bold: true } },
+                { insert: '\n' }
+            ]);
+
+            console.log(quill.getContents());
+            console.log((result.Content));
+        }
         $("#selected").removeClass();
         $("#selected").addClass(result.ID);
     }
@@ -108,9 +120,9 @@
                 } else {
                     $("#note-event").text("Not linked from an event");
                 }
-                
-                if (result.Content != null)
-                    quill.setText($.parseJSON(result.Content).ops[0].insert);
+
+                if (result.Content != null && result.Content != "")
+                    quill.setContents($.parseJSON(result.Content).ops[0].insert);
                 else
                     quill.setText("");
             },
@@ -119,6 +131,7 @@
     });
 
     function save(nid) {
+        console.log(quill.getContents());
         $.post('/Note/UpdateNote',
             {
                 ID: nid,
@@ -160,7 +173,7 @@
                     console.log("ctrl + s pressed. saving current note.");
                     var nid = $("#selected").attr("class");
                     if (nid != null)
-                        if(nid != "empty")
+                        if (nid != "empty")
                             save(nid);
                     break;
             }
@@ -169,7 +182,7 @@
 
     setInterval(autosave, 2500);
 
-    var setSelectedNote = function(id) {
+    var setSelectedNote = function (id) {
         $.ajax({
             type: "GET",
             url: "/Note/GetNoteDetails",

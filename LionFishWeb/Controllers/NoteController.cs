@@ -19,6 +19,7 @@ namespace LionFishWeb.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
+        private static Note currentNote;
 
         public NoteController()
         {
@@ -54,25 +55,38 @@ namespace LionFishWeb.Controllers
             }
         }
 
+        public void SetCurrentNote(SetCurrentNoteViewModel model)
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                using(var dbContextTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE UserID ='" + model.Id + "'").ToList<Note>();
+                        currentNote = query[0];
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+            }
+        }
+
+        public Note GetCurrentNote()
+        {
+            return currentNote;
+        }
+
         // GET: Note
         public ActionResult Index()
         {
             NoteFolderViewModel NFVM = new NoteFolderViewModel();
             NFVM.NVM.Notes = Load(User.Identity.GetUserId());
             NFVM.FVM.Folders = Load(User.Identity.GetUserId(), "");
+            NFVM.Requested = GetCurrentNote();
             return View(NFVM);
-        }
-
-        // GET: Note
-        public ActionResult IndexRequested(IndexRequestedViewModel model)
-        {
-            NoteFolderViewModel NFVM = new NoteFolderViewModel();
-            NFVM.NVM.Notes = Load(User.Identity.GetUserId());
-            NFVM.FVM.Folders = Load(User.Identity.GetUserId(), "");
-            NFVM.Requested = model.Id;
-			Debug.WriteLine("model.Id : " +model.Id);
-			Debug.WriteLine("model.Id : " + model.Id);
-			return View("Index", NFVM);
         }
 
         public static List<Note> Load(string id)

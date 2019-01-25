@@ -38,9 +38,10 @@
 				$(document).on("click", ".notesLink", function () {
 					var noteID = $(this).attr("id");
 					
-					noteID = JSON.stringify(noteID);
+					//noteID = JSON.stringify(noteID);
 					console.log("requiesting note " + noteID);
-					$.post('/Note/IndexRequested', {Id:noteID}, function () { });
+                    $.post('/Note/SetCurrentNote', { Id: noteID }, function () { });
+                    window.location.href = "/Note";
 				});
 
 				$("#closePopup").click(function () {

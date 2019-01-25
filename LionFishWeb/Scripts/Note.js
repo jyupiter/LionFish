@@ -2,6 +2,7 @@
     $("#swap1").hide();
     $("#swap2").show();
 
+
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
@@ -167,7 +168,7 @@
 
     setInterval(autosave, 2500);
 
-    function setSelectedNote(id) {
+    var setSelectedNote = function(id) {
         $.ajax({
             type: "GET",
             url: "/Note/GetNoteDetails",

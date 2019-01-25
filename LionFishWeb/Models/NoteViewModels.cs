@@ -5,9 +5,9 @@ using System.Web;
 
 namespace LionFishWeb.Models
 {
-	public class IndexRequestedViewModel
-	{
-		public string Id{ get; set; }
+	public class SetCurrentNoteViewModel
+    {
+		public string Id { get; set; }
 	}
 
 	public class CreateNoteViewModel
@@ -41,7 +41,7 @@ namespace LionFishWeb.Models
     {
         public NoteViewModel NVM { get; set; }
         public FolderViewModel FVM { get; set; }
-        public string Requested { get; set; }
+        public Note Requested { get; set; }
 
         public NoteFolderViewModel()
         {

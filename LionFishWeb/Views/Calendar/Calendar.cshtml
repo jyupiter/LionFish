@@ -29,6 +29,11 @@
 
 				//var selectedEvent; //Move to controller
 
+				$(".notesLink").click(function () {
+					var noteID = $(this).attr("id");
+					$.post('/Note/Index', noteID, function () { });
+				});
+
 				$("#closePopup").click(function () {
 					$('#popup').css('display', 'none');
 				});
@@ -122,13 +127,21 @@
 						//$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
 						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
-                        $("#popuptext").append("<p id=\"notes\">Notes: " + calEvent.notes + "</p>");
-                        // do something with the url client side variable, for example redirect
-                        var link = @Html.ActionLink("Linked notes", "Index", "Note", null, new { @class = "navdroplink" })
-                        $("#popuptext").append(link);
+
+						var eventNotes = JSON.parse(calEvent.notes);
+						for (var key in eventNotes) {
+							if (eventNotes.hasOwnProperty(key)) {
+								console.log(key + " -> " + eventNotes[key]);
+								var link = "<a class=\"notesLink\" id=\"" + key + "\" href=\"/Note\">" + eventNotes[key]+"</a>";
+								$("#popuptext").append(link);
+							}
+							
+						}
+						console.log(calEvent.notes);
+						console.log(eventNotes);
+						
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
-						console.log(event.pageX);
 						$('#popup').css('left', event.pageX - 240);      // <<< use pageX and pageY
 						$('#popup').css('top', event.pageY - 50);
 						$('#popup').css('display', 'inline');
@@ -274,6 +287,7 @@
 			</div>
 			<div class="bc" style="padding:0;overflow:visible;">
 				<div id='external-events'>
+					
 					<div id='external-events-listing'>
 						<h4>Imported Events</h4>
 

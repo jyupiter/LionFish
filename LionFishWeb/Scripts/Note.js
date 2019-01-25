@@ -114,6 +114,21 @@
         });
     });
 
+    function save(nid) {
+        $.post('/Note/UpdateNote',
+            {
+                ID: nid,
+                title: $("#ntitle").val(),
+                content: quill.getContents()
+            }, function () { });
+    }
+
+    $("#save-out").on("click", function () {
+        var nid = $("#selected").attr("class");
+        if (nid != "empty" && nid != null)
+            save(nid);
+    });
+
     $(window).bind('keydown', function (event) {
         if (event.ctrlKey || event.metaKey) {
             switch (String.fromCharCode(event.which).toLowerCase()) {
@@ -121,13 +136,8 @@
                     event.preventDefault();
                     console.log("ctrl + s pressed. saving current note.");
                     var nid = $("#selected").attr("class");
-                    if(nid != "empty")
-                        $.post('/Note/UpdateNote',
-                            {
-                                ID: nid,
-                                title: $("#ntitle").val(),
-                                content: quill.getContents()
-                            }, function () { });
+                    if (nid != "empty" && nid != null)
+                        save(nid);
                     break;
             }
         }

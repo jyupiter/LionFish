@@ -123,7 +123,9 @@
 						$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
                         $("#popuptext").append("<p id=\"notes\">Notes: " + calEvent.notes + "</p>");
-                       // $("#popuptext").append(" @Html.ActionLink(\"Notes\", \"Index\", \"Note\", null, new { @class = \"navdroplink\" })");
+                        // do something with the url client side variable, for example redirect
+                        var link = @Html.ActionLink("Linked notes", "Index", "Note", null, new { @class = "navdroplink" })
+                        $("#popuptext").append(link);
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
 						console.log(event.pageX);

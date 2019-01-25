@@ -21,6 +21,7 @@ namespace LionFishWeb.Controllers
 	[Authorize]
 	public class CalendarController : Controller
 	{
+        private static string EventID;
 
 		public ActionResult Calendar()
 		{
@@ -55,24 +56,16 @@ namespace LionFishWeb.Controllers
 			{
 				events.ID = events.ID.GetIndirectReference();
 			}
-
-			
-
+           
 			ViewData["EventsPublic"] = listOfEvents;
-			//Debug.WriteLine("calendar() called");
-			return View();
 
-			//string[] filePaths = Directory.GetFiles(path);
-			//List<Event> listOfEvents = new List<Event>();
-			//foreach (string file in filePaths)
-			//{
-			//	Event events = Event.UnJson(System.IO.File.ReadAllText(file));
-			//	listOfEvents.Add(events);
-			//}
-			//ViewData["Events"] = listOfEvents;
-			//Debug.WriteLine("calendar() called");
-			//return View();
+            CalendarViewModel CVM = new CalendarViewModel
+            {
+                ID = EventID
+            };
+            return View("Calendar", CVM);
 		}
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Apply([Bind(Include = "ID, Title, Color, Description, AllDay, Start, End")] Event events)
@@ -110,7 +103,14 @@ namespace LionFishWeb.Controllers
 			return RedirectToAction("Calendar");
 		}
 
-		[HttpPost]
+        [HttpPost]
+        [AllowAnonymous]
+        public void SetEventByID(SetEventViewModel model)
+        {
+            EventID = model.ID;
+        }
+
+        [HttpPost]
 		[AllowAnonymous]
 		public void AutoSave(Event stuff)
 		{
@@ -180,29 +180,7 @@ namespace LionFishWeb.Controllers
 			}
 			return null;
 		}
-		//public static string SetUser(string UID,string EID)
-		//{
-		//	using (var context = new ApplicationDbContext())
-		//	{
-		//		using (var dbContextTransaction = context.Database.BeginTransaction())
-		//		{
-		//			try
-		//			{
-		//				Debug.WriteLine(UID);
-		//				context.Database.ExecuteSqlCommand(
-		//						@"UPDATE AspNetUsers" +
-		//						" SET UserID = '" + UID + "'" +
-		//						" WHERE Id = '" + EID + "'"
-		//						);
-		//				return query2[0].Id;
-		//			}
-		//			catch (Exception e)
-		//			{
-		//				return "";
-		//			}
-		//		}
-		//	}
-		//}
+
 		public static void DebugEvents(Event events)
 		{
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");

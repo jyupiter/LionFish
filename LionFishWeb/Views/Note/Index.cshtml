@@ -14,49 +14,52 @@
 
 @if (Model.Requested != null)
 {
-<script>
-    $(document).ready(function () {
-        function decodeHtml(html) {
-            var txt = document.createElement("textarea");
-            txt.innerHTML = html;
-            return txt.value;
-        }
-        $("#ntitle").val("@Model.Requested.Title");
-        $(".ql-editor").text($.parseJSON(decodeHtml("@Model.Requested.Content")).ops[0].insert);
-        $.ajax({
-            type: "GET",
-            url: "/Note/GetFolderName",
-            data: { ID: "@Model.Requested.FolderID" },
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result1) {
-                $("#note-folder").text(result1);
-            },
-            error: function (response) { }
-        });
-        if ("@Model.Requested.EventID" != null) {
+    <script>
+        $(document).ready(function () {
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+            $("#ntitle").val("@Model.Requested.Title");
+            $(".ql-editor").text($.parseJSON(decodeHtml("@Model.Requested.Content")).ops[0].insert);
             $.ajax({
                 type: "GET",
-                url: "/Note/GetEventTitle",
-                data: { ID: "@Model.Requested.EventID" },
+                url: "/Note/GetFolderName",
+                data: { ID: "@Model.Requested.FolderID" },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (result2) {
-                    $("#note-event").text(result2);
-                    $("#note-event").removeClass();
-                    $("#note-event").addClass(@Model.Requested.EventID);
+                success: function (result1) {
+                    $("#note-folder").text(result1);
                 },
                 error: function (response) { }
             });
-        } else {
-            $("#note-event").text("Not linked from an event");
-        }
-        $.post('/Calendar/GetEventByID',
-            {
-                id: $("#note-event").attr("class");
-            }, function () { });
-    });
-</script>
+            if ("@Model.Requested.EventID" != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Note/GetEventTitle",
+                    data: { ID: "@Model.Requested.EventID" },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result2) {
+                        $("#note-event").text(result2);
+                        $("#note-event").removeClass();
+                        $("#note-event").addClass(@Model.Requested.EventID);
+                    },
+                    error: function (response) { }
+                });
+            } else {
+                $("#note-event").text("Not linked from an event");
+            }
+            $("#note-event").on("click", function () {
+                $.post('/Calendar/SetEventByID',
+                    {
+                        id: $(this).attr("class");
+                    }, function () { });
+
+            });
+        });
+    </script>
 }
 
 <main>

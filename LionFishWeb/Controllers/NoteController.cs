@@ -64,13 +64,13 @@ namespace LionFishWeb.Controllers
         }
 
         // GET: Note
-        public ActionResult Index(string id)
+        public ActionResult IndexRequested(string id)
         {
             NoteFolderViewModel NFVM = new NoteFolderViewModel();
             NFVM.NVM.Notes = Load(User.Identity.GetUserId());
             NFVM.FVM.Folders = Load(User.Identity.GetUserId(), "");
             NFVM.Requested = id;
-            return View(NFVM);
+            return View("Index", NFVM);
         }
 
         public static List<Note> Load(string id)

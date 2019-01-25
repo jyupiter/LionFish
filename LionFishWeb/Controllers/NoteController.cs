@@ -63,8 +63,9 @@ namespace LionFishWeb.Controllers
                 {
                     try
                     {
-                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE UserID ='" + model.Id + "'").ToList<Note>();
+                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE ID ='" + model.Id + "'").ToList<Note>();
                         currentNote = query[0];
+                        Debug.WriteLine(currentNote);
                     }
                     catch(Exception e)
                     {
@@ -86,7 +87,7 @@ namespace LionFishWeb.Controllers
             NFVM.NVM.Notes = Load(User.Identity.GetUserId());
             NFVM.FVM.Folders = Load(User.Identity.GetUserId(), "");
             NFVM.Requested = GetCurrentNote();
-            return View(NFVM);
+            return View("Index", NFVM);
         }
 
         public static List<Note> Load(string id)

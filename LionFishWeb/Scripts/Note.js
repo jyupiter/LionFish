@@ -1,7 +1,6 @@
 ﻿$(function () {
-    $("#swap1").hide();
-    $("#swap2").show();
-
+    $("#swap1").show();
+    $("#swap2").hide();
 
     var quill = new Quill('#editor', {
         theme: 'snow'
@@ -41,7 +40,6 @@
                         name: v1
                     }, function () { });
             } catch (e) {
-                console.log("[!!!] note creation");
             }
         } else {
             try {
@@ -52,7 +50,6 @@
                         name: v
                     }, function () { });
             } catch (e) {
-                console.log("[!!!] folder creation");
             }
         }
         $("#creator input").val("");
@@ -89,7 +86,7 @@
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (result1) {
-                        $("#note-folder").text(result1.Name);
+                        $("#note-folder").text(result1);
                     },
                     error: function (response) { }
                 });
@@ -102,7 +99,8 @@
                         contentType: "application/json;charset=utf-8",
                         dataType: "json",
                         success: function (result2) {
-                            $("#note-event").text(result2.Title);
+                            console.log(result2);
+                            $("#note-event").text(result2);
                         },
                         error: function (response) { }
                     });
@@ -110,11 +108,10 @@
                     $("#note-event").text("Not linked from an event");
                 }
                 
-                if(result.Content != null)
-                    quill.setText(result.Content);
+                if (result.Content != null)
+                    quill.setText($.parseJSON(result.Content).ops[0].insert);
                 else
                     quill.setText("");
-                console.log(result);
             },
             error: function (response) { }
         });
@@ -127,6 +124,7 @@
                 title: $("#ntitle").val(),
                 content: JSON.stringify(quill.getContents())
             }, function () { });
+        $("#save-out").text("Saved");
     }
 
     function autosave() {
@@ -138,13 +136,15 @@
 
     $("#ntitle").on("keyup", function () {
         $("#editor").attr("data-dirty", "true");
+        $("#save-out").text("Unsaved changes");
     });
 
     quill.on('text-change', function () {
         $("#editor").attr("data-dirty", "true");
+        $("#save-out").text("Unsaved changes");
     });
 
-    $("#save-out").on("click", function () {
+    $("#save").on("click", function () {
         var nid = $("#selected").attr("class");
         if (nid != null)
             if (nid != "empty")

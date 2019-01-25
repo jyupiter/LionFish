@@ -66,6 +66,7 @@
         $("#swap1").hide();
         $("#swap2").show();
         $("#ntitle").val(result.Title);
+        quill.setText(result.Content);
         $("#selected").removeClass();
         $("#selected").addClass(result.ID);
     }

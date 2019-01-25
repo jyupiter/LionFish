@@ -28,17 +28,6 @@ namespace LionFishWeb.Models
 			ID = UserID + Guid.NewGuid();
 			Public = false;
 		}
-		public Event(string title, string color, string desc)
-		{
-			Title = title;
-			Color = color;
-			Description = desc;
-		}
-
-		public Event(string id, string title, string desc, bool allDay, DateTime start, DateTime end, string color)
-		{
-
-		}
 
 		public static string GetJson(Event events)
 		{
@@ -48,11 +37,6 @@ namespace LionFishWeb.Models
 		public static Event UnJson(string json)
 		{
 			return JsonConvert.DeserializeObject<Event>(json);
-		}
-
-		public static void WriteToFile(string thing, string name)
-		{
-			System.IO.File.WriteAllText(@"D:\Github\LionFish\Events\" + name + ".json", thing + "\n");
 		}
 	}
 }

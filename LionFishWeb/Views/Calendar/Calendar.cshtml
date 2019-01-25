@@ -285,7 +285,7 @@
 						revertduration: 0  //  original position after the drag
 					});
                 });
-                $('#calendar').fullCalendar('gotoDate',@Model.ID );
+                $('#calendar').fullCalendar('gotoDate','@Model.DateT' );
 			});
 		</script>
 	}
@@ -299,7 +299,14 @@
 			</div>
 			<div class="bc" style="padding:0;overflow:visible;">
 				<div id='external-events'>
+					@using (Html.BeginForm())
+					{
+						@Html.AntiForgeryToken()
 					
+						@Html.Editor("Search", new { htmlAttributes = new { id = "Search" } })
+
+						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;" id="deleteDis">Search Event</button>
+					}
 					<div id='external-events-listing'>
 						<h4>Imported Events</h4>
 

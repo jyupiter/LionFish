@@ -21,7 +21,8 @@ namespace LionFishWeb.Controllers
 	[Authorize]
 	public class CalendarController : Controller
 	{
-        private static string EventID;
+		private static string EventID;
+		private static string SearchString;
 
 		public ActionResult Calendar()
 		{
@@ -39,7 +40,7 @@ namespace LionFishWeb.Controllers
 					foreach (Note notes in note)
 					{
 						notesList.Add(notes.ID, notes.Title);
-                        Debug.WriteLine(notes.ID);
+						Debug.WriteLine(notes.ID);
 					}
 				}
 				catch (Exception e)
@@ -56,14 +57,23 @@ namespace LionFishWeb.Controllers
 			{
 				events.ID = events.ID.GetIndirectReference();
 			}
-           
+
 			ViewData["EventsPublic"] = listOfEvents;
 
-            CalendarViewModel CVM = new CalendarViewModel
-            {
-                ID = EventID
-            };
-            return View("Calendar", CVM);
+			CalendarViewModel CVM = new CalendarViewModel
+			{
+				ID = EventID,
+				DateT = GetEventDate(EventID).Start
+			};
+			return View("Calendar", CVM);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Search([Bind(Include = "Search")] string search)
+		{
+			SearchString = search;
+			return RedirectToAction("Calendar");
 		}
 
 		[HttpPost]
@@ -103,14 +113,14 @@ namespace LionFishWeb.Controllers
 			return RedirectToAction("Calendar");
 		}
 
-        [HttpPost]
-        [AllowAnonymous]
-        public void SetEventByID(SetEventViewModel model)
-        {
-            EventID = model.ID;
-        }
+		[HttpPost]
+		[AllowAnonymous]
+		public void SetEventByID(SetEventViewModel model)
+		{
+			EventID = model.ID;
+		}
 
-        [HttpPost]
+		[HttpPost]
 		[AllowAnonymous]
 		public void AutoSave(Event stuff)
 		{
@@ -169,8 +179,29 @@ namespace LionFishWeb.Controllers
 				{
 					try
 					{
-						var query = context.Events.SqlQuery("SELECT * FROM Event WHERE \"Public\" = 'True'").ToList<Event>();
-						return query;
+						List<Event> query = new List<Event>();
+						List<Event> listOfEvents = new List<Event>();
+						Debug.WriteLine(SearchString);
+						if (SearchString != null)
+						{
+							query = context.Events.SqlQuery("SELECT * FROM Event WHERE Title LIKE '%" + SearchString + "%'").ToList<Event>();
+
+						}
+						else
+						{
+							query = context.Events.SqlQuery("SELECT * FROM Event").ToList<Event>();
+							
+						}
+						foreach (Event events in query)
+						{
+
+							if (events.Public)
+							{
+								Debug.WriteLine(events.Public);
+								listOfEvents.Add(events);
+							}
+						}
+						return listOfEvents;
 					}
 					catch (Exception e)
 					{
@@ -180,6 +211,27 @@ namespace LionFishWeb.Controllers
 			}
 			return null;
 		}
+
+		public static Event GetEventDate(string id)
+		{
+			using (var context = new ApplicationDbContext())
+			{
+				using (var dbContextTransaction = context.Database.BeginTransaction())
+				{
+					try
+					{
+						var query = context.Events.SqlQuery("SELECT * FROM Event WHERE \"Public\" = '" + id + "'").ToList<Event>();
+						return query[0];
+					}
+					catch (Exception e)
+					{
+						Debug.WriteLine(e);
+					}
+				}
+			}
+			return null;
+		}
+
 
 		public static void DebugEvents(Event events)
 		{
@@ -217,7 +269,7 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "publish")
 			{
-				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID.GetDirectReference() + user + "PUBLICEVENT','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
+				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "PUBLICEVENT','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
 
 			}
 			else

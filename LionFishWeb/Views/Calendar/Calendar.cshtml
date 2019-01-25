@@ -330,10 +330,10 @@
 								@using (Html.BeginForm())
 								{
 									@Html.AntiForgeryToken()
-									<p>
+									@*<p>
 										ID
 										@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-									</p>
+									</p>*@
 									<p>Title</p>
 									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
 									<p>Color</p>

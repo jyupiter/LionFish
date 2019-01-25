@@ -42,14 +42,19 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result2) {
-
-                    $("#note-event").html("");
+                    $("#note-event").text(result2);
+                    $("#note-event").removeClass();
+                    $("#note-event").addClass(@Model.Requested.EventID);
                 },
                 error: function (response) { }
             });
         } else {
             $("#note-event").text("Not linked from an event");
         }
+        $.post('/Calendar/GetEventByID',
+            {
+                id: $("#note-event").attr("class");
+            }, function () { });
     });
 </script>
 }

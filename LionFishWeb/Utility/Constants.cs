@@ -11,7 +11,7 @@ namespace LionFishWeb.Utility
 {
     public static class Constants
     {
-        public static string Conn => ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+        public static string Conn => ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public const string captchaSecret = "6LcPQ30UAAAAABFqqSAazpaMGWObvP6lCuSZggbR";
 
         private static readonly int SaltLengthLimit = 16;

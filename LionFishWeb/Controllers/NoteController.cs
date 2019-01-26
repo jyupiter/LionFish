@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace LionFishWeb.Controllers
 {
@@ -80,7 +82,7 @@ namespace LionFishWeb.Controllers
             return currentNote;
         }
 
-        // GET: Note
+        // GET: Note/Index
         public ActionResult Index()
         {
             NoteFolderViewModel NFVM = new NoteFolderViewModel();
@@ -280,6 +282,19 @@ namespace LionFishWeb.Controllers
                     }
                 }
             }
+        }
+
+        public static void CallDB(SqlCommand command)
+        {
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                Debug.WriteLine(command.CommandText);
+                conn.Open();
+                command.Connection = conn;
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+
         }
 
         #region Helpers

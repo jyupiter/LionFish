@@ -1,26 +1,20 @@
 ﻿using LionFishWeb.Models;
 using LionFishWeb.Utility;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Configuration;
 
 
 namespace LionFishWeb.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class CalendarController : Controller
 	{
 
@@ -184,8 +178,7 @@ namespace LionFishWeb.Controllers
 				ParameterName = "@user",
 				Value = user
 			};
-			using (SqlConnection conn = new
-				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				SqlCommand command = new SqlCommand();
 
@@ -223,8 +216,7 @@ namespace LionFishWeb.Controllers
 				ParameterName = "@search",
 				Value = SearchString
 			};
-			using (SqlConnection conn = new
-				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				SqlCommand command = new SqlCommand();
 				if (SearchString != null)
@@ -272,8 +264,7 @@ namespace LionFishWeb.Controllers
 				ParameterName = "@UID",
 				Value = id
 			};
-			using (SqlConnection conn = new
-				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				SqlCommand command = new SqlCommand();
 				command = new SqlCommand("SELECT * FROM Event WHERE ID = @UID", conn);
@@ -438,20 +429,13 @@ namespace LionFishWeb.Controllers
 				CallDB(cmd);
 			}
 			else
-			{
-				return false;
-			}
-
-
-
+                return false;
 			return true;
-
 		}
 
 		public static void CallDB(SqlCommand command)
 		{
-			using (SqlConnection conn = new
-				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				Debug.WriteLine(command.CommandText);
 				conn.Open();

@@ -45,7 +45,7 @@
                     success: function (result2) {
                         $("#note-event").text(result2);
                         $("#note-event").removeClass();
-                        $("#note-event").addClass(@Model.Requested.EventID);
+                        $("#note-event").addClass("@Model.Requested.EventID");
                     },
                     error: function (response) { }
                 });

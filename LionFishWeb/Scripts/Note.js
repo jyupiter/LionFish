@@ -32,10 +32,22 @@
 
     $("#create").on("click", function () {
         var v = $("#creator input").val();
+        console.log(v);
         var v1 = $("#creator option:selected").text();
         if (!$(this).hasClass("folder")) {
             try {
-                $("#sb .stt:contains('" + v1 + "')").eq(0).after("<div class='pc'>" + v + "</div>");
+                $.ajax({
+                    type: "GET",
+                    url: "/Note/GetNoteDetails",
+                    data: { ID: $(this).attr('id') },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        $("#sb .stt:contains('" + v1 + "')").eq(0).after("<div class='pc' id='" + result.ID + "'>" + v + "</div>");
+                    },
+                    error: function (response) { }
+                });
+
                 $.post('/Note/CreateNote',
                     {
                         title: v,
@@ -66,19 +78,15 @@
         $("#swap1").hide();
         $("#swap2").show();
         $("#ntitle").val(result.Title);
-        if (result.Content != "") {
-            //quill.setContents($.parseJSON(result.Content).ops);
-            quill.setContents([
-                { insert: 'Hello ' },
-                { insert: 'World!', attributes: { bold: true } },
-                { insert: '\n' }
-            ]);
-
-            console.log(quill.getContents());
-            console.log((result.Content));
-        }
+        setQuill(result.Content);
         $("#selected").removeClass();
         $("#selected").addClass(result.ID);
+    }
+
+    function setQuill(content) {
+        quill.setText('');
+        if (content != "")
+            quill.setContents($.parseJSON(content));
     }
 
     $("#sb").on("click", ".pc", function () {
@@ -120,18 +128,12 @@
                 } else {
                     $("#note-event").text("Not linked from an event");
                 }
-
-                if (result.Content != null && result.Content != "")
-                    quill.setContents($.parseJSON(result.Content).ops[0].insert);
-                else
-                    quill.setText("");
             },
             error: function (response) { }
         });
     });
 
     function save(nid) {
-        console.log(quill.getContents());
         $.post('/Note/UpdateNote',
             {
                 ID: nid,

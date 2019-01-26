@@ -64,11 +64,15 @@ namespace LionFishWeb.Controllers
 			}
 
 			ViewData["EventsPublic"] = listOfEvents;
-
+			DateTime tempDT = DateTime.Today;
+			if(EventID != null)
+			{
+				tempDT = GetEventDate(EventID).Start;
+			}
 			CalendarViewModel CVM = new CalendarViewModel
 			{
 				ID = EventID,
-				DateT = GetEventDate(EventID).Start
+				DateT = tempDT
 			};
 			Debug.WriteLine(EventID);
 			return View("Calendar", CVM);
@@ -262,24 +266,41 @@ namespace LionFishWeb.Controllers
 
 		public static Event GetEventDate(string id)
 		{
-			using (var context = new ApplicationDbContext())
+			if (id == null) { return null; }
+			SqlParameter uid = new SqlParameter
 			{
-				using (var dbContextTransaction = context.Database.BeginTransaction())
-				{
-					try
-					{
-						var query = context.Events.SqlQuery("SELECT * FROM Event WHERE \"Public\" = '" + id + "'").ToList<Event>();
-						return query[0];
-					}
-					catch (Exception e)
-					{
-						Debug.WriteLine(e);
-					}
-				}
-			}
-			return null;
-		}
+				ParameterName = "@UID",
+				Value = id
+			};
+			using (SqlConnection conn = new
+				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			{
+				SqlCommand command = new SqlCommand();
+				command = new SqlCommand("SELECT * FROM Event WHERE ID = @UID", conn);
+				command.Parameters.Add(uid);
 
+				Debug.WriteLine(command.CommandText);
+				conn.Open();
+				SqlDataReader results = command.ExecuteReader();
+				Event events = new Event();
+				while (results.Read())
+				{
+
+					events.ID = results["ID"].ToString();
+					events.Title = results["Title"].ToString();
+					events.Description = results["Description"].ToString();
+					events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
+					events.Start = Convert.ToDateTime(results["Start"].ToString());
+					events.End = Convert.ToDateTime(results["End"].ToString());
+					events.Color = results["Color"].ToString();
+					events.UserID = results["UserID"].ToString();
+					events.Public = Convert.ToBoolean(results["Public"].ToString());
+				}
+				conn.Close();
+
+				return events;
+			}
+		}
 
 		public static void DebugEvents(Event events)
 		{

@@ -77,7 +77,6 @@
     function changeSelectedNote(result) {
         $("#swap1").hide();
         $("#swap2").show();
-        $("#ntitle").val(result.Title);
         setQuill(result.Content);
         $("#selected").removeClass();
         $("#selected").addClass(result.ID);
@@ -89,7 +88,7 @@
             quill.setContents($.parseJSON(content));
     }
 
-    $("#sb").on("click", ".pc", function () {
+    $("#sb").on("click", ".pc", function (passed) {
         $.ajax({
             type: "GET",
             url: "/Note/GetNoteDetails",
@@ -97,6 +96,7 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
+                $("#ntitle").val($(passed.target).text());
                 changeSelectedNote(result);
 
                 $.ajax({

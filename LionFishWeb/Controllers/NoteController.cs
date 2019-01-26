@@ -191,9 +191,6 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                CreateNoteViewModel data = JsonConvert.DeserializeObject<CreateNoteViewModel>(json);
-
                 using (var context = new ApplicationDbContext())
                 {
                     using (var dbContextTransaction = context.Database.BeginTransaction())
@@ -230,9 +227,6 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                CreateFolderViewModel data = JsonConvert.DeserializeObject<CreateFolderViewModel>(json);
-
                 using (var context = new ApplicationDbContext())
                 {
                     using (var dbContextTransaction = context.Database.BeginTransaction())
@@ -242,7 +236,7 @@ namespace LionFishWeb.Controllers
                             Folder f = new Folder();
                             context.Database.ExecuteSqlCommand(
                                 @"INSERT INTO Folder (ID, Name, UserID) " +
-                                "VALUES ('" + f.ID + "', '" + f.Name + "', '" + User.Identity.GetUserId() + "');"
+                                "VALUES ('" + f.ID + "', '" + model.Name + "', '" + User.Identity.GetUserId() + "');"
                             );
 
                             context.SaveChanges();
@@ -257,16 +251,13 @@ namespace LionFishWeb.Controllers
             }
         }
 
-        // POST: /Note/CreateFolder
+        // POST: /Note/UpdateNote
         [HttpPost]
         [AllowAnonymous]
         public void UpdateNote(UpdateNoteViewModel model)
         {
             if(ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                CreateFolderViewModel data = JsonConvert.DeserializeObject<CreateFolderViewModel>(json);
-
                 using(var context = new ApplicationDbContext())
                 {
                     using(var dbContextTransaction = context.Database.BeginTransaction())

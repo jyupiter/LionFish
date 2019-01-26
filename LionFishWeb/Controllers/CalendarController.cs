@@ -55,7 +55,9 @@ namespace LionFishWeb.Controllers
 			listOfEvents = LoadPublic(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
 			{
+				Debug.WriteLine(events.ID);
 				events.ID = events.ID.GetIndirectReference();
+				Debug.WriteLine(events.ID);
 			}
 
 			ViewData["EventsPublic"] = listOfEvents;
@@ -260,7 +262,7 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "update")
 			{
-				CallDB("UPDATE Event SET ID = '" + events.ID.GetDirectReference() + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', UserID = '" + user + "' WHERE ID = '" + events.ID + "'");
+				CallDB("UPDATE Event SET ID = '" + events.ID.GetDirectReference() + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', UserID = '" + user + "' WHERE ID = '" + events.ID.GetDirectReference() + "'");
 			}
 			else if (mode == "delete")
 			{
@@ -269,7 +271,7 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "publish")
 			{
-				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "PUBLICEVENT','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
+				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
 
 			}
 			else

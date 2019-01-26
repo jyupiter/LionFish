@@ -269,7 +269,7 @@
 								title: listOfEvents[i].Title,
 								start: moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours'),
 								end: moment(end, "YYYY-MM-DD HH:mm").add(8, 'hours'),
-								id: listOfEvents[i].ID + listOfEvents[i].UserID,
+								id: listOfEvents[i].ID,// + listOfEvents[i].UserID,
 								color: listOfEvents[i].Color,
 								notes: listOfEvents[i].Notes,
 								editable: true,
@@ -302,10 +302,11 @@
 					@using (Html.BeginForm())
 					{
 						@Html.AntiForgeryToken()
-					
+
 						@Html.Editor("Search", new { htmlAttributes = new { id = "Search" } })
 
-						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;" id="deleteDis">Search Event</button>
+						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;" >Search Event</button>
+						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:orange;" >Clear Search</button>
 					}
 					<div id='external-events-listing'>
 						<h4>Imported Events</h4>
@@ -338,10 +339,10 @@
 								@using (Html.BeginForm())
 								{
 									@Html.AntiForgeryToken()
-									@*<p>
+									<p>
 										ID
 										@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-									</p>*@
+									</p>
 									<p>Title</p>
 									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
 									<p>Color</p>

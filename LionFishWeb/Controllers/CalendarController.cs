@@ -6,6 +6,8 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -21,6 +23,7 @@ namespace LionFishWeb.Controllers
 	[Authorize]
 	public class CalendarController : Controller
 	{
+
 		private static string EventID;
 		private static string SearchString;
 
@@ -67,6 +70,7 @@ namespace LionFishWeb.Controllers
 				ID = EventID,
 				DateT = GetEventDate(EventID).Start
 			};
+			Debug.WriteLine(EventID);
 			return View("Calendar", CVM);
 		}
 
@@ -104,8 +108,22 @@ namespace LionFishWeb.Controllers
 
 		public ActionResult Note([Bind(Include = "ID, Notes")] Event events)
 		{
+			SqlParameter ENotes = new SqlParameter
+			{
+				ParameterName = "@Notes",
+				Value = events.Notes
+			};
 
-			CallDB("UPDATE Event SET Notes = '" + events.Notes + "' WHERE ID = '" + events.ID.GetDirectReference() + "'");
+			SqlParameter DEID = new SqlParameter
+			{
+				ParameterName = "@DID",
+				Value = events.Notes
+			};
+
+			SqlCommand cmd = new SqlCommand("UPDATE Event SET Notes = @Notes WHERE ID = @DID");
+			cmd.Parameters.Add(ENotes);
+			cmd.Parameters.Add(DEID);
+			CallDB(cmd);
 			return RedirectToAction("Calendar");
 		}
 
@@ -155,63 +173,90 @@ namespace LionFishWeb.Controllers
 
 		public static List<Event> LoadPrivate(string user)
 		{
-			using (var context = new ApplicationDbContext())
+			List<Event> listOfEvents = new List<Event>();
+			SqlParameter UID = new SqlParameter
 			{
-				using (var dbContextTransaction = context.Database.BeginTransaction())
+				ParameterName = "@user",
+				Value = user
+			};
+			using (SqlConnection conn = new
+				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			{
+				SqlCommand command = new SqlCommand();
+
+				command = new SqlCommand("SELECT * FROM Event WHERE UserID = @user", conn);
+
+				command.Parameters.Add(UID);
+				Debug.WriteLine(command.CommandText);
+				conn.Open();
+				SqlDataReader results = command.ExecuteReader();
+				
+				while (results.Read())
 				{
-					try
-					{
-						var query = context.Events.SqlQuery("SELECT * FROM Event WHERE UserID = '" + user + "'").ToList<Event>();
-						return query;
-					}
-					catch (Exception e)
-					{
-						Debug.WriteLine(e);
-					}
+					Event events = new Event();
+					events.ID = results["ID"].ToString();
+					events.Title = results["Title"].ToString();
+					events.Description = results["Description"].ToString();
+					events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
+					events.Start = Convert.ToDateTime(results["Start"].ToString());
+					events.End = Convert.ToDateTime(results["End"].ToString());
+					events.Color = results["Color"].ToString();
+					events.UserID = results["UserID"].ToString();
+					events.Public = Convert.ToBoolean(results["Public"].ToString());
+					listOfEvents.Add(events);
 				}
+				conn.Close();
 			}
-			return null;
+			return listOfEvents;
 		}
 
 		public static List<Event> LoadPublic(string user)
 		{
-			using (var context = new ApplicationDbContext())
+			List<Event> listOfEvents = new List<Event>();
+			SqlParameter search = new SqlParameter
 			{
-				using (var dbContextTransaction = context.Database.BeginTransaction())
+				ParameterName = "@search",
+				Value = SearchString
+			};
+			using (SqlConnection conn = new
+				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
+			{
+				SqlCommand command = new SqlCommand();
+				if (SearchString != null)
 				{
-					try
+					command = new SqlCommand("SELECT * FROM Event WHERE Title LIKE %@search%", conn);
+					command.Parameters.Add(search);
+				}
+				else
+				{
+					command = new SqlCommand("SELECT * FROM Event", conn);
+				}
+				
+				Debug.WriteLine(command.CommandText);
+				conn.Open();
+				SqlDataReader results = command.ExecuteReader();
+				
+				while (results.Read())
+				{
+					if (results["Public"].ToString() == "True")
 					{
-						List<Event> query = new List<Event>();
-						List<Event> listOfEvents = new List<Event>();
-						Debug.WriteLine(SearchString);
-						if (SearchString != null)
-						{
-							query = context.Events.SqlQuery("SELECT * FROM Event WHERE Title LIKE '%" + SearchString + "%'").ToList<Event>();
-
-						}
-						else
-						{
-							query = context.Events.SqlQuery("SELECT * FROM Event").ToList<Event>();
-							
-						}
-						foreach (Event events in query)
-						{
-
-							if (events.Public)
-							{
-								Debug.WriteLine(events.Public);
-								listOfEvents.Add(events);
-							}
-						}
-						return listOfEvents;
-					}
-					catch (Exception e)
-					{
-						Debug.WriteLine(e);
+						Event events = new Event();
+						events.ID = results["ID"].ToString();
+						events.Title = results["Title"].ToString();
+						events.Description = results["Description"].ToString();
+						events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
+						events.Start = Convert.ToDateTime(results["Start"].ToString());
+						events.End = Convert.ToDateTime(results["End"].ToString());
+						events.Color = results["Color"].ToString();
+						events.UserID = results["UserID"].ToString();
+						events.Public = Convert.ToBoolean(results["Public"].ToString());
+						listOfEvents.Add(events);
 					}
 				}
+				conn.Close();
 			}
-			return null;
+
+			return listOfEvents;
 		}
 
 		public static Event GetEventDate(string id)
@@ -249,59 +294,149 @@ namespace LionFishWeb.Controllers
 			Debug.WriteLine("\n --------------------- \n");
 		}
 
-		public static bool Save(Event events, string mode, string user)
+		public static bool Save(Event events, string mode, string user2)
 		{
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
 			DebugEvents(events);
 
+			SqlParameter user = new SqlParameter
+			{
+				ParameterName = "@user",
+				Value = user2
+			};
+
+			SqlParameter EID = new SqlParameter
+			{
+				ParameterName = "@ID",
+				Value = events.ID
+			};
+			SqlParameter ETitle = new SqlParameter
+			{
+				ParameterName = "@Title",
+				Value = events.Title
+			};
+			SqlParameter EDesc = new SqlParameter
+			{
+				ParameterName = "@Description",
+				Value = events.Description
+			};
+			SqlParameter EAllDay = new SqlParameter
+			{
+				ParameterName = "@AllDay",
+				Value = events.AllDay
+			};
+			SqlParameter EStart = new SqlParameter
+			{
+				ParameterName = "@Start",
+				Value = start
+			};
+			SqlParameter EEnd = new SqlParameter
+			{
+				ParameterName = "@End",
+				Value = end
+			};
+			SqlParameter EColor = new SqlParameter
+			{
+				ParameterName = "@Color",
+				Value = events.Color
+			};
+			SqlParameter EUserID = new SqlParameter
+			{
+				ParameterName = "@UserID",
+				Value = events.UserID
+			};
+			SqlParameter EPublic = new SqlParameter
+			{
+				ParameterName = "@Public",
+				Value = events.Public
+			};
+
 			if (mode == "create")
 			{
-
-				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', '" + user + "' , 'False')");
+				SqlCommand cmd = new SqlCommand(
+				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID ,@Title ,@Description,@AllDay,@start ,@end , @Color , @UserID , 'False')"
+				);
+				cmd.Parameters.Add(EID);
+				cmd.Parameters.Add(ETitle);
+				cmd.Parameters.Add(EDesc);
+				cmd.Parameters.Add(EAllDay);
+				cmd.Parameters.Add(EStart);
+				cmd.Parameters.Add(EEnd);
+				cmd.Parameters.Add(EColor);
+				cmd.Parameters.Add(EUserID);
+				CallDB(cmd);
 			}
 			else if (mode == "update")
 			{
-				CallDB("UPDATE Event SET ID = '" + events.ID.GetDirectReference() + "', Title = '" + events.Title + "', Description = '" + events.Description + "', AllDay = '" + events.AllDay + "', \"Start\" = '" + start + "', \"End \"= '" + end + "', Color = '" + events.Color + "', UserID = '" + user + "' WHERE ID = '" + events.ID.GetDirectReference() + "'");
+				SqlParameter DEID = new SqlParameter
+				{
+					ParameterName = "@DID",
+					Value = events.ID.GetDirectReference()
+				};
+				SqlCommand cmd = new SqlCommand(
+				"UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , \"start\" =  @start , \"end \"=  @end , Color =  @Color , UserID =  @UserID  WHERE ID =  @DID ");
+				cmd.Parameters.Add(EID);
+				cmd.Parameters.Add(ETitle);
+				cmd.Parameters.Add(EDesc);
+				cmd.Parameters.Add(EAllDay);
+				cmd.Parameters.Add(EStart);
+				cmd.Parameters.Add(EEnd);
+				cmd.Parameters.Add(EColor);
+				cmd.Parameters.Add(EUserID);
+				cmd.Parameters.Add(DEID);
+				CallDB(cmd);
 			}
 			else if (mode == "delete")
 			{
+				SqlParameter DEID = new SqlParameter
+				{
+					ParameterName = "@DID",
+					Value = events.ID.GetDirectReference()
+				};
+				SqlCommand cmd = new SqlCommand(
+				"DELETE FROM Event WHERE ID =  @DID ");
+				cmd.Parameters.Add(DEID);
 
-				CallDB("DELETE FROM Event WHERE ID = '" + events.ID.GetDirectReference() + "'");
+				CallDB(cmd);
 			}
 			else if (mode == "publish")
 			{
-				CallDB("INSERT INTO Event (ID,Title,Description,AllDay,\"Start\",\"end\",Color,UserID,\"Public\") VALUES ('" + events.ID + user + "','" + events.Title + "','" + events.Description + "','" + events.AllDay + "','" + start + "','" + end + "','" + events.Color + "', 'public' , 'True')");
-
+				SqlCommand cmd = new SqlCommand(
+				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID , @Title , @Description , @AllDay , @start , @end , @Color , 'public' , True)");
+				cmd.Parameters.Add(EID);
+				cmd.Parameters.Add(ETitle);
+				cmd.Parameters.Add(EDesc);
+				cmd.Parameters.Add(EAllDay);
+				cmd.Parameters.Add(EStart);
+				cmd.Parameters.Add(EEnd);
+				cmd.Parameters.Add(EColor);
+				cmd.Parameters.Add(EUserID);
+				CallDB(cmd);
 			}
 			else
 			{
 				return false;
 			}
+
+
+
 			return true;
 
 		}
 
-		public static void CallDB(string command)
+		public static void CallDB(SqlCommand command)
 		{
-			using (var context = new ApplicationDbContext())
+			using (SqlConnection conn = new
+				SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=LionFishDB;Integrated Security=True"))
 			{
-				using (var dbContextTransaction = context.Database.BeginTransaction())
-				{
-					try
-					{
-						Debug.WriteLine(command);
-						context.Database.ExecuteSqlCommand(command);
-						context.SaveChanges();
-						dbContextTransaction.Commit();
-					}
-					catch (Exception e)
-					{
-						Debug.WriteLine(e);
-						dbContextTransaction.Rollback();
-					}
-				}
+				Debug.WriteLine(command.CommandText);
+				conn.Open();
+				command.Connection = conn;
+				command.ExecuteNonQuery();
+				conn.Close();
 			}
+
 		}
 
 		#region Helpers

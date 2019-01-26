@@ -7,7 +7,12 @@ namespace LionFishWeb.Models
 {
     public class CalendarViewModel
     {
-        public string ID { get; set; }
+		public CalendarViewModel()
+		{
+			ID = "";
+			//DateT = new DateTime();
+		}
+		public string ID { get; set; }
 		public DateTime DateT { get; set; }
 	}
 

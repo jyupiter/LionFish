@@ -94,6 +94,7 @@ namespace LionFishWeb.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind(Include = "Title, Color, Description, AllDay, Start, End")] Event events)
 		{
+			Debug.WriteLine(User.Identity.GetUserId());
 			Save(events, "create", User.Identity.GetUserId());
 			return RedirectToAction("Calendar");
 		}
@@ -286,6 +287,7 @@ namespace LionFishWeb.Controllers
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
 			Debug.WriteLine("\n --------------------- \n");
 			Debug.WriteLine("id: " + events.ID);
+			Debug.WriteLine("User: " + events.UserID);
 			Debug.WriteLine("title: " + events.Title);
 			Debug.WriteLine("desc: " + events.Description);
 			Debug.WriteLine("start: " + start);
@@ -299,10 +301,10 @@ namespace LionFishWeb.Controllers
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
 			DebugEvents(events);
-
+			Debug.WriteLine(user2);
 			SqlParameter user = new SqlParameter
 			{
-				ParameterName = "@user",
+				ParameterName = "@User",
 				Value = user2
 			};
 
@@ -355,7 +357,7 @@ namespace LionFishWeb.Controllers
 			if (mode == "create")
 			{
 				SqlCommand cmd = new SqlCommand(
-				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID ,@Title ,@Description,@AllDay,@start ,@end , @Color , @UserID , 'False')"
+				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID ,@Title ,@Description,@AllDay,@start ,@end , @Color , @User , 'False')"
 				);
 				cmd.Parameters.Add(EID);
 				cmd.Parameters.Add(ETitle);
@@ -364,7 +366,7 @@ namespace LionFishWeb.Controllers
 				cmd.Parameters.Add(EStart);
 				cmd.Parameters.Add(EEnd);
 				cmd.Parameters.Add(EColor);
-				cmd.Parameters.Add(EUserID);
+				cmd.Parameters.Add(user);
 				CallDB(cmd);
 			}
 			else if (mode == "update")
@@ -375,7 +377,7 @@ namespace LionFishWeb.Controllers
 					Value = events.ID.GetDirectReference()
 				};
 				SqlCommand cmd = new SqlCommand(
-				"UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , \"start\" =  @start , \"end \"=  @end , Color =  @Color , UserID =  @UserID  WHERE ID =  @DID ");
+				"UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , \"start\" =  @start , \"end \"=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID ");
 				cmd.Parameters.Add(EID);
 				cmd.Parameters.Add(ETitle);
 				cmd.Parameters.Add(EDesc);
@@ -383,7 +385,7 @@ namespace LionFishWeb.Controllers
 				cmd.Parameters.Add(EStart);
 				cmd.Parameters.Add(EEnd);
 				cmd.Parameters.Add(EColor);
-				cmd.Parameters.Add(EUserID);
+				cmd.Parameters.Add(user);
 				cmd.Parameters.Add(DEID);
 				CallDB(cmd);
 			}

@@ -59,21 +59,21 @@ namespace LionFishWeb.Controllers
 
         public void SetCurrentNote(SetCurrentNoteViewModel model)
         {
-            using(var context = new ApplicationDbContext())
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
-                using(var dbContextTransaction = context.Database.BeginTransaction())
+                SqlCommand command = new SqlCommand("SELECT * FROM Note WHERE ID = @id", conn);
+                SqlParameter NID = new SqlParameter
                 {
-                    try
-                    {
-                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE ID ='" + model.Id + "'").ToList<Note>();
-                        currentNote = query[0];
-                        Debug.WriteLine(currentNote);
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
-                }
+                    ParameterName = "@id",
+                    Value = model.Id
+                };
+                command.Parameters.Add(NID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                currentNote = (Note)command.ExecuteScalar();
+                conn.Close();
             }
         }
 
@@ -94,62 +94,113 @@ namespace LionFishWeb.Controllers
 
         public static List<Note> Load(string id)
         {
-            using (var context = new ApplicationDbContext())
+            List<Note> nl = new List<Note>();
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
-                using (var dbContextTransaction = context.Database.BeginTransaction())
+                SqlCommand command = new SqlCommand("SELECT * FROM Note WHERE UserID = @userid", conn);
+                SqlParameter UID = new SqlParameter
                 {
-                    try
+                    ParameterName = "@userid",
+                    Value = id
+                };
+                command.Parameters.Add(UID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
                     {
-                        var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE UserID ='" + id + "'").ToList<Note>();
-                        return query;
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
+                        Note n = new Note
+                        {
+                            ID = r["ID"].ToString(),
+                            Title = r["Title"].ToString(),
+                            Content = r["Content"].ToString(),
+                            FolderID = r["FolderID"].ToString(),
+                            UserID = id,
+                            EventID = r["EventID"].ToString()
+                        };
+                        nl.Add(n);
                     }
                 }
+                conn.Close();
             }
-            return null;
+            return nl;
         }
 
         public static List<Folder> Load(string id, string _)
         {
-            using (var context = new ApplicationDbContext())
+            List<Folder> fl = new List<Folder>();
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
-                using (var dbContextTransaction = context.Database.BeginTransaction())
+                SqlCommand command = new SqlCommand("SELECT * FROM Folder WHERE UserID = @userid", conn);
+                SqlParameter UID = new SqlParameter
                 {
-                    try
+                    ParameterName = "@userid",
+                    Value = id
+                };
+                command.Parameters.Add(UID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
                     {
-                        var query = context.Folders.SqlQuery("SELECT * FROM Folder WHERE UserID ='" + id + "'").ToList<Folder>();
-                        return query;
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e);
+                        Folder f = new Folder
+                        {
+                            ID = r["ID"].ToString(),
+                            Name = r["Name"].ToString(),
+                            UserID = id
+                        };
+                        fl.Add(f);
                     }
                 }
+                conn.Close();
             }
-            return null;
+            return fl;
         }
 
         public static List<Event> Load(string id, string _, string __)
         {
-            using(var context = new ApplicationDbContext())
+            List<Event> el = new List<Event>();
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
-                using(var dbContextTransaction = context.Database.BeginTransaction())
+                SqlCommand command = new SqlCommand("SELECT * FROM Event WHERE ID = @id", conn);
+                SqlParameter EID = new SqlParameter
                 {
-                    try
+                    ParameterName = "@id",
+                    Value = id
+                };
+                command.Parameters.Add(EID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
                     {
-                        var query = context.Events.SqlQuery("SELECT * FROM Event WHERE ID ='" + id + "'").ToList<Event>();
-                        return query;
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.WriteLine(e);
+                        Event f = new Event
+                        {
+                            ID = r["ID"].ToString(),
+                            Title = r["Title"].ToString(),
+                            Description = r["Description"].ToString(),
+                            AllDay = Convert.ToBoolean(r["AllDay"].ToString()),
+                            Start = Convert.ToDateTime(r["Start"].ToString()),
+                            End = Convert.ToDateTime(r["End"].ToString()),
+                            Color = r["Color"].ToString(),
+                            UserID = id,
+                            Public = Convert.ToBoolean(r["Public"].ToString())
+                        };
+                        el.Add(f);
                     }
                 }
+                conn.Close();
             }
-            return null;
+            return el;
         }
 
         public JsonResult GetNoteDetails(string ID)
@@ -193,32 +244,38 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var context = new ApplicationDbContext())
+                string uid = User.Identity.GetUserId();
+                Folder f = Load(uid, "")[0];
+                Note n = new Note();
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO Note (ID, Title, Content, FolderID, UserID)" +
+                    "VALUES (@id, @title, @content, @folderid, @userid)");
+                SqlParameter NID = new SqlParameter
                 {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            string uid = User.Identity.GetUserId();
-                            var query = context.Folders.Where(p => p.Name == model.Name && p.UserID == uid);
-
-
-                            Note n = new Note();
-                            var q = query.ToArray();
-                            context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Note (ID, Title, Content, FolderID, UserID) " +
-                                 "VALUES ('" + n.ID + "', '" + model.Title + "', '" + n.Content + "', '" + q[0].ID + "', '" + uid + "');"
-                            );
-
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
-                }
+                    ParameterName = "@id",
+                    Value = n.ID
+                };
+                SqlParameter TTL = new SqlParameter
+                {
+                    ParameterName = "@title",
+                    Value = model.Title
+                };
+                SqlParameter CTT = new SqlParameter
+                {
+                    ParameterName = "@content",
+                    Value = n.Content
+                };
+                SqlParameter FID = new SqlParameter
+                {
+                    ParameterName = "@folderid",
+                    Value = f.ID
+                };
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@userid",
+                    Value = uid
+                };
+                CallDB(command);
             }
         }
 
@@ -229,27 +286,27 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var context = new ApplicationDbContext())
+                string uid = User.Identity.GetUserId();
+                Folder f = new Folder();
+                SqlCommand command = new SqlCommand(
+                    "INSERT INTO Folder (ID, Name, UserID)" +
+                    "VALUES (@id, @name, @userid)");
+                SqlParameter FID = new SqlParameter
                 {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            Folder f = new Folder();
-                            context.Database.ExecuteSqlCommand(
-                                @"INSERT INTO Folder (ID, Name, UserID) " +
-                                "VALUES ('" + f.ID + "', '" + model.Name + "', '" + User.Identity.GetUserId() + "');"
-                            );
-
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
-                }
+                    ParameterName = "@id",
+                    Value = f.ID
+                };
+                SqlParameter NME = new SqlParameter
+                {
+                    ParameterName = "@name",
+                    Value = model.Name
+                };
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@userid",
+                    Value = uid
+                };
+                CallDB(command);
             }
         }
 
@@ -260,27 +317,26 @@ namespace LionFishWeb.Controllers
         {
             if(ModelState.IsValid)
             {
-                using(var context = new ApplicationDbContext())
+                SqlCommand command = new SqlCommand(
+                    "UPDATE Note" +
+                    "SET Title = @title, Content = @content" +
+                    "WHERE ID= @id");
+                SqlParameter NID = new SqlParameter
                 {
-                    using(var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand(
-                                @"UPDATE Note" +
-                                " SET Title = '" + model.Title + "', Content = '" + model.Content + "'" +
-                                " WHERE Id = '" + model.ID + "'"
-                            );
-
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch(Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
-                }
+                    ParameterName = "@id",
+                    Value = model.ID
+                };
+                SqlParameter TTL = new SqlParameter
+                {
+                    ParameterName = "@title",
+                    Value = model.Title
+                };
+                SqlParameter CTT = new SqlParameter
+                {
+                    ParameterName = "@content",
+                    Value = model.Content
+                };
+                CallDB(command);
             }
         }
 
@@ -291,7 +347,11 @@ namespace LionFishWeb.Controllers
                 Debug.WriteLine(command.CommandText);
                 conn.Open();
                 command.Connection = conn;
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception) { }
                 conn.Close();
             }
 

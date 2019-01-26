@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using System;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -73,6 +75,13 @@ namespace LionFishWeb.Controllers
             return View(user);
         }
 
+        // GET: /App/Feedback
+        public ActionResult Feedback()
+        {
+            ViewBag.Message = "gib thee knowledge";
+            return View();
+        }
+
         // POST: /App/UpdatePrivacy
         [HttpPost]
         [AllowAnonymous]
@@ -83,34 +92,27 @@ namespace LionFishWeb.Controllers
                 string json = new JavaScriptSerializer().Serialize(model);
                 UpdatePrivacyViewModel data = JsonConvert.DeserializeObject<UpdatePrivacyViewModel>(json);
 
-                using (var context = new ApplicationDbContext())
-                {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand(
-                                @"UPDATE AspNetUsers" +
-                                " SET Private = '" + data.Private + "'" +
-                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
-                            );
+                string uid = User.Identity.GetUserId();
 
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
-                }
+                SqlCommand command = new SqlCommand(
+                    "UPDATE AspNetUsers" +
+                    "SET Private = @private" +
+                    "WHERE ID= @id");
+
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = uid
+                };
+                SqlParameter PVT = new SqlParameter
+                {
+                    ParameterName = "@private",
+                    Value = data.Private
+                };
+                CallDB(command);
             }
         }
-        public ActionResult Feedback()
-        {
-            ViewBag.Message = "gib thee knowledge";
-            return View();
-        }
+
         // POST: /App/UpdateProfileImg
         [HttpPost]
         [AllowAnonymous]
@@ -120,28 +122,25 @@ namespace LionFishWeb.Controllers
             {
                 string json = new JavaScriptSerializer().Serialize(model);
                 UpdateProfileImgViewModel data = JsonConvert.DeserializeObject<UpdateProfileImgViewModel>(json);
+                
+                string uid = User.Identity.GetUserId();
 
-                using (var context = new ApplicationDbContext())
+                SqlCommand command = new SqlCommand(
+                    "UPDATE AspNetUsers" +
+                    "SET ProfileImg = @profileimg" +
+                    "WHERE ID= @id");
+                
+                SqlParameter UID = new SqlParameter
                 {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand(
-                                @"UPDATE AspNetUsers" +
-                                " SET ProfileImg = '" + data.ProfileImg + "'" +
-                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
-                                );
-
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
-                }
+                    ParameterName = "@id",
+                    Value = uid
+                };
+                SqlParameter IMG = new SqlParameter
+                {
+                    ParameterName = "@profilebio",
+                    Value = data.ProfileImg
+                };
+                CallDB(command);
             }
         }
 
@@ -155,34 +154,40 @@ namespace LionFishWeb.Controllers
                 string json = new JavaScriptSerializer().Serialize(model);
                 UpdateProfileInfoViewModel data = JsonConvert.DeserializeObject<UpdateProfileInfoViewModel>(json);
 
-                using (var context = new ApplicationDbContext())
-                {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            if (data.Name.Equals("nme"))
-                                context.Database.ExecuteSqlCommand(
-                                    @"UPDATE AspNetUsers" +
-                                    " SET UserName = '" + data.Info + "'" +
-                                    " WHERE Id = '" + User.Identity.GetUserId() + "'"
-                                    );
-                            else
-                                context.Database.ExecuteSqlCommand(
-                                @"UPDATE AspNetUsers" +
-                                " SET ProfileBio = '" + data.Info + "'" +
-                                " WHERE Id = '" + User.Identity.GetUserId() + "'"
-                                );
+                string uid = User.Identity.GetUserId();
 
-                            context.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            dbContextTransaction.Rollback();
-                        }
-                    }
+                SqlCommand command;
+                if(data.Name.Equals("nme"))
+                {
+                    command = new SqlCommand(
+                        "UPDATE AspNetUsers" +
+                        "SET UserName = @username" +
+                        "WHERE ID= @id");
                 }
+                else
+                {
+                    command = new SqlCommand(
+                        "UPDATE AspNetUsers" +
+                        "SET ProfileBio = @profilebio" +
+                        "WHERE ID= @id");
+                }
+                
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = uid
+                };
+                SqlParameter UNM = new SqlParameter
+                {
+                    ParameterName = "@username",
+                    Value = data.Info
+                };
+                SqlParameter BIO = new SqlParameter
+                {
+                    ParameterName = "@profilebio",
+                    Value = data.Info
+                };
+                CallDB(command);
             }
         }
 
@@ -209,6 +214,19 @@ namespace LionFishWeb.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
             }
+        }
+
+        public static void CallDB(SqlCommand command)
+        {
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                Debug.WriteLine(command.CommandText);
+                conn.Open();
+                command.Connection = conn;
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+
         }
 
         #region Helpers

@@ -238,7 +238,7 @@
     <Compile Include="MyHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utility\Obfusication.cs" />
+    <Compile Include="Utility\Obfuscation.cs" />
     <Compile Include="Utility\Constants.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
+using System.Data.SqlClient;
 
 namespace LionFishWeb.Controllers
 {
@@ -163,35 +164,40 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(Utility.Constants.ZXCVBN(model.Password) < 2)
+                {
+                    ViewBag.Message = "Password too weak.";
+                    return View(model);
+                }
                 var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
-                    using (var context = new ApplicationDbContext())
+                    
+                    Folder f = new Folder();
+                    SqlCommand command = new SqlCommand(
+                        "INSERT INTO Folder (ID, Name, UserID)" +
+                        "VALUES (@id, @name, @userid)");
+                    SqlParameter FID = new SqlParameter
                     {
-                        using (var dbContextTransaction = context.Database.BeginTransaction())
-                        {
-                            try
-                            {
-                                Folder f = new Folder();
-                                context.Database.ExecuteSqlCommand(
-                                    @"INSERT INTO Folder (ID, Name, UserID) " +
-                                    "VALUES ('" + f.ID + "', '" + f.Name + "', '" + user.Id + "');"
-                                );
+                        ParameterName = "@id",
+                        Value = f.ID
+                    };
+                    SqlParameter NME = new SqlParameter
+                    {
+                        ParameterName = "@name",
+                        Value = f.Name
+                    };
+                    SqlParameter UID = new SqlParameter
+                    {
+                        ParameterName = "@userid",
+                        Value = user.Id
+                    };
+                    CallDB(command);
 
-                                context.SaveChanges();
-                                dbContextTransaction.Commit();
-                            }
-                            catch (Exception)
-                            {
-                                dbContextTransaction.Rollback();
-                            }
-                        }
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
-
                     return View(model);
-                    }
                 }
                 AddErrors(result);
             }
@@ -442,6 +448,23 @@ namespace LionFishWeb.Controllers
                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
+        }
+
+        public static void CallDB(SqlCommand command)
+        {
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                Debug.WriteLine(command.CommandText);
+                conn.Open();
+                command.Connection = conn;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch(Exception) { }
+                conn.Close();
+            }
+
         }
 
         #region Helpers

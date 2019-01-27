@@ -73,15 +73,20 @@
     function changeSelectedNote(result) {
         $("#swap1").hide();
         $("#swap2").show();
-        setQuill(result.Content);
         $("#selected").removeClass();
         $("#selected").addClass(result.ID);
     }
 
     function setQuill(content) {
-        quill.setText('');
-        if (content != "")
-            quill.setContents($.parseJSON(content));
+        if (content != "") {
+            var cjson = content.replace(/\n/g, "\\n");
+            console.log($.parseJSON(cjson));
+            quill.setContents([
+                { insert: 'Hello ' },
+                { insert: 'World!', attributes: { bold: true } },
+                { insert: '\n' }
+            ]);
+        }
     }
 
     quill.on('text-change', function () {
@@ -104,6 +109,10 @@
             success: function (result) {
                 $("#ntitle").val($(passed.target).text());
                 changeSelectedNote(result);
+                if (result.Content != "") {
+                    var cjson = result.Content.replace(/\n/g, "\\n");
+                    quill.setContents($.parseJSON(cjson));
+                }
 
                 $.ajax({
                     type: "GET",

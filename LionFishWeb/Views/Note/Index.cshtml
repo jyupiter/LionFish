@@ -22,15 +22,14 @@
                 return txt.value;
             }
             $("#ntitle").val("@Model.Requested.Title");
-            $("#editor").remove();
-            $("#ned").append("<div id='editor' data-dirty='false'></div>");
+            $("#ned").remove();
+            $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
             var editor = new Quill('#editor', {
                 theme: 'snow'
             });
             var rjson = decodeHtml("@Model.Requested.Content");
             var cjson = rjson.replace(/\n/g, "\\n");
-            editor.setContents(cjson);
-            console.log(editor);
+            editor.setContents($.parseJSON(cjson));
             $.ajax({
                 type: "GET",
                 url: "/Note/GetFolderName",

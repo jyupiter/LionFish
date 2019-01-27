@@ -1,4 +1,5 @@
 ﻿using LionFishWeb.Models;
+using LionFishWeb.Utility;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -72,6 +73,7 @@ namespace LionFishWeb.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             User user = db.Users.Find(User.Identity.GetUserId());
+            user.Id = user.Id.GetIndirectReference();
             return View(user);
         }
 
@@ -89,14 +91,11 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdatePrivacyViewModel data = JsonConvert.DeserializeObject<UpdatePrivacyViewModel>(json);
-
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command = new SqlCommand(
-                    "UPDATE AspNetUsers" +
-                    "SET Private = @private" +
+                    "UPDATE AspNetUsers " +
+                    "SET Private = @private " +
                     "WHERE ID= @id");
 
                 SqlParameter UID = new SqlParameter
@@ -107,8 +106,10 @@ namespace LionFishWeb.Controllers
                 SqlParameter PVT = new SqlParameter
                 {
                     ParameterName = "@private",
-                    Value = data.Private
+                    Value = model.Private
                 };
+                command.Parameters.Add(UID);
+                command.Parameters.Add(PVT);
                 CallDB(command);
             }
         }
@@ -120,14 +121,11 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdateProfileImgViewModel data = JsonConvert.DeserializeObject<UpdateProfileImgViewModel>(json);
-                
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command = new SqlCommand(
-                    "UPDATE AspNetUsers" +
-                    "SET ProfileImg = @profileimg" +
+                    "UPDATE AspNetUsers " +
+                    "SET ProfileImg = @profileimg " +
                     "WHERE ID= @id");
                 
                 SqlParameter UID = new SqlParameter
@@ -138,8 +136,10 @@ namespace LionFishWeb.Controllers
                 SqlParameter IMG = new SqlParameter
                 {
                     ParameterName = "@profilebio",
-                    Value = data.ProfileImg
+                    Value = model.ProfileImg
                 };
+                command.Parameters.Add(UID);
+                command.Parameters.Add(IMG);
                 CallDB(command);
             }
         }
@@ -151,24 +151,21 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdateProfileInfoViewModel data = JsonConvert.DeserializeObject<UpdateProfileInfoViewModel>(json);
-
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command;
-                if(data.Name.Equals("nme"))
+                if(model.Name.Equals("nme"))
                 {
                     command = new SqlCommand(
-                        "UPDATE AspNetUsers" +
-                        "SET UserName = @username" +
+                        "UPDATE AspNetUsers " +
+                        "SET UserName = @username " +
                         "WHERE ID= @id");
                 }
                 else
                 {
                     command = new SqlCommand(
-                        "UPDATE AspNetUsers" +
-                        "SET ProfileBio = @profilebio" +
+                        "UPDATE AspNetUsers " +
+                        "SET ProfileBio = @profilebio " +
                         "WHERE ID= @id");
                 }
                 
@@ -180,13 +177,16 @@ namespace LionFishWeb.Controllers
                 SqlParameter UNM = new SqlParameter
                 {
                     ParameterName = "@username",
-                    Value = data.Info
+                    Value = model.Info
                 };
                 SqlParameter BIO = new SqlParameter
                 {
                     ParameterName = "@profilebio",
-                    Value = data.Info
+                    Value = model.Info
                 };
+                command.Parameters.Add(UID);
+                command.Parameters.Add(UNM);
+                command.Parameters.Add(BIO);
                 CallDB(command);
             }
         }

@@ -32,10 +32,14 @@
 
     $("#create").on("click", function () {
         var v = $("#creator input").val();
-        console.log(v);
         var v1 = $("#creator option:selected").text();
         if (!$(this).hasClass("folder")) {
             try {
+                $.post('/Note/CreateNote',
+                    {
+                        title: v,
+                        name: v1
+                    }, function () { });
                 $.ajax({
                     type: "GET",
                     url: "/Note/GetNoteDetails",
@@ -47,12 +51,6 @@
                     },
                     error: function (response) { }
                 });
-
-                $.post('/Note/CreateNote',
-                    {
-                        title: v,
-                        name: v1
-                    }, function () { });
             } catch (e) {
             }
         } else {
@@ -126,7 +124,7 @@
                         error: function (response) { }
                     });
                 } else {
-                    $("#note-event").text("Not linked from an event");
+                    $("#note-event").text("Not event linked");
                 }
             },
             error: function (response) { }

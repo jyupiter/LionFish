@@ -5,13 +5,10 @@ using Microsoft.Owin.Security;
 using System;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
 using System.Data.SqlClient;
-using System.Configuration;
+using LionFishWeb.Utility;
 
 namespace LionFishWeb.Controllers
 {
@@ -20,7 +17,6 @@ namespace LionFishWeb.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext db = new ApplicationDbContext();
         private static Note currentNote;
 
         public NoteController()
@@ -65,7 +61,7 @@ namespace LionFishWeb.Controllers
                 SqlParameter NID = new SqlParameter
                 {
                     ParameterName = "@id",
-                    Value = model.Id
+                    Value = model.Id.GetDirectReference()
                 };
                 command.Parameters.Add(NID);
 
@@ -74,6 +70,7 @@ namespace LionFishWeb.Controllers
                 conn.Open();
                 currentNote = (Note)command.ExecuteScalar();
                 conn.Close();
+                currentNote.ID = currentNote.ID.GetIndirectReference();
             }
         }
 
@@ -114,12 +111,12 @@ namespace LionFishWeb.Controllers
                     {
                         Note n = new Note
                         {
-                            ID = r["ID"].ToString(),
+                            ID = r["ID"].ToString().GetIndirectReference(),
                             Title = r["Title"].ToString(),
                             Content = r["Content"].ToString(),
-                            FolderID = r["FolderID"].ToString(),
-                            UserID = id,
-                            EventID = r["EventID"].ToString()
+                            FolderID = r["FolderID"].ToString().GetIndirectReference(),
+                            UserID = id.GetIndirectReference(),
+                            EventID = r["EventID"].ToString().GetIndirectReference()
                         };
                         nl.Add(n);
                     }
@@ -151,9 +148,9 @@ namespace LionFishWeb.Controllers
                     {
                         Folder f = new Folder
                         {
-                            ID = r["ID"].ToString(),
+                            ID = r["ID"].ToString().GetIndirectReference(),
                             Name = r["Name"].ToString(),
-                            UserID = id
+                            UserID = id.GetIndirectReference()
                         };
                         fl.Add(f);
                     }
@@ -163,9 +160,9 @@ namespace LionFishWeb.Controllers
             return fl;
         }
 
-        public static List<Event> Load(string id, string _, string __)
+        public static Event Load(string id, string _, string __)
         {
-            List<Event> el = new List<Event>();
+            Event e = new Event();
             using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
                 SqlCommand command = new SqlCommand("SELECT * FROM Event WHERE ID = @id", conn);
@@ -183,24 +180,23 @@ namespace LionFishWeb.Controllers
                 {
                     while(r.Read())
                     {
-                        Event f = new Event
+                        e = new Event
                         {
-                            ID = r["ID"].ToString(),
+                            ID = r["ID"].ToString().GetIndirectReference(),
                             Title = r["Title"].ToString(),
                             Description = r["Description"].ToString(),
                             AllDay = Convert.ToBoolean(r["AllDay"].ToString()),
                             Start = Convert.ToDateTime(r["Start"].ToString()),
                             End = Convert.ToDateTime(r["End"].ToString()),
                             Color = r["Color"].ToString(),
-                            UserID = id,
+                            UserID = id.GetIndirectReference(),
                             Public = Convert.ToBoolean(r["Public"].ToString())
                         };
-                        el.Add(f);
                     }
                 }
                 conn.Close();
             }
-            return el;
+            return e;
         }
 
         public JsonResult GetNoteDetails(string ID)
@@ -212,6 +208,7 @@ namespace LionFishWeb.Controllers
                 if(nt.ID == ID)
                 {
                     n = nt;
+                    break;
                 }
             }
             return Json(n, JsonRequestBehavior.AllowGet);
@@ -226,6 +223,7 @@ namespace LionFishWeb.Controllers
                 if(fl.ID == ID)
                 {
                     f = fl;
+                    break;
                 }
             }
             return Json(f.Name, JsonRequestBehavior.AllowGet);
@@ -233,8 +231,8 @@ namespace LionFishWeb.Controllers
 
         public JsonResult GetEventTitle(string ID)
         {
-            List<Event> events = Load(ID, "", "");
-            return Json(events[0].Title, JsonRequestBehavior.AllowGet);
+            Event e = Load(ID.GetDirectReference(), "", "");
+            return Json(e.Title, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Note/CreateNote
@@ -248,7 +246,7 @@ namespace LionFishWeb.Controllers
                 Folder f = Load(uid, "")[0];
                 Note n = new Note();
                 SqlCommand command = new SqlCommand(
-                    "INSERT INTO Note (ID, Title, Content, FolderID, UserID)" +
+                    "INSERT INTO Note (ID, Title, Content, FolderID, UserID) " +
                     "VALUES (@id, @title, @content, @folderid, @userid)");
                 SqlParameter NID = new SqlParameter
                 {
@@ -275,6 +273,11 @@ namespace LionFishWeb.Controllers
                     ParameterName = "@userid",
                     Value = uid
                 };
+                command.Parameters.Add(NID);
+                command.Parameters.Add(TTL);
+                command.Parameters.Add(CTT);
+                command.Parameters.Add(FID);
+                command.Parameters.Add(UID);
                 CallDB(command);
             }
         }
@@ -289,7 +292,7 @@ namespace LionFishWeb.Controllers
                 string uid = User.Identity.GetUserId();
                 Folder f = new Folder();
                 SqlCommand command = new SqlCommand(
-                    "INSERT INTO Folder (ID, Name, UserID)" +
+                    "INSERT INTO Folder (ID, Name, UserID) " +
                     "VALUES (@id, @name, @userid)");
                 SqlParameter FID = new SqlParameter
                 {
@@ -306,6 +309,9 @@ namespace LionFishWeb.Controllers
                     ParameterName = "@userid",
                     Value = uid
                 };
+                command.Parameters.Add(FID);
+                command.Parameters.Add(NME);
+                command.Parameters.Add(UID);
                 CallDB(command);
             }
         }
@@ -318,13 +324,13 @@ namespace LionFishWeb.Controllers
             if(ModelState.IsValid)
             {
                 SqlCommand command = new SqlCommand(
-                    "UPDATE Note" +
-                    "SET Title = @title, Content = @content" +
+                    "UPDATE Note " +
+                    "SET Title = @title, Content = @content " +
                     "WHERE ID= @id");
                 SqlParameter NID = new SqlParameter
                 {
                     ParameterName = "@id",
-                    Value = model.ID
+                    Value = model.ID.GetDirectReference()
                 };
                 SqlParameter TTL = new SqlParameter
                 {
@@ -336,6 +342,9 @@ namespace LionFishWeb.Controllers
                     ParameterName = "@content",
                     Value = model.Content
                 };
+                command.Parameters.Add(NID);
+                command.Parameters.Add(TTL);
+                command.Parameters.Add(CTT);
                 CallDB(command);
             }
         }

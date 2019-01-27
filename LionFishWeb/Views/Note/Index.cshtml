@@ -21,6 +21,8 @@
                 txt.innerHTML = html;
                 return txt.value;
             }
+            $("#swap1").hide();
+            $("#swap2").show();
             $("#ntitle").val("@Model.Requested.Title");
             $("#selected").removeClass();
             $("#selected").addClass("@Model.Requested.ID");
@@ -31,7 +33,8 @@
                 theme: 'snow'
             });
             var rjson = decodeHtml("@Model.Requested.Content");
-            var cjson = rjson.replace(/\n/g, "\\n");
+            var bjson = rjson.replace(/\\\"/g, '\"');
+            var cjson = bjson.substring(1, bjson.length - 1);
             editor.setContents($.parseJSON(cjson));
             $.ajax({
                 type: "GET",

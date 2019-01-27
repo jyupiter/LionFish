@@ -343,11 +343,10 @@
 								{
 									@Html.AntiForgeryToken()
 									<p>
-										ID
-										@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
+										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" }  })
 									</p>
 									<p>Title</p>
-									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" , required = "required" } })
 									<p>Color</p>
 									@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 									<p>Description</p>
@@ -373,12 +372,8 @@
 							@using (Html.BeginForm())
 							{
 								@Html.AntiForgeryToken()
-								@*<p>
-									ID
-									@Html.Editor("ID", new { htmlAttributes = new { id = "chID" } })
-								</p>*@
 								<p>Title</p>
-								@Html.Editor("Title", new { htmlAttributes = new { id = "chName" } })
+								@Html.Editor("Title", new { htmlAttributes = new { id = "chName" ,required = "required" } })
 								<p>Color</p>
 								@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 								<p>Description</p>

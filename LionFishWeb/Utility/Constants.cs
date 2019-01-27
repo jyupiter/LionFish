@@ -61,7 +61,7 @@ namespace LionFishWeb.Utility
         }
         public static int ZXCVBN(string p)
         {
-            var s = System.IO.File.ReadAllText("C:/Users/Jupiter/source/repos/LionFishWeb/LionFishWeb/Scripts/zxcvbn.js");
+            var s = System.IO.File.ReadAllText("D:/Github/LionFish/LionFishWeb/Scripts/zxcvbn.js");
             int x = 10;
 
             var engine = new Engine();

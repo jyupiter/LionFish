@@ -383,6 +383,7 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "update")
 			{
+				DebugEvents(events);
 				SqlParameter DEID = new SqlParameter
 				{
 					ParameterName = "@DID",

@@ -57,6 +57,8 @@ namespace LionFishWeb.Controllers
         {
             using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
             {
+                string uid = User.Identity.GetUserId();
+                Note n = new Note();
                 SqlCommand command = new SqlCommand("SELECT * FROM Note WHERE ID = @id", conn);
                 SqlParameter NID = new SqlParameter
                 {
@@ -65,12 +67,24 @@ namespace LionFishWeb.Controllers
                 };
                 command.Parameters.Add(NID);
 
-                Debug.WriteLine(command.CommandText);
-
                 conn.Open();
-                currentNote = (Note)command.ExecuteScalar();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
+                    {
+                        n = new Note
+                        {
+                            ID = model.Id,
+                            Title = r["Title"].ToString(),
+                            Content = r["Content"].ToString(),
+                            FolderID = r["FolderID"].ToString().GetIndirectReference(),
+                            UserID = uid.GetIndirectReference(),
+                            EventID = r["EventID"].ToString().GetIndirectReference()
+                        };
+                    }
+                }
                 conn.Close();
-                currentNote.ID = currentNote.ID.GetIndirectReference();
+                currentNote = n;
             }
         }
 

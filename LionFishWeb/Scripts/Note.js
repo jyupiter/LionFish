@@ -6,8 +6,6 @@
         theme: 'snow'
     });
 
-    $('<div id="editor">').data('quill', quill);
-
     $("#newnf").on("click", function () {
         $("#newnfc").toggle();
     });
@@ -86,7 +84,17 @@
             quill.setContents($.parseJSON(content));
     }
 
+    quill.on('text-change', function () {
+        $("#editor").attr("data-dirty", "true");
+        $("#save-out").text("Unsaved changes");
+    });
+
     $("#sb").on("click", ".pc", function (passed) {
+        $("#ned").remove();
+        $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
         $.ajax({
             type: "GET",
             url: "/Note/GetNoteDetails",
@@ -153,11 +161,6 @@
         $("#save-out").text("Unsaved changes");
     });
 
-    quill.on('text-change', function () {
-        $("#editor").attr("data-dirty", "true");
-        $("#save-out").text("Unsaved changes");
-    });
-
     $("#save").on("click", function () {
         var nid = $("#selected").attr("class");
         if (nid != null)
@@ -195,4 +198,12 @@
             error: function (response) { }
         });
     }
+
+    $("#note-event").on("click", function () {
+        $.post('/Note/SetEventByID',
+            {
+                ID: $(this).attr("id")
+            }, function () { });
+        window.location.replace("/Calendar/Calendar");
+    });
 });

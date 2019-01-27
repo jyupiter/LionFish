@@ -22,8 +22,15 @@
                 return txt.value;
             }
             $("#ntitle").val("@Model.Requested.Title");
-            var editor = $('#editor').data('quill');
-            editor.setContents($.parseJSON(decodeHtml("@Model.Requested.Content")));
+            $("#editor").remove();
+            $("#ned").append("<div id='editor' data-dirty='false'></div>");
+            var editor = new Quill('#editor', {
+                theme: 'snow'
+            });
+            var rjson = decodeHtml("@Model.Requested.Content");
+            var cjson = rjson.replace(/\n/g, "\\n");
+            editor.setContents(cjson);
+            console.log(editor);
             $.ajax({
                 type: "GET",
                 url: "/Note/GetFolderName",
@@ -150,7 +157,7 @@
                 <div class="stt">
                     <span id="note-folder" style="margin-left:2px;"></span>
                     |
-                    <span id="note-event"></span>
+                    <span id="note-event" style="cursor:pointer;color:navy;"></span>
                 </div>
                 <div id="ned" class="bc">
                     <div id="editor" data-dirty="false"></div>

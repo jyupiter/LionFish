@@ -36,7 +36,7 @@ namespace LionFishWeb.Controllers
 				{
 					foreach (Note notes in note)
 					{
-						notesList.Add(notes.ID, notes.Title);
+						notesList.Add(notes.ID.GetIndirectReference(), notes.Title);
 						Debug.WriteLine(notes.ID);
 					}
 				}
@@ -152,23 +152,51 @@ namespace LionFishWeb.Controllers
 
 		public static List<Note> GetNotes(string EID)
 		{
-			using (var context = new ApplicationDbContext())
-			{
-				using (var dbContextTransaction = context.Database.BeginTransaction())
-				{
-					try
-					{
-						var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
-						return query;
-					}
-					catch (Exception e)
-					{
-						Debug.WriteLine(e);
-					}
-				}
-			}
-			return null;
-		}
+            List<Note> listOfNotes = new List<Note>();
+            SqlParameter ID = new SqlParameter
+            {
+                ParameterName = "@id",
+                Value = EID
+            };
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                SqlCommand command = new SqlCommand();
+
+                command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
+
+                command.Parameters.Add(ID);
+                Debug.WriteLine(command.CommandText);
+                conn.Open();
+                SqlDataReader results = command.ExecuteReader();
+
+                while(results.Read())
+                {
+                    Note note = new Note();
+                   note.ID = results["ID"].ToString();
+                    note.Title = results["Title"].ToString();
+                   
+                    listOfNotes.Add(note);
+                }
+                conn.Close();
+            }
+            return listOfNotes;
+            //using (var context = new ApplicationDbContext())
+            //{
+            //	using (var dbContextTransaction = context.Database.BeginTransaction())
+            //	{
+            //		try
+            //		{
+            //			var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
+            //			return query;
+            //		}
+            //		catch (Exception e)
+            //		{
+            //			Debug.WriteLine(e);
+            //		}
+            //	}
+            //}
+            //return null;
+        }
 
 		public static List<Event> LoadPrivate(string user)
 		{

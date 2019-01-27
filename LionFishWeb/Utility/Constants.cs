@@ -3,6 +3,7 @@ using LionFishWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
@@ -61,7 +62,10 @@ namespace LionFishWeb.Utility
         }
         public static int ZXCVBN(string p)
         {
-            var s = System.IO.File.ReadAllText("D:/Github/LionFish/LionFishWeb/Scripts/zxcvbn.js");
+            string startupPath = HttpRuntime.AppDomainAppPath;
+            Debug.WriteLine(HttpRuntime.AppDomainAppPath);
+
+            var s = System.IO.File.ReadAllText(startupPath + "/Scripts/zxcvbn.js");
             int x = 10;
 
             var engine = new Engine();

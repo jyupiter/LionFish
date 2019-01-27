@@ -9,8 +9,9 @@ namespace LionFishWeb.Utility
 	{
 		public static void Log(string input)
 		{
-			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"D:\Github\LionFish\LionFishWeb\Logs.txt", true))
+            string startupPath = HttpRuntime.AppDomainAppPath;
+            using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(startupPath + "\\Logs.txt", true))
 			{
 				file.WriteLine(input);
 			}

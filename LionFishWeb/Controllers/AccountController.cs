@@ -194,6 +194,9 @@ namespace LionFishWeb.Controllers
                         ParameterName = "@userid",
                         Value = user.Id
                     };
+                    command.Parameters.Add(FID);
+                    command.Parameters.Add(NME);
+                    command.Parameters.Add(UID);
                     CallDB(command);
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";

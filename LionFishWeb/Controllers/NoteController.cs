@@ -257,7 +257,17 @@ namespace LionFishWeb.Controllers
             if (ModelState.IsValid)
             {
                 string uid = User.Identity.GetUserId();
-                Folder f = Load(uid, "")[0];
+                List<Folder> fl = Load(uid, "");
+                Folder f = new Folder();
+                foreach(Folder x in fl)
+                {
+                    if(x.Name == model.Name && x.UserID.GetDirectReference() == uid)
+                    {
+                        Debug.WriteLine(x.ID);
+                        f = x;
+                        break;
+                    }
+                }
                 Note n = new Note();
                 SqlCommand command = new SqlCommand(
                     "INSERT INTO Note (ID, Title, Content, FolderID, UserID) " +
@@ -280,7 +290,7 @@ namespace LionFishWeb.Controllers
                 SqlParameter FID = new SqlParameter
                 {
                     ParameterName = "@folderid",
-                    Value = f.ID
+                    Value = f.ID.GetDirectReference()
                 };
                 SqlParameter UID = new SqlParameter
                 {

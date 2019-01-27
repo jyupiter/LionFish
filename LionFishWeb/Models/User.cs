@@ -20,6 +20,7 @@ namespace LionFishWeb.Models
         public User()
         {
             UserName = "";
+            ProfileImg = "https://profiles.utdallas.edu/img/default.png";
             Notes = new List<string>();
             Groups = new List<string>();
             Friends = new List<string>();

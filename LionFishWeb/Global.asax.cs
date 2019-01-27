@@ -36,9 +36,8 @@ namespace LionFishWeb
 					function back() { history.go(-1); } //--></script></head>
 					<body style='font-family: Arial, Sans-serif;'>
 					<h1>Oops!</h1>
-					<p>I'm sorry, but HTML entry is not allowed on that page.</p>
-					<p>Please make sure that your entries do not contain 
-					any angle brackets like &lt; or &gt;.</p>
+					<p>When you try to XSS our site</p>
+					<img src='https://i.imgur.com/RUdPyQP.jpg'></img>
 					<p><a href='javascript:back()'>Go back</a></p>
 					</body></html>
 					");

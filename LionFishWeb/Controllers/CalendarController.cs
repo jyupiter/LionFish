@@ -23,11 +23,14 @@ namespace LionFishWeb.Controllers
 
 		public ActionResult Calendar()
 		{
+			Logging.Log("---------- Calendar() called, Starting calendar app! ----------");
 			List<Event> listOfEvents = new List<Event>();
 			listOfEvents = LoadPrivate(User.Identity.GetUserId());
+
+			Logging.Log("~~~~~~~~~~ Loading private events ~~~~~~~~~~");
 			foreach (Event events in listOfEvents)
 			{
-
+				DebugEvents(events);
 				Dictionary<string, string> notesList = new Dictionary<string, string>();
 				List<Note> note = new List<Note>();
 				note = GetNotes(events.ID);
@@ -37,24 +40,22 @@ namespace LionFishWeb.Controllers
 					foreach (Note notes in note)
 					{
 						notesList.Add(notes.ID.GetIndirectReference(), notes.Title);
-						Debug.WriteLine(notes.ID);
 					}
 				}
 				catch (Exception e)
 				{
 					Debug.WriteLine(e);
-					Debug.WriteLine("No notes found!");
 				}
 				events.Notes = JsonConvert.SerializeObject(notesList);
 			}
 			ViewData["Events"] = listOfEvents;
 
+			Logging.Log("~~~~~~~~~~ Loading public events ~~~~~~~~~~");
 			listOfEvents = LoadPublic(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
 			{
-				Debug.WriteLine(events.ID);
+				DebugEvents(events);
 				events.ID = events.ID.GetIndirectReference();
-				Debug.WriteLine(events.ID);
 			}
 
 			ViewData["EventsPublic"] = listOfEvents;
@@ -68,7 +69,6 @@ namespace LionFishWeb.Controllers
 				ID = EventID,
 				DateT = tempDT
 			};
-			Debug.WriteLine(EventID);
 			return View("Calendar", CVM);
 		}
 
@@ -76,6 +76,7 @@ namespace LionFishWeb.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Search([Bind(Include = "Search")] string search)
 		{
+			Logging.Log("User search: " + search);
 			SearchString = search;
 			return RedirectToAction("Calendar");
 		}
@@ -92,7 +93,6 @@ namespace LionFishWeb.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind(Include = "Title, Color, Description, AllDay, Start, End")] Event events)
 		{
-			Debug.WriteLine(User.Identity.GetUserId());
 			Save(events, "create", User.Identity.GetUserId());
 			return RedirectToAction("Calendar");
 		}
@@ -105,6 +105,8 @@ namespace LionFishWeb.Controllers
 			return RedirectToAction("Calendar");
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Note([Bind(Include = "ID, Notes")] Event events)
 		{
 			SqlParameter ENotes = new SqlParameter
@@ -126,6 +128,8 @@ namespace LionFishWeb.Controllers
 			return RedirectToAction("Calendar");
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public ActionResult Publish([Bind(Include = "Title, Color, Description, AllDay, Start, End")] Event events)
 		{
 			Save(events, "publish", User.Identity.GetUserId());
@@ -136,8 +140,6 @@ namespace LionFishWeb.Controllers
 		[AllowAnonymous]
 		public void SetEventByID(SetEventViewModel model)
 		{
-			Debug.WriteLine(model.ID);
-			Debug.WriteLine(model.ID.GetDirectReference());
 			EventID = model.ID.GetDirectReference();
 		}
 
@@ -154,6 +156,7 @@ namespace LionFishWeb.Controllers
 
 		public static List<Note> GetNotes(string EID)
 		{
+			Logging.Log("~~~~~~~~~~ Getting Notes ~~~~~~~~~~");
 			List<Note> listOfNotes = new List<Note>();
 			SqlParameter ID = new SqlParameter
 			{
@@ -167,7 +170,6 @@ namespace LionFishWeb.Controllers
 				command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
 
 				command.Parameters.Add(ID);
-				Debug.WriteLine(command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
 
@@ -176,28 +178,13 @@ namespace LionFishWeb.Controllers
 					Note note = new Note();
 					note.ID = results["ID"].ToString();
 					note.Title = results["Title"].ToString();
-
+					Logging.Log(note.Title);
+					Logging.Log(note.ID);
 					listOfNotes.Add(note);
 				}
 				conn.Close();
 			}
 			return listOfNotes;
-			//using (var context = new ApplicationDbContext())
-			//{
-			//	using (var dbContextTransaction = context.Database.BeginTransaction())
-			//	{
-			//		try
-			//		{
-			//			var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
-			//			return query;
-			//		}
-			//		catch (Exception e)
-			//		{
-			//			Debug.WriteLine(e);
-			//		}
-			//	}
-			//}
-			//return null;
 		}
 
 		public static List<Event> LoadPrivate(string user)
@@ -213,9 +200,8 @@ namespace LionFishWeb.Controllers
 				SqlCommand command = new SqlCommand();
 
 				command = new SqlCommand("SELECT * FROM Event WHERE UserID = @user", conn);
-
+				Logging.Log(">>>>> SQL command: " + command.CommandText);
 				command.Parameters.Add(UID);
-				Debug.WriteLine(command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
 
@@ -258,8 +244,7 @@ namespace LionFishWeb.Controllers
 				{
 					command = new SqlCommand("SELECT * FROM Event", conn);
 				}
-
-				Debug.WriteLine(command.CommandText);
+				Logging.Log(">>>>> SQL command: " + command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
 
@@ -299,8 +284,7 @@ namespace LionFishWeb.Controllers
 				SqlCommand command = new SqlCommand();
 				command = new SqlCommand("SELECT * FROM Event WHERE ID = @UID", conn);
 				command.Parameters.Add(uid);
-
-				Debug.WriteLine(command.CommandText);
+				Logging.Log(">>>>> SQL command: " + command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
 				Event events = new Event();
@@ -328,16 +312,6 @@ namespace LionFishWeb.Controllers
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
 
-			Debug.WriteLine("\n --------------------- \n");
-			Debug.WriteLine("id: " + events.ID);
-			Debug.WriteLine("User: " + events.UserID);
-			Debug.WriteLine("title: " + events.Title);
-			Debug.WriteLine("desc: " + events.Description);
-			Debug.WriteLine("start: " + start);
-			Debug.WriteLine("End: " + end);
-			Debug.WriteLine("Notes: " + events.Notes);
-			Debug.WriteLine("\n --------------------- \n");
-
 			Logging.Log("\n --------------------- \n");
 			Logging.Log("id: " + events.ID);
 			Logging.Log("User: " + events.UserID);
@@ -353,8 +327,6 @@ namespace LionFishWeb.Controllers
 		{
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
-			DebugEvents(events);
-			Debug.WriteLine(user2);
 			SqlParameter user = new SqlParameter
 			{
 				ParameterName = "@User",
@@ -420,11 +392,11 @@ namespace LionFishWeb.Controllers
 				cmd.Parameters.Add(EEnd);
 				cmd.Parameters.Add(EColor);
 				cmd.Parameters.Add(user);
+				Logging.Log("Creating event!");
 				CallDB(cmd);
 			}
 			else if (mode == "update")
 			{
-				DebugEvents(events);
 				SqlParameter DEID = new SqlParameter
 				{
 					ParameterName = "@DID",
@@ -441,6 +413,7 @@ namespace LionFishWeb.Controllers
 				cmd.Parameters.Add(EColor);
 				cmd.Parameters.Add(user);
 				cmd.Parameters.Add(DEID);
+				Logging.Log("Updating event!");
 				CallDB(cmd);
 			}
 			else if (mode == "delete")
@@ -453,7 +426,7 @@ namespace LionFishWeb.Controllers
 				SqlCommand cmd = new SqlCommand(
 				"DELETE FROM Event WHERE ID =  @DID ");
 				cmd.Parameters.Add(DEID);
-
+				Logging.Log("Deleting event!");
 				CallDB(cmd);
 			}
 			else if (mode == "publish")
@@ -468,6 +441,7 @@ namespace LionFishWeb.Controllers
 				cmd.Parameters.Add(EEnd);
 				cmd.Parameters.Add(EColor);
 				cmd.Parameters.Add(EUserID);
+				Logging.Log("Publishing event!");
 				CallDB(cmd);
 			}
 			else
@@ -479,7 +453,7 @@ namespace LionFishWeb.Controllers
 		{
 			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
-				Debug.WriteLine(command.CommandText);
+				Logging.Log(">>>>> SQL command: " + command.CommandText);
 				conn.Open();
 				command.Connection = conn;
 				command.ExecuteNonQuery();

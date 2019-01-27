@@ -18,20 +18,6 @@ namespace LionFishWeb
     public class MyHub : Hub
     {
 
-        //input user
-        //DB here thing
-        static string[] thing1 = { "hello", "hello1", "hello2", "hello3" };
-        static string[] thing2 = { "hella", "hella1", "hella2", "hella3" };
-        static string[] thing3 = { "hellb", "hellb1", "hellb2", "hellb3" };
-        //     static Boolean TimerEnable = true;
-        //input from DB here and thing
-        //     ArrayList messageArray = new ArrayList();
-        Queue<string> msgpgroup = new Queue<string>(200);
-        //MessageGroup room1 = new MessageGroup("room1",thing1);
-        //MessageGroup room2 = new MessageGroup("room2", thing2);
-        //MessageGroup room3 = new MessageGroup("room3",thing3);
-        //user john = new user("john","room1");
-
         public static readonly Regex forbiddenTags = new Regex("^(script|object|embed|link|style|form|input)$");
         public static readonly Regex allowedTags = new Regex("^(b|p|i|s|a|img|table|thead|tbody|tfoot|tr|th|td|dd|dl|dt|em|h1|h2|h3|h4|h5|h6|li|ul|ol|span|div|strike|strong|" +
                 "sub|sup|pre|del|code|blockquote|strike|kbd|br|hr|area|map|object|embed|param|link|form|small|big)$");
@@ -603,55 +589,7 @@ namespace LionFishWeb
         }
         public async Task Hello()
         {
-            //goes through group| mute cell, 
-            //query it
-            //turn json array into normal array
-            //if name is not there, continue, if it is, break or whatever
-            using (var context = new ApplicationDbContext())
-
-            {
-                // Stack of 50 pre-initialized with message object type
-                //query for current session username and user whatever
-                //var query = context.Messages.Where(s => s.ID == 123).FirstOrDefault<Message>();
-
-                //attach msg and uname to message obj
-                Debug.Write("query time");
-
-                //var query = context.Groups.SqlQuery("SELECT messageGrp, ");
-                //Debug.Write(query);
-                ////query for message for pertaining group (PM counted as user self group like linux or whatever)
-                //var query1 = context.Messages.Where(s => s.ID == 123).FirstOrDefault<Message>();
-
-                ////fill stack with queried message array or whatever
-
-                //remove last msg and append new msg obj
-                //return new stack into json or whatever into db
-
-                using (var dbContextTransaction = context.Database.BeginTransaction())
-                {
-                    //try
-                    //{
-                    //    Debug.Write("INSERT INTO Message (message, Users_Id) VALUES ('HEY YOU FUCKHEAD HAWIEHAOWEHOAWE','John')");
-                    //    context.Database.ExecuteSqlCommand(@"INSERT INTO Message (message, Users_Id) VALUES ('HEY YOU FUCKHEAD HAWIEHAOWEHOAWE',222)");
-                    //    context.SaveChanges();
-                    //    dbContextTransaction.Commit();
-
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    dbContextTransaction.Rollback();
-                    //    Debug.Write(e);
-                    //}
-
-                }
-
-                DateTime hw = DateTime.Now;
-                // SanitizeResult sani = sanitizer(message);
-                //string encoded = System.Security.SecurityElement.Escape(message);
-                //Message newMessage = new Message(123, encoded, uname);
-                System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
-             new System.Web.Script.Serialization.JavaScriptSerializer();
-                //   string sJSON = oSerializer.Serialize();
+         
                 await Clients.All.hello();
             }
 

@@ -216,6 +216,219 @@ namespace LionFishWeb.Controllers
             }
         }
 
+
+        public ActionResult Chat()
+        {
+            List<string> temp = new List<string>();
+            List<Group> query2 = new List<Group>();
+            using (var context = new ApplicationDbContext())
+            {
+                using (var ctxtransaction = context.Database.BeginTransaction())
+                {
+                    string uname = User.Identity.GetUserId();
+                    //   var userquery = context.Groups.SqlQuery("SELECT * FROM GroupUser").ToList();
+                    //       Debug.Write(userquery);
+
+                    //var query = context.Messages.Select(p => new { p.ID, p.messages });
+
+                    query2 = context.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%" + User.Identity.GetUserId() + "%')").ToList();
+                    for (int i = 0; i < query2.Count; i++)
+                    {
+                        temp.Add(query2[i].Group_Id);
+                    }
+                    Debug.Write(query2);
+                    //  var query = context.Users.SqlQuery("SELECT Group_Id FROM AspNetUsers").To
+                    //  Debug.Write(query);
+                }
+            }
+            return View(query2); ;
+        }
+
+        public ActionResult feedback()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        // when sending message
+
+        public void sendMessage(string group, string messageIn)
+        {
+            string currentUser = User.Identity.GetUserId();
+            using (var ctx = new ApplicationDbContext())
+
+            {
+                string esMessage = System.Security.SecurityElement.Escape(messageIn);
+                List<Group> gp = new List<Group>();
+                using (var ctxtrans = ctx.Database.BeginTransaction())
+                {
+                    gp = ctx.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id ='" + group + "'").ToList();
+                    string msgjs = gp[0].GroupMessage;
+                    List<Message> m = new List<Message>();
+
+
+                    m = JsonConvert.DeserializeObject<List<Message>>(msgjs);
+                    Message tmp = new Message();
+                    tmp.message = esMessage;
+                    tmp.ID = Convert.ToInt32(group) + 100;
+                    tmp.User_Id = currentUser;
+                    tmp.UserName = ctx.Users.Find(currentUser).UserName;
+                    m.Add(tmp);
+                    string after = JsonConvert.SerializeObject(m);
+                    string sql = "UPDATE \"Group\" SET GroupMessage = @after WHERE Group_Id = @group";
+                    SqlCommand command = new SqlCommand(sql);
+                    command.Parameters.Add(new SqlParameter("@group", System.Data.SqlDbType.NVarChar));
+                    command.Parameters.Add(new SqlParameter("@after", System.Data.SqlDbType.NVarChar));
+                    command.Parameters["@group"].Value = group;
+                    command.Parameters["@after"].Value = after;
+                    // ctx.Database.ExecuteSqlCommand("UPDATE \"Group\" SET GroupMessage = '" + after + "' WHERE Group_Id = '" + group + "'");
+                    CallDB(command);
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+            // return Index(Json(, JsonRequestBehavior.AllowGet));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult updateDB()
+        {
+            List<Group> a = new List<Group>();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                string uname = User.Identity.GetUserId();
+                var query3 = ctx.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%'" + User.Identity.GetUserId() + "'").ToList();
+                string GroupID = query3[0].Group_Id;
+                a = ctx.Groups.SqlQuery("SELECT * \"Group\" WHERE Group_Id = '" + GroupID + "'").ToList();
+                List<Message> m = new List<Message>();
+
+                string ms = a[0].GroupMessage;
+                m = JsonConvert.DeserializeObject<List<Message>>(a[0].GroupMessage);
+                return Json(ms, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //after clicking on the gorup icons
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewGroups(string selected)
+        {
+
+            List<Group> query = new List<Group>();
+            using (var ctx = new ApplicationDbContext())
+
+            {
+                //parameterinsing
+                string sql = "SELECT * FROM \"Group\"  WHERE Group_Id = @selected_group";
+                using (var ctxtrans = ctx.Database.BeginTransaction())
+                {
+                    string user = User.Identity.GetUserId();
+                    SqlCommand command = new SqlCommand(sql);
+                    command.Parameters.Add(new SqlParameter("@selected_group", System.Data.SqlDbType.NVarChar));
+                    command.Parameters["@selected_group"].Value = selected;
+                    //end parameterinsing
+                    string a = selected;
+                    Debug.Write(selected);
+                    Debug.Write("AHDIADIOAHOIDHOAISHDSA");
+                    query = ctx.Groups.SqlQuery(sql).ToList();
+                    //   var q = ctx.Groups.Where(s => s.Group_Id == id).ToString();
+                    Debug.Write(query);
+                    string JSmessage = query[0].GroupMessage;
+                    //string jsonmessage = query[0].GroupMessage;
+                    return Json(JSmessage, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+
+
+        }
+        // not part of code
+        public ActionResult ShowGroup(ViewGroupsObj fuck)
+        {
+
+            //for displaying purposes only
+            List<Message> msg = new List<Message>();
+            Message a = new Message(1, "Anytime", "2323", "Tom");
+            Message b = new Message(2, "thx :smile:", "2323", "Tom");
+            Message c = new Message(3, "So as your multiplier goes up, the scaffold gets better and better", "2323", "Tom");
+            Message d = new Message(4, "VS only boosts one damage number. Shwaak hits like 10x200. Scaffold hits 4x200 1x400", "2323", "Tom");
+            Message e = new Message(5, "If that makes any sense", "2323", "Tom");
+            Message f = new Message(6, "Shwakk will have like more 200 hits along side it though", "2323", "Tom");
+            Message g = new Message(7, "But a x4 on a 800 damage on Scaffold", "2323", "Tom");
+            Message h = new Message(8, "So like you'll get x4 on a 200 damage on shwaak.", "2323", "Tom");
+            Message i = new Message(9, "Shwaak only has a bunch of little hits", "2323", "Tom");
+            Message j = new Message(10, "Anda a bunch of little hits that don't", "2323", "Tom");
+            Message k = new Message(11, "The secondary has one big hit that gets multiplied", "2323", "Tom");
+            Message l = new Message(12, "so secondary if VS. im guessing becuz of higher base dmg, when VS gets to a curtain number, it automaticlly out damages shwaak multi?", "2323", "Tom");
+            Message m = new Message(13, "Also if you are shooting through a Volt Shield. Scaffold is better.", "2323", "Tom");
+            Message n = new Message(14, "Shwakk has alot of punch through, so aimnat the crouch or chest and you get alot if hits in with one blast", "2323", "Tom");
+            msg.Add(a);
+            msg.Add(b);
+            msg.Add(c);
+            msg.Add(d);
+            msg.Add(e);
+            msg.Add(f);
+            msg.Add(g);
+            msg.Add(h);
+            msg.Add(i);
+            msg.Add(j);
+            msg.Add(k);
+            msg.Add(l);
+            msg.Add(m);
+            msg.Add(n);
+            var json = JsonConvert.SerializeObject(msg);
+            // json.Replace("'","\'");
+            Debug.Write(json);
+            using (var ctx = new ApplicationDbContext())
+            {
+                using (var ctxtrans = ctx.Database.BeginTransaction())
+                {
+                    ctx.Database.ExecuteSqlCommand("UPDATE \"Group\" SET GroupMessage = '" + json.Replace("'", "''") + "' WHERE Group_Id = 100");
+                    ctxtrans.Commit();
+                }
+
+            }
+
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult MessageGroup(string GroupSelected)
+        {
+
+
+            // List<Group> que;
+            using (var ctx = new ApplicationDbContext())
+            {
+                using (var ctxtrans = ctx.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = ctx.Groups.SqlQuery("SELECT GroupMessage FROM \"Group\" WHERE Group_Id = '" + GroupSelected + "'");
+                    }
+                    catch (Exception)
+                    {
+                        ctxtrans.Rollback();
+                    }
+                }
+
+            }
+            return View("~/Views/App/Chat.cshtml");
+        }
         public static void CallDB(SqlCommand command)
         {
             using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))

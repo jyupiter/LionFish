@@ -278,6 +278,7 @@
     <Content Include="Scripts\Note.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\SignalR.js" />
     <Content Include="Scripts\tippy.js" />
     <Content Include="Scripts\zxcvbn.js" />
     <Content Include="Web.config" />
@@ -323,6 +324,7 @@
     <Content Include="Views\Note\Index.cshtml" />
     <Content Include="Views\Calendar\Calendar.cshtml" />
     <Content Include="Views\App\Feedback.cshtml" />
+    <Content Include="Views\App\chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,33 +8,33 @@
     @Html.Partial("_NavApp", Model.ProfileImg);
 }
 
+<script>
+    $(function () {
+        function clock() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            if (s < 10) {
+                s = "0" + s;
+            }
+            $("h1").text(h + " : " + m + " : " + s);
+            setTimeout(function () { clock() }, 500);
+        }
+
+        clock();
+    });
+</script>
 <main>
-    <aside id="as" class="split">
-        <div class="db-v-split"></div>
-        <div class="db-v-split"></div>
-        <div class="db-v-split"></div>
-        <div class="db-v-split"></div>
-        <div class="db-v-split"></div>
-        <div class="db-v-split"></div>
-    </aside>
-    <section id="ss" class="split">
-        <div class="db-v-split">
-            <div class="db-h-split">
-                <div class="h-header">hmm</div>
-                <div class="h-body">aa</div>
-            </div>
-            <div class="db-h-split">
-                <div class="h-header">hmmm</div>
-                <div class="h-body">a</div>
-            </div>
-            <div class="db-h-split">
-                <div class="h-header">hmmm</div>
-                <div class="h-body">a</div>
-            </div>
-            <div class="db-h-split">
-                <div class="h-header">hm</div>
-                <div class="h-body">aaa</div>
-            </div>
+    <div id="imperfection">
+        <h1>Hello, </h1>
+        <h2>Let's get started.</h2>
+        <div>
+            @Html.ActionLink("Calendar", "Calendar", "Calendar", null, new { @class = "button button-blue" })
+            @Html.ActionLink("Notes", "Index", "Note", null, new { @class = "button button-blue" })
+            @Html.ActionLink("Groups", "Dashboard", "App", null, new { @class = "button button-blue" })
+            <hr>
+            @Html.ActionLink("Have feedback?", "Feedback", "App", null, new { @class = "navdroplink" })
         </div>
-    </section>
+    </div>
 </main>

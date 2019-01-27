@@ -216,7 +216,7 @@ namespace LionFishWeb.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            return View(result.Succeeded ? "Login" : "Error");
         }
         
         // GET: /Account/ForgotPassword

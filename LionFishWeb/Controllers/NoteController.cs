@@ -369,6 +369,7 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(NID);
                 command.Parameters.Add(TTL);
                 command.Parameters.Add(CTT);
+                Debug.WriteLine(model.ID.GetDirectReference() + model.Title + model.Content);
                 CallDB(command);
             }
         }

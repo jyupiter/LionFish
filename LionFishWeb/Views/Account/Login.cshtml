@@ -44,13 +44,6 @@
                             }
                         </script>
                         <div class="g-recaptcha" data-callback="enableBtn" data-sitekey="6LcPQ30UAAAAAFRDS6_hR4jehjr1-PliyM1R5HLG"></div>
-                        <div class="checkbox">
-                            <label id="rememberme">
-                                Remember me
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
                         <input type="submit" id="submit-log" class="button-gray" value="Log in" disabled>
                         @Html.ActionLink("Forgot password", "ForgotPassword", new { id = "", @class = "" })
                     </div>

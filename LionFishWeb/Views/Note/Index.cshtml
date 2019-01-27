@@ -22,9 +22,12 @@
                 return txt.value;
             }
             $("#ntitle").val("@Model.Requested.Title");
+            $("#selected").removeClass();
+            $("#selected").addClass("@Model.Requested.ID");
             $("#ned").remove();
             $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
             var editor = new Quill('#editor', {
+                placeholder: 'Type anything...',
                 theme: 'snow'
             });
             var rjson = decodeHtml("@Model.Requested.Content");
@@ -149,7 +152,7 @@
             </div>
             <div id="swap2">
                 <div class="tt">
-                    <input id="selected" type="hidden" class="empty" />
+                    <input id="selected" type="hidden" class="empty" data-content="" />
                     <input id="ntitle" type="text" placeholder="Title" />
                     <a id="save" class="button button-blue" style="float:right;margin:5px 0 0 0;">Save</a>
                     <span id="save-out">Saved</span>
@@ -157,7 +160,7 @@
                 <div class="stt">
                     <span id="note-folder" style="margin-left:2px;"></span>
                     |
-                    <span id="note-event" style="cursor:pointer;color:navy;"></span>
+                    <span id="note-event" style="cursor:pointer;color:navy;">No event linked</span>
                 </div>
                 <div id="ned" class="bc">
                     <div id="editor" data-dirty="false"></div>

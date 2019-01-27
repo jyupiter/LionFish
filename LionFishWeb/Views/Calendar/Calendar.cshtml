@@ -142,7 +142,7 @@
 						for (var key in eventNotes) {
 							if (eventNotes.hasOwnProperty(key)) {
 								console.log(key + " -> " + eventNotes[key]);
-								var link = "<button class=\"notesLink\" id=\"" + key + "\">" + eventNotes[key] + "</button>";
+								var link = "<span class=\"notesLink\" id=\"" + key + "\">" + eventNotes[key] + "</span>";
 								console.log(link);
 								$("#popuptext").append(link);
 							}

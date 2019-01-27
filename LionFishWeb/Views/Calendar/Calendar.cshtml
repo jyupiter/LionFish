@@ -37,7 +37,7 @@
 
 				$(document).on("click", ".notesLink", function () {
 					var noteID = $(this).attr("id");
-					
+
 					//noteID = JSON.stringify(noteID);
 					console.log("requiesting note " + noteID);
                     $.post('/Note/SetCurrentNote', { Id: noteID }, function () { });
@@ -78,6 +78,12 @@
 					$('#chEnd').val(moment(eventObj.end).format("YYYY-MM-DD"));
 					$('#editor').css('display', 'inline');
 					$("#editor").css("position", "absolute");
+				});
+
+				$("#addNote").click(function () {
+
+					$('#notesLinker').css('display', 'inline');
+					$('#notesLinker').css("position", "absolute");
 				});
 				/* initialize the external events
 				-----------------------------------------------------------------*/
@@ -139,18 +145,28 @@
 						$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
 
 						var eventNotes = JSON.parse(calEvent.notes);
-						for (var key in eventNotes) {
-							if (eventNotes.hasOwnProperty(key)) {
-								console.log(key + " -> " + eventNotes[key]);
-								var link = "<span style='cursor:pointer;' class='notesLink' id='" + key + "'>" + eventNotes[key] + "</span>";
-								console.log(link);
-								$("#popuptext").append(link);
-							}
-							
-						}
-						console.log(calEvent.notes);
 						console.log(eventNotes);
-						
+						for (var key in eventNotes) {
+							
+							if (eventNotes.hasOwnProperty(key)) {
+								var unJSON = JSON.parse(key)
+								for (var key2 in unJSON) {
+									console.log("key :" + key);
+									console.log("eventNotes[key] : " + eventNotes[key])
+									console.log("key2 : " + key2);
+									console.log("unJSON[key2] : " + unJSON[key2]);
+									console.log("calEvent.id : " + calEvent.id);
+									if (calEvent.id == unJSON[key2]) {
+										var link = "<span style='cursor:pointer;' class='notesLink' id='" + key2 + "'>" + eventNotes[key] + "</span>";
+										$("#popuptext").append(link);
+										//break;
+									}
+								}
+								
+							}
+
+						}
+
 						//$('#popuptext').append(calEvent.id).attr(id="id");
 						//console.log(calEvent.id);
 						$('#popup').css('left', event.pageX - 240);      // <<< use pageX and pageY
@@ -236,10 +252,10 @@
 				};
 				var loadPublicEvents = function () {
 					var listOfEvents = @Html.Raw(Json.Encode(ViewData["EventsPublic"]));
-					
+
 					for (var i = 0; i < listOfEvents.length; i++) {
-						
-						
+
+
 
 						var html = '<div style="z-index:99999"class="fc-event" id=' + listOfEvents[i].ID + 'IMPORTED>' + listOfEvents[i].Title + '</div>' // '<li>' + listOfEvents[i].Title + '</li>' +
 						//'<li>' + moment(start, "YYYY-MM-DD HH:mm").add(8, 'hours') + '</li>' +
@@ -288,7 +304,7 @@
 				if('@Model.ID' != null) {
 					$('#calendar').fullCalendar('gotoDate', '@Model.DateT');
 				}
-				
+
 			});
 		</script>
 	}
@@ -308,14 +324,14 @@
 
 						@Html.Editor("Search", new { htmlAttributes = new { id = "Search" } })
 
-						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;" >Search Event</button>
-						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:orange;" >Clear Search</button>
+						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;">Search Event</button>
+						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:orange;">Clear Search</button>
 					}
 					<div id='external-events-listing'>
 						<h4>Imported Events</h4>
 
 					</div>
-					<p @*style=" display:none"*@>
+					<p style=" display:none">
 						<input type='checkbox' id='drop-remove' checked='checked' />
 
 					</p>
@@ -330,23 +346,51 @@
 				<div class="bc">
 					<div id='wrap'>
 						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
-                            <div id="popuptext">
-                               
+							<div id="popuptext">
 
 
 
 
-                            </div>
+
+							</div>
+							<button id="addNote">Link Notes</button>
 							<button id="modEvent">Modify event</button>
+
+							<div style="display:none;padding:30px;height:auto;background-color: lightblue;  z-index:9999;" id="notesLinker">
+								@using (Html.BeginForm())
+								{
+									@Html.AntiForgeryToken()
+									<p>
+										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" } })
+									</p>
+									<p>Notes</p>
+
+
+									List<SelectListItem> listItems = new List<SelectListItem>();
+									foreach (KeyValuePair<string, string> note in @Model.Notes)
+									{
+										listItems.Add(new SelectListItem
+										{
+											Text = note.Value,
+											Value = note.Key
+										});
+									}
+									
+									@Html.DropDownList("Notes", new SelectList(listItems, "Value", "Text"), new { htmlAttributes = new { id = "Notes" } })
+									<button formaction=@Url.Action("Note") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Link</button>
+								}
+								<button style="padding:5px;background-color:orange;" id="closeLinker">Close</button>
+							</div>
+
 							<div style="display:none;padding:10px;height:auto;background-color: lightblue;  z-index:9999;" id="editor">
 								@using (Html.BeginForm())
 								{
 									@Html.AntiForgeryToken()
 									<p>
-										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" }  })
+										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" } })
 									</p>
 									<p>Title</p>
-									@Html.Editor("Title", new { htmlAttributes = new { id = "chName" , required = "required" } })
+									@Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
 									<p>Color</p>
 									@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 									<p>Description</p>
@@ -357,9 +401,7 @@
 									@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
 									<p>End date</p>
 									@Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
-									<p>Make this event public?</p>
-									@Html.CheckBox("Public", false)
-									<button formaction=@Url.Action("Publish") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Publish this event?</button>
+									<button formaction=@Url.Action("Publish") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Publish this event</button>
 									<button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
 									<button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
 								}
@@ -373,7 +415,7 @@
 							{
 								@Html.AntiForgeryToken()
 								<p>Title</p>
-								@Html.Editor("Title", new { htmlAttributes = new { id = "chName" ,required = "required" } })
+								@Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
 								<p>Color</p>
 								@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
 								<p>Description</p>

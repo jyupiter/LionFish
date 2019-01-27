@@ -26,20 +26,27 @@ namespace LionFishWeb.Controllers
 			Logging.Log("---------- Calendar() called, Starting calendar app! ----------");
 			List<Event> listOfEvents = new List<Event>();
 			listOfEvents = LoadPrivate(User.Identity.GetUserId());
-
+			Dictionary<string, string> notesList = new Dictionary<string, string>();
+			List<Note> note = new List<Note>();
 			Logging.Log("~~~~~~~~~~ Loading private events ~~~~~~~~~~");
+
+
 			foreach (Event events in listOfEvents)
 			{
 				DebugEvents(events);
-				Dictionary<string, string> notesList = new Dictionary<string, string>();
-				List<Note> note = new List<Note>();
+				
 				note = GetNotes(events.ID);
 				events.ID = events.ID.GetIndirectReference();
 				try
 				{
 					foreach (Note notes in note)
 					{
-						notesList.Add(notes.ID.GetIndirectReference(), notes.Title);
+						Debug.WriteLine(notes.ID.GetIndirectReference());
+						Debug.WriteLine("notes.EventID : " + notes.EventID.GetIndirectReference());
+						Debug.WriteLine("events.ID : " + events.ID);
+						Dictionary<string, string> ary = new Dictionary<string, string>();
+						ary.Add(notes.ID.GetIndirectReference(), notes.EventID.GetIndirectReference());
+						notesList.Add(JsonConvert.SerializeObject(ary), notes.Title);
 					}
 				}
 				catch (Exception e)
@@ -49,7 +56,7 @@ namespace LionFishWeb.Controllers
 				events.Notes = JsonConvert.SerializeObject(notesList);
 			}
 			ViewData["Events"] = listOfEvents;
-
+			notesList = new Dictionary<string, string>();
 			Logging.Log("~~~~~~~~~~ Loading public events ~~~~~~~~~~");
 			listOfEvents = LoadPublic(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
@@ -64,10 +71,27 @@ namespace LionFishWeb.Controllers
 			{
 				tempDT = GetEventDate(EventID).Start;
 			}
+
+			note = GetNotes("");
+			try
+			{
+				foreach (Note notes in note)
+				{
+					Debug.WriteLine(notes.ID);
+					notesList.Add(notes.ID.GetIndirectReference(), notes.Title);
+					
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e);
+			}
+
 			CalendarViewModel CVM = new CalendarViewModel
 			{
 				ID = EventID,
-				DateT = tempDT
+				DateT = tempDT,
+				Notes = notesList
 			};
 			return View("Calendar", CVM);
 		}
@@ -112,16 +136,17 @@ namespace LionFishWeb.Controllers
 			SqlParameter ENotes = new SqlParameter
 			{
 				ParameterName = "@Notes",
-				Value = events.Notes
+				Value = events.Notes.GetDirectReference()
 			};
-
+			Debug.WriteLine("Notes : " + events.Notes.GetDirectReference());
+			Debug.WriteLine("ID : " + events.ID.GetDirectReference());
 			SqlParameter DEID = new SqlParameter
 			{
 				ParameterName = "@DID",
-				Value = events.Notes
+				Value = events.ID.GetDirectReference()
 			};
 
-			SqlCommand cmd = new SqlCommand("UPDATE Event SET Notes = @Notes WHERE ID = @DID");
+			SqlCommand cmd = new SqlCommand("UPDATE Note SET EventID = @DID WHERE ID = @Notes");
 			cmd.Parameters.Add(ENotes);
 			cmd.Parameters.Add(DEID);
 			CallDB(cmd);
@@ -158,18 +183,27 @@ namespace LionFishWeb.Controllers
 		{
 			Logging.Log("~~~~~~~~~~ Getting Notes ~~~~~~~~~~");
 			List<Note> listOfNotes = new List<Note>();
-			SqlParameter ID = new SqlParameter
-			{
-				ParameterName = "@id",
-				Value = EID
-			};
+			
 			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				SqlCommand command = new SqlCommand();
 
-				command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
+				if (EID != "")
+				{
+					SqlParameter ID = new SqlParameter
+					{
+						ParameterName = "@id",
+						Value = EID
+					};
+					command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
 
-				command.Parameters.Add(ID);
+					command.Parameters.Add(ID);
+				}
+				else
+				{
+					command = new SqlCommand("SELECT * FROM Note", conn);
+				}
+				
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
 
@@ -177,6 +211,7 @@ namespace LionFishWeb.Controllers
 				{
 					Note note = new Note();
 					note.ID = results["ID"].ToString();
+					note.EventID = results["EventID"].ToString();
 					note.Title = results["Title"].ToString();
 					Logging.Log(note.Title);
 					Logging.Log(note.ID);
@@ -186,6 +221,7 @@ namespace LionFishWeb.Controllers
 			}
 			return listOfNotes;
 		}
+
 
 		public static List<Event> LoadPrivate(string user)
 		{

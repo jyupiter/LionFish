@@ -229,7 +229,6 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Log.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteViewModels.cs" />

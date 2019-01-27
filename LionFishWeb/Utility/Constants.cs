@@ -3,6 +3,7 @@ using LionFishWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
@@ -15,6 +16,8 @@ namespace LionFishWeb.Utility
         public static string Conn => ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public const string captchaSecret = "6LcPQ30UAAAAABFqqSAazpaMGWObvP6lCuSZggbR";
 
+        // DEPRECATED
+        /*
         private static readonly int SaltLengthLimit = 16;
         private static byte[] GetSalt()
         {
@@ -60,11 +63,11 @@ namespace LionFishWeb.Utility
                 return false;
             }
         }
+        */
+
         public static int ZXCVBN(string p)
         {
             string startupPath = HttpRuntime.AppDomainAppPath;
-            Debug.WriteLine(HttpRuntime.AppDomainAppPath);
-
             var s = System.IO.File.ReadAllText(startupPath + "/Scripts/zxcvbn.js");
             int x = 10;
 
@@ -82,6 +85,45 @@ namespace LionFishWeb.Utility
             ");
 
             return Convert.ToInt16(al[0]);
+        }
+
+        public static string GetProfileImg(string id)
+        {
+            string p = "";
+            using(SqlConnection conn = new SqlConnection(Conn))
+            {
+                SqlCommand command = new SqlCommand("SELECT ProfileImg FROM AspNetUsers WHERE ID = @id", conn);
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = id
+                };
+                command.Parameters.Add(UID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                p = (string)command.ExecuteScalar();
+                conn.Close();
+            }
+            return p;
+        }
+
+        public static void CallDB(SqlCommand command)
+        {
+            using(SqlConnection conn = new SqlConnection(Conn))
+            {
+                Debug.WriteLine(command.CommandText);
+                conn.Open();
+                command.Connection = conn;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch(Exception) { }
+                conn.Close();
+            }
+
         }
     }
 }

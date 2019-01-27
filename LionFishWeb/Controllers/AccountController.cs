@@ -197,7 +197,7 @@ namespace LionFishWeb.Controllers
                     command.Parameters.Add(FID);
                     command.Parameters.Add(NME);
                     command.Parameters.Add(UID);
-                    CallDB(command);
+                    Utility.Constants.CallDB(command);
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
                     return View(model);
@@ -451,23 +451,6 @@ namespace LionFishWeb.Controllers
                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
-        }
-
-        public static void CallDB(SqlCommand command)
-        {
-            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
-            {
-                Debug.WriteLine(command.CommandText);
-                conn.Open();
-                command.Connection = conn;
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                catch(Exception) { }
-                conn.Close();
-            }
-
         }
 
         #region Helpers

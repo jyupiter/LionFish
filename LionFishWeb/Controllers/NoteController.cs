@@ -100,6 +100,7 @@ namespace LionFishWeb.Controllers
             NFVM.NVM.Notes = Load(User.Identity.GetUserId());
             NFVM.FVM.Folders = Load(User.Identity.GetUserId(), "");
             NFVM.Requested = GetCurrentNote();
+            NFVM.ProfileImg = Utility.Constants.GetProfileImg(User.Identity.GetUserId());
             return View("Index", NFVM);
         }
 
@@ -302,7 +303,7 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(CTT);
                 command.Parameters.Add(FID);
                 command.Parameters.Add(UID);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -336,7 +337,7 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(FID);
                 command.Parameters.Add(NME);
                 command.Parameters.Add(UID);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -370,25 +371,8 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(TTL);
                 command.Parameters.Add(CTT);
                 Debug.WriteLine(model.ID.GetDirectReference() + model.Title + model.Content);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
-        }
-
-        public static void CallDB(SqlCommand command)
-        {
-            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
-            {
-                Debug.WriteLine(command.CommandText);
-                conn.Open();
-                command.Connection = conn;
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception) { }
-                conn.Close();
-            }
-
         }
 
         #region Helpers

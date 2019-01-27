@@ -91,7 +91,8 @@ namespace LionFishWeb.Controllers
 			{
 				ID = EventID,
 				DateT = tempDT,
-				Notes = notesList
+				Notes = notesList,
+                ProfileImg = Utility.Constants.GetProfileImg(User.Identity.GetUserId())
 			};
 			return View("Calendar", CVM);
 		}

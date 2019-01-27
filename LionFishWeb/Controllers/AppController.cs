@@ -18,7 +18,6 @@ namespace LionFishWeb.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AppController()
         {
@@ -62,7 +61,7 @@ namespace LionFishWeb.Controllers
             var userId = User.Identity.GetUserId();
             var model = new DashboardViewModel
             {
-                ProfileImg = db.Users.Find(User.Identity.GetUserId()).ProfileImg
+                ProfileImg = Utility.Constants.GetProfileImg(User.Identity.GetUserId())
             };
             return View(model);
         }
@@ -72,9 +71,40 @@ namespace LionFishWeb.Controllers
         public ActionResult Settings(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            User user = db.Users.Find(User.Identity.GetUserId());
-            user.Id = user.Id.GetIndirectReference();
-            return View(user);
+            string uid = User.Identity.GetUserId();
+            User u = new User();
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                SqlCommand command = new SqlCommand("SELECT * FROM AspNetUsers WHERE ID = @id", conn);
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = uid
+                };
+                command.Parameters.Add(UID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
+                    {
+                        u = new User
+                        {
+                            Id = uid.GetIndirectReference(),
+                            ProfileImg = Utility.Constants.GetProfileImg(uid),
+                            ProfileBio = r["ProfileBio"].ToString(),
+                            Private = r["Private"].ToString(),
+                            Email = r["Email"].ToString(),
+                            PasswordHash = r["PasswordHash"].ToString(),
+                            UserName = r["UserName"].ToString(),
+                        };
+                    }
+                }
+                conn.Close();
+            }
+            return View(u);
         }
 
         // GET: /App/Feedback
@@ -110,7 +140,7 @@ namespace LionFishWeb.Controllers
                 };
                 command.Parameters.Add(UID);
                 command.Parameters.Add(PVT);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -135,12 +165,12 @@ namespace LionFishWeb.Controllers
                 };
                 SqlParameter IMG = new SqlParameter
                 {
-                    ParameterName = "@profilebio",
+                    ParameterName = "@profileimg",
                     Value = model.ProfileImg
                 };
                 command.Parameters.Add(UID);
                 command.Parameters.Add(IMG);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -187,7 +217,7 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(UID);
                 command.Parameters.Add(UNM);
                 command.Parameters.Add(BIO);
-                CallDB(command);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -214,19 +244,6 @@ namespace LionFishWeb.Controllers
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
             }
-        }
-
-        public static void CallDB(SqlCommand command)
-        {
-            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
-            {
-                Debug.WriteLine(command.CommandText);
-                conn.Open();
-                command.Connection = conn;
-                command.ExecuteNonQuery();
-                conn.Close();
-            }
-
         }
 
         #region Helpers

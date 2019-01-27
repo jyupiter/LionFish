@@ -80,6 +80,12 @@
         $("#selected").addClass(result.ID);
     }
 
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
     $("#swap2").on("change", "#editor", function () {
         $("#editor").attr("data-dirty", "true");
         $("#save-out").text("Unsaved changes");
@@ -102,9 +108,9 @@
                 $("#ntitle").val($(passed.target).text());
                 changeSelectedNote(result);
                 if (result.Content != "") {
-                    var bjson = result.Content.replace(/\\\"/g, '\"');
+                    var rjson = decodeHtml(result.Content);
+                    var bjson = rjson.replace(/\\\"/g, '\"');
                     var cjson = bjson.substring(1, bjson.length - 1);
-                    console.log(cjson);
                     quill.setContents($.parseJSON(cjson));
                 }
 

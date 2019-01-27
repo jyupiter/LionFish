@@ -10,6 +10,11 @@ namespace LionFishWeb.Models
         public string ProfileImg { get; set; }
     }
 
+    public class FeedbackViewModel
+    {
+        public string ProfileImg { get; set; }
+    }
+
     public class UpdatePrivacyViewModel
     {
         public string Private { get; set; }

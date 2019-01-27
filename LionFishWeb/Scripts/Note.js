@@ -1,10 +1,13 @@
 ﻿$(function () {
-    $("#swap1").hide();
-    $("#swap2").show();
+    $("#swap1").show();
+    $("#swap2").hide();
 
     var quill = new Quill('#editor', {
+        placeholder: 'Type anything...',
         theme: 'snow'
     });
+    
+    $("#swap2").data('quill', quill);
 
     $("#newnf").on("click", function () {
         $("#newnfc").toggle();
@@ -77,19 +80,7 @@
         $("#selected").addClass(result.ID);
     }
 
-    function setQuill(content) {
-        if (content != "") {
-            var cjson = content.replace(/\n/g, "\\n");
-            console.log($.parseJSON(cjson));
-            quill.setContents([
-                { insert: 'Hello ' },
-                { insert: 'World!', attributes: { bold: true } },
-                { insert: '\n' }
-            ]);
-        }
-    }
-
-    quill.on('text-change', function () {
+    $("#swap2").on("change", "#editor", function () {
         $("#editor").attr("data-dirty", "true");
         $("#save-out").text("Unsaved changes");
     });
@@ -98,6 +89,7 @@
         $("#ned").remove();
         $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
         var quill = new Quill('#editor', {
+            placeholder: 'Type anything...',
             theme: 'snow'
         });
         $.ajax({
@@ -110,7 +102,9 @@
                 $("#ntitle").val($(passed.target).text());
                 changeSelectedNote(result);
                 if (result.Content != "") {
-                    var cjson = result.Content.replace(/\n/g, "\\n");
+                    var bjson = result.Content.replace(/\\\"/g, '\"');
+                    var cjson = bjson.substring(1, bjson.length - 1);
+                    console.log(cjson);
                     quill.setContents($.parseJSON(cjson));
                 }
 
@@ -125,7 +119,8 @@
                     },
                     error: function (response) { }
                 });
-
+                $("#note-event").removeClass();
+                $("#note-event").text("No event linked");
                 if (result.EventID != null) {
                     $.ajax({
                         type: "GET",
@@ -140,8 +135,6 @@
                         },
                         error: function (response) { }
                     });
-                } else {
-                    $("#note-event").text("Not event linked");
                 }
             },
             error: function (response) { }
@@ -149,11 +142,12 @@
     });
 
     function save(nid) {
+        console.log($("#selected").attr("data-content"));
         $.post('/Note/UpdateNote',
             {
                 ID: nid,
                 title: $("#ntitle").val(),
-                content: JSON.stringify(quill.getContents())
+                content: JSON.stringify($("#selected").attr("data-content"))
             }, function () { });
         $("#save-out").text("Saved");
     }
@@ -177,12 +171,15 @@
                 save(nid);
     });
 
+    $("#swap2").on("keyup", "#editor", function (event) {
+        $("#selected").attr("data-content", JSON.stringify($(this)[0].__quill.editor.delta));
+    });
+
     $(window).bind('keydown', function (event) {
         if (event.ctrlKey || event.metaKey) {
             switch (String.fromCharCode(event.which).toLowerCase()) {
                 case 's':
                     event.preventDefault();
-                    console.log("ctrl + s pressed. saving current note.");
                     var nid = $("#selected").attr("class");
                     if (nid != null)
                         if (nid != "empty")

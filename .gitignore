@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 LionFishWeb/Web.config
+LionFishWeb/Logs.txt

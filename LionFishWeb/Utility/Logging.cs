@@ -10,7 +10,7 @@ namespace LionFishWeb.Utility
 		public static void Log(string input)
 		{
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"Logs.txt", true))
+			new System.IO.StreamWriter(@"D:\Github\LionFish\LionFishWeb\Logs.txt", true))
 			{
 				file.WriteLine(input);
 			}

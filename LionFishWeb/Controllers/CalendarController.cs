@@ -22,7 +22,7 @@ namespace LionFishWeb.Controllers
 		private static string SearchString;
 
 		public ActionResult Calendar()
-		{
+		{ 
 			List<Event> listOfEvents = new List<Event>();
 			listOfEvents = LoadPrivate(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
@@ -297,6 +297,7 @@ namespace LionFishWeb.Controllers
 		{
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
+
 			Debug.WriteLine("\n --------------------- \n");
 			Debug.WriteLine("id: " + events.ID);
 			Debug.WriteLine("User: " + events.UserID);
@@ -306,6 +307,16 @@ namespace LionFishWeb.Controllers
 			Debug.WriteLine("End: " + end);
 			Debug.WriteLine("Notes: " + events.Notes);
 			Debug.WriteLine("\n --------------------- \n");
+
+			Logging.Log("\n --------------------- \n");
+			Logging.Log("id: " + events.ID);
+			Logging.Log("User: " + events.UserID);
+			Logging.Log("title: " + events.Title);
+			Logging.Log("desc: " + events.Description);
+			Logging.Log("start: " + start);
+			Logging.Log("End: " + end);
+			Logging.Log("Notes: " + events.Notes);
+			Logging.Log("\n --------------------- \n");
 		}
 
 		public static bool Save(Event events, string mode, string user2)
@@ -418,7 +429,7 @@ namespace LionFishWeb.Controllers
 			else if (mode == "publish")
 			{
 				SqlCommand cmd = new SqlCommand(
-				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID , @Title , @Description , @AllDay , @start , @end , @Color , 'public' , True)");
+				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID , @Title , @Description , @AllDay , @start , @end , @Color , 'public' , 'True')");
 				cmd.Parameters.Add(EID);
 				cmd.Parameters.Add(ETitle);
 				cmd.Parameters.Add(EDesc);

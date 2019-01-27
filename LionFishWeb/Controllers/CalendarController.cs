@@ -14,7 +14,7 @@ using System.Configuration;
 
 namespace LionFishWeb.Controllers
 {
-    [Authorize]
+	[Authorize]
 	public class CalendarController : Controller
 	{
 
@@ -22,7 +22,7 @@ namespace LionFishWeb.Controllers
 		private static string SearchString;
 
 		public ActionResult Calendar()
-		{ 
+		{
 			List<Event> listOfEvents = new List<Event>();
 			listOfEvents = LoadPrivate(User.Identity.GetUserId());
 			foreach (Event events in listOfEvents)
@@ -59,7 +59,7 @@ namespace LionFishWeb.Controllers
 
 			ViewData["EventsPublic"] = listOfEvents;
 			DateTime tempDT = DateTime.Today;
-			if(EventID != null)
+			if (EventID != null)
 			{
 				tempDT = GetEventDate(EventID).Start;
 			}
@@ -136,7 +136,9 @@ namespace LionFishWeb.Controllers
 		[AllowAnonymous]
 		public void SetEventByID(SetEventViewModel model)
 		{
-			EventID = model.ID;
+			Debug.WriteLine(model.ID);
+			Debug.WriteLine(model.ID.GetDirectReference());
+			EventID = model.ID.GetDirectReference();
 		}
 
 		[HttpPost]
@@ -152,51 +154,51 @@ namespace LionFishWeb.Controllers
 
 		public static List<Note> GetNotes(string EID)
 		{
-            List<Note> listOfNotes = new List<Note>();
-            SqlParameter ID = new SqlParameter
-            {
-                ParameterName = "@id",
-                Value = EID
-            };
-            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
-            {
-                SqlCommand command = new SqlCommand();
+			List<Note> listOfNotes = new List<Note>();
+			SqlParameter ID = new SqlParameter
+			{
+				ParameterName = "@id",
+				Value = EID
+			};
+			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+			{
+				SqlCommand command = new SqlCommand();
 
-                command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
+				command = new SqlCommand("SELECT * FROM Note WHERE EventID =  @id", conn);
 
-                command.Parameters.Add(ID);
-                Debug.WriteLine(command.CommandText);
-                conn.Open();
-                SqlDataReader results = command.ExecuteReader();
+				command.Parameters.Add(ID);
+				Debug.WriteLine(command.CommandText);
+				conn.Open();
+				SqlDataReader results = command.ExecuteReader();
 
-                while(results.Read())
-                {
-                    Note note = new Note();
-                   note.ID = results["ID"].ToString();
-                    note.Title = results["Title"].ToString();
-                   
-                    listOfNotes.Add(note);
-                }
-                conn.Close();
-            }
-            return listOfNotes;
-            //using (var context = new ApplicationDbContext())
-            //{
-            //	using (var dbContextTransaction = context.Database.BeginTransaction())
-            //	{
-            //		try
-            //		{
-            //			var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
-            //			return query;
-            //		}
-            //		catch (Exception e)
-            //		{
-            //			Debug.WriteLine(e);
-            //		}
-            //	}
-            //}
-            //return null;
-        }
+				while (results.Read())
+				{
+					Note note = new Note();
+					note.ID = results["ID"].ToString();
+					note.Title = results["Title"].ToString();
+
+					listOfNotes.Add(note);
+				}
+				conn.Close();
+			}
+			return listOfNotes;
+			//using (var context = new ApplicationDbContext())
+			//{
+			//	using (var dbContextTransaction = context.Database.BeginTransaction())
+			//	{
+			//		try
+			//		{
+			//			var query = context.Notes.SqlQuery("SELECT * FROM Note WHERE EventID = '" + EID + "'").ToList<Note>();
+			//			return query;
+			//		}
+			//		catch (Exception e)
+			//		{
+			//			Debug.WriteLine(e);
+			//		}
+			//	}
+			//}
+			//return null;
+		}
 
 		public static List<Event> LoadPrivate(string user)
 		{
@@ -216,7 +218,7 @@ namespace LionFishWeb.Controllers
 				Debug.WriteLine(command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
-				
+
 				while (results.Read())
 				{
 					Event events = new Event();
@@ -256,11 +258,11 @@ namespace LionFishWeb.Controllers
 				{
 					command = new SqlCommand("SELECT * FROM Event", conn);
 				}
-				
+
 				Debug.WriteLine(command.CommandText);
 				conn.Open();
 				SqlDataReader results = command.ExecuteReader();
-				
+
 				while (results.Read())
 				{
 					if (results["Public"].ToString() == "True")
@@ -469,7 +471,7 @@ namespace LionFishWeb.Controllers
 				CallDB(cmd);
 			}
 			else
-                return false;
+				return false;
 			return true;
 		}
 

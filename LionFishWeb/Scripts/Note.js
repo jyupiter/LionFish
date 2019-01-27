@@ -208,10 +208,11 @@
         });
     }
 
-    $("#note-event").on("click", function () {
-        $.post('/Note/SetEventByID',
+	$("#note-event").on("click", function () {
+		console.log($(this).attr("id"));
+        $.post('/Calendar/SetEventByID',
             {
-                ID: $(this).attr("id")
+                ID: $(this).attr("class")
             }, function () { });
         window.location.replace("/Calendar/Calendar");
     });

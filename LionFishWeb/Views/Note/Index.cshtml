@@ -58,7 +58,8 @@
             } else {
                 $("#note-event").text("Not linked from an event");
             }
-            $("#note-event").on("click", function () {
+			$("#note-event").on("click", function () {
+				console.log(posting);
                 $.post('/Calendar/SetEventByID',
                     {
                         id: $(this).attr("class")

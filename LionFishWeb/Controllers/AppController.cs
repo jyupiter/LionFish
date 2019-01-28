@@ -4,8 +4,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -234,7 +236,7 @@ namespace LionFishWeb.Controllers
                     query2 = context.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%" + User.Identity.GetUserId() + "%')").ToList();
                     for (int i = 0; i < query2.Count; i++)
                     {
-                        temp.Add(query2[i].Group_Id);
+                        temp.Add(query2[i].ID);
                     }
                     Debug.Write(query2);
                     //  var query = context.Users.SqlQuery("SELECT Group_Id FROM AspNetUsers").To
@@ -313,7 +315,7 @@ namespace LionFishWeb.Controllers
             {
                 string uname = User.Identity.GetUserId();
                 var query3 = ctx.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%'" + User.Identity.GetUserId() + "'").ToList();
-                string GroupID = query3[0].Group_Id;
+                string GroupID = query3[0].ID;
                 a = ctx.Groups.SqlQuery("SELECT * \"Group\" WHERE Group_Id = '" + GroupID + "'").ToList();
                 List<Message> m = new List<Message>();
 
@@ -359,54 +361,7 @@ namespace LionFishWeb.Controllers
 
         }
         // not part of code
-        public ActionResult ShowGroup(ViewGroupsObj fuck)
-        {
-
-            //for displaying purposes only
-            List<Message> msg = new List<Message>();
-            Message a = new Message(1, "Anytime", "2323", "Tom");
-            Message b = new Message(2, "thx :smile:", "2323", "Tom");
-            Message c = new Message(3, "So as your multiplier goes up, the scaffold gets better and better", "2323", "Tom");
-            Message d = new Message(4, "VS only boosts one damage number. Shwaak hits like 10x200. Scaffold hits 4x200 1x400", "2323", "Tom");
-            Message e = new Message(5, "If that makes any sense", "2323", "Tom");
-            Message f = new Message(6, "Shwakk will have like more 200 hits along side it though", "2323", "Tom");
-            Message g = new Message(7, "But a x4 on a 800 damage on Scaffold", "2323", "Tom");
-            Message h = new Message(8, "So like you'll get x4 on a 200 damage on shwaak.", "2323", "Tom");
-            Message i = new Message(9, "Shwaak only has a bunch of little hits", "2323", "Tom");
-            Message j = new Message(10, "Anda a bunch of little hits that don't", "2323", "Tom");
-            Message k = new Message(11, "The secondary has one big hit that gets multiplied", "2323", "Tom");
-            Message l = new Message(12, "so secondary if VS. im guessing becuz of higher base dmg, when VS gets to a curtain number, it automaticlly out damages shwaak multi?", "2323", "Tom");
-            Message m = new Message(13, "Also if you are shooting through a Volt Shield. Scaffold is better.", "2323", "Tom");
-            Message n = new Message(14, "Shwakk has alot of punch through, so aimnat the crouch or chest and you get alot if hits in with one blast", "2323", "Tom");
-            msg.Add(a);
-            msg.Add(b);
-            msg.Add(c);
-            msg.Add(d);
-            msg.Add(e);
-            msg.Add(f);
-            msg.Add(g);
-            msg.Add(h);
-            msg.Add(i);
-            msg.Add(j);
-            msg.Add(k);
-            msg.Add(l);
-            msg.Add(m);
-            msg.Add(n);
-            var json = JsonConvert.SerializeObject(msg);
-            // json.Replace("'","\'");
-            Debug.Write(json);
-            using (var ctx = new ApplicationDbContext())
-            {
-                using (var ctxtrans = ctx.Database.BeginTransaction())
-                {
-                    ctx.Database.ExecuteSqlCommand("UPDATE \"Group\" SET GroupMessage = '" + json.Replace("'", "''") + "' WHERE Group_Id = 100");
-                    ctxtrans.Commit();
-                }
-
-            }
-
-            return Json(json, JsonRequestBehavior.AllowGet);
-        }
+        
         public ActionResult MessageGroup(string GroupSelected)
         {
 

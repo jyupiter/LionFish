@@ -1,0 +1,109 @@
+﻿@using LionFishWeb.Models
+@model LionFishWeb.Models.GroupViewModels.GroupViewModel
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*BACK BUTTON*@
+<input type="button" onclick="location.href='@Url.Action("Index","Groups")'" value="Back">
+
+<div id="something" style="display:none;">@Model.group.ID</div>
+<p><span class="edit">Edit</span> <input id="GroupName" type="text" maxlength="20" value=@Model.group.GroupName disabled /></p>
+
+
+<p><span class="edit">Edit</span> <input id="GroupDesc" type="text" maxlength="50" value=@Model.group.GroupDesc disabled></p>
+
+<div>
+    <h3>Member List</h3>
+    @using(Html.BeginForm("InviteMembers", "Groups"))
+    {
+        @Html.HiddenFor(model => model.group.ID);
+        @Html.EditorFor(model => model.search.Search);
+        <input type="submit" id="submit-log" class="button-blue" value="Invite Members" />
+    }
+
+    @*Add a Horizontal Bar here to make all the profile pics centralised or something. Also make the pictures come in one straight line*@
+    @foreach(User user in Model.group.User)
+    {
+        if(user.ProfileImg != null)
+        {
+            <img src=@user.ProfileImg>
+        }
+        else
+        {
+            <img src="https://qph.fs.quoracdn.net/main-qimg-7ca600a4562ef6a81f4dc2bd5c99fee9.webp">
+        }
+
+    }
+
+</div>
+<script>
+
+
+    $("#editable").click(function () {
+        var groupnamefield = $("#GroupName");
+        if (groupnamefield.prop('disabled') == true) {
+            groupnamefield.attr('disabled', false)
+            $("#editable").val("Save");
+        } else {
+            groupnamefield.attr('disabled', true)
+            $("#editable").val("Edit");
+        }
+    })
+
+    // Search
+    $(document).ready(function () {
+        $("#searchy").keyup(function () {
+            var SearchValue = $("#searchy").val();
+            var SetData = $("#searchuser");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/Groups/GetSearchingData?SearchValue=" + SearchValue,
+                contentType: "html",
+                success: function (result) {
+                    if (result.length == 0) {
+                        SetData.append('')
+                    }
+                    else {
+                        $.each(result, function (index, value) {
+                            var Data = "<tr id='searchyusername'>" +
+                                "<td>" + value.UserName + "</td>" +
+                                "</tr>";
+                            SetData.append(Data);
+                        });
+
+
+                    };
+                }
+            })
+        })
+    })
+
+    $(document).ready(function () {
+        $(".edit").on("click", function () {
+            var nx = $(this).next();
+            var ds = nx.prop("disabled");
+            var inf = $("#something");
+            nx.prop("disabled", !ds).focus();
+            nx.toggleClass("editable");
+            $(this).text(ds ? 'Save' : 'Edit');
+            var attr = nx.attr("id");
+            var valaa = nx.val();
+
+            if ($(this).text() != "save") {
+                $.ajax({
+                    type: "post",
+                    url: "/Groups/UpdateGroups?name="+attr+"&data="+valaa+"&grouped="+inf.text(),
+                    contentType: "html",
+                    success: function (result) {
+
+                    }
+                })
+            }
+        })
+    }) //WORKING
+
+</script>

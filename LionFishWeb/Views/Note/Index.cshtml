@@ -5,7 +5,7 @@
 }
 
 @section Nav {
-    @Html.Partial("_NavApp");
+    @Html.Partial("_NavApp", Model.ProfileImg);
 }
 
 @Scripts.Render("~/Scripts/Note.js")
@@ -21,9 +21,21 @@
                 txt.innerHTML = html;
                 return txt.value;
             }
+            $("#swap1").hide();
+            $("#swap2").show();
             $("#ntitle").val("@Model.Requested.Title");
-            var editor = $('#editor').data('quill');
-            editor.setContents($.parseJSON(decodeHtml("@Model.Requested.Content")));
+            $("#selected").removeClass();
+            $("#selected").addClass("@Model.Requested.ID");
+            $("#ned").remove();
+            $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
+            var editor = new Quill('#editor', {
+                placeholder: 'Type anything...',
+                theme: 'snow'
+            });
+            var rjson = decodeHtml("@Model.Requested.Content");
+            var bjson = rjson.replace(/\\\"/g, '\"');
+            var cjson = bjson.substring(1, bjson.length - 1);
+            editor.setContents($.parseJSON(cjson));
             $.ajax({
                 type: "GET",
                 url: "/Note/GetFolderName",
@@ -52,7 +64,8 @@
             } else {
                 $("#note-event").text("Not linked from an event");
             }
-            $("#note-event").on("click", function () {
+			$("#note-event").on("click", function () {
+				console.log(posting);
                 $.post('/Calendar/SetEventByID',
                     {
                         id: $(this).attr("class")
@@ -142,7 +155,7 @@
             </div>
             <div id="swap2">
                 <div class="tt">
-                    <input id="selected" type="hidden" class="empty" />
+                    <input id="selected" type="hidden" class="empty" data-content="" />
                     <input id="ntitle" type="text" placeholder="Title" />
                     <a id="save" class="button button-blue" style="float:right;margin:5px 0 0 0;">Save</a>
                     <span id="save-out">Saved</span>
@@ -150,7 +163,7 @@
                 <div class="stt">
                     <span id="note-folder" style="margin-left:2px;"></span>
                     |
-                    <span id="note-event"></span>
+                    <span id="note-event" style="cursor:pointer;color:navy;">No event linked</span>
                 </div>
                 <div id="ned" class="bc">
                     <div id="editor" data-dirty="false"></div>

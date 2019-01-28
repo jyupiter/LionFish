@@ -1,10 +1,10 @@
-﻿
+﻿@model LionFishWeb.Models.FeedbackViewModel
 @{
     ViewBag.Title = "Feedback";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Nav {
-    @Html.Partial("_NavHome");
+    @Html.Partial("_NavApp", Model.ProfileImg);
 }
 
 <h2>feedback</h2>

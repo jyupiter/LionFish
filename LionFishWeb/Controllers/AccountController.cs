@@ -194,7 +194,10 @@ namespace LionFishWeb.Controllers
                         ParameterName = "@userid",
                         Value = user.Id
                     };
-                    CallDB(command);
+                    command.Parameters.Add(FID);
+                    command.Parameters.Add(NME);
+                    command.Parameters.Add(UID);
+                    Utility.Constants.CallDB(command);
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
                     return View(model);
@@ -213,7 +216,7 @@ namespace LionFishWeb.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            return View(result.Succeeded ? "Login" : "Error");
         }
         
         // GET: /Account/ForgotPassword
@@ -448,23 +451,6 @@ namespace LionFishWeb.Controllers
                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
-        }
-
-        public static void CallDB(SqlCommand command)
-        {
-            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
-            {
-                Debug.WriteLine(command.CommandText);
-                conn.Open();
-                command.Connection = conn;
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                catch(Exception) { }
-                conn.Close();
-            }
-
         }
 
         #region Helpers

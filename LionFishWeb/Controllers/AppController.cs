@@ -1,4 +1,5 @@
 ﻿using LionFishWeb.Models;
+using LionFishWeb.Utility;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -19,7 +20,6 @@ namespace LionFishWeb.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AppController()
         {
@@ -63,7 +63,7 @@ namespace LionFishWeb.Controllers
             var userId = User.Identity.GetUserId();
             var model = new DashboardViewModel
             {
-                ProfileImg = db.Users.Find(User.Identity.GetUserId()).ProfileImg
+                ProfileImg = Utility.Constants.GetProfileImg(User.Identity.GetUserId())
             };
             return View(model);
         }
@@ -73,8 +73,40 @@ namespace LionFishWeb.Controllers
         public ActionResult Settings(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            User user = db.Users.Find(User.Identity.GetUserId());
-            return View(user);
+            string uid = User.Identity.GetUserId();
+            User u = new User();
+            using(SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
+            {
+                SqlCommand command = new SqlCommand("SELECT * FROM AspNetUsers WHERE ID = @id", conn);
+                SqlParameter UID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = uid
+                };
+                command.Parameters.Add(UID);
+
+                Debug.WriteLine(command.CommandText);
+
+                conn.Open();
+                using(SqlDataReader r = command.ExecuteReader())
+                {
+                    while(r.Read())
+                    {
+                        u = new User
+                        {
+                            Id = uid.GetIndirectReference(),
+                            ProfileImg = Utility.Constants.GetProfileImg(uid),
+                            ProfileBio = r["ProfileBio"].ToString(),
+                            Private = r["Private"].ToString(),
+                            Email = r["Email"].ToString(),
+                            PasswordHash = r["PasswordHash"].ToString(),
+                            UserName = r["UserName"].ToString(),
+                        };
+                    }
+                }
+                conn.Close();
+            }
+            return View(u);
         }
 
         // GET: /App/Feedback
@@ -91,14 +123,11 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdatePrivacyViewModel data = JsonConvert.DeserializeObject<UpdatePrivacyViewModel>(json);
-
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command = new SqlCommand(
-                    "UPDATE AspNetUsers" +
-                    "SET Private = @private" +
+                    "UPDATE AspNetUsers " +
+                    "SET Private = @private " +
                     "WHERE ID= @id");
 
                 SqlParameter UID = new SqlParameter
@@ -109,9 +138,11 @@ namespace LionFishWeb.Controllers
                 SqlParameter PVT = new SqlParameter
                 {
                     ParameterName = "@private",
-                    Value = data.Private
+                    Value = model.Private
                 };
-                CallDB(command);
+                command.Parameters.Add(UID);
+                command.Parameters.Add(PVT);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -122,14 +153,11 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdateProfileImgViewModel data = JsonConvert.DeserializeObject<UpdateProfileImgViewModel>(json);
-                
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command = new SqlCommand(
-                    "UPDATE AspNetUsers" +
-                    "SET ProfileImg = @profileimg" +
+                    "UPDATE AspNetUsers " +
+                    "SET ProfileImg = @profileimg " +
                     "WHERE ID= @id");
                 
                 SqlParameter UID = new SqlParameter
@@ -139,10 +167,12 @@ namespace LionFishWeb.Controllers
                 };
                 SqlParameter IMG = new SqlParameter
                 {
-                    ParameterName = "@profilebio",
-                    Value = data.ProfileImg
+                    ParameterName = "@profileimg",
+                    Value = model.ProfileImg
                 };
-                CallDB(command);
+                command.Parameters.Add(UID);
+                command.Parameters.Add(IMG);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -153,24 +183,21 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                string json = new JavaScriptSerializer().Serialize(model);
-                UpdateProfileInfoViewModel data = JsonConvert.DeserializeObject<UpdateProfileInfoViewModel>(json);
-
                 string uid = User.Identity.GetUserId();
 
                 SqlCommand command;
-                if(data.Name.Equals("nme"))
+                if(model.Name.Equals("nme"))
                 {
                     command = new SqlCommand(
-                        "UPDATE AspNetUsers" +
-                        "SET UserName = @username" +
+                        "UPDATE AspNetUsers " +
+                        "SET UserName = @username " +
                         "WHERE ID= @id");
                 }
                 else
                 {
                     command = new SqlCommand(
-                        "UPDATE AspNetUsers" +
-                        "SET ProfileBio = @profilebio" +
+                        "UPDATE AspNetUsers " +
+                        "SET ProfileBio = @profilebio " +
                         "WHERE ID= @id");
                 }
                 
@@ -182,14 +209,17 @@ namespace LionFishWeb.Controllers
                 SqlParameter UNM = new SqlParameter
                 {
                     ParameterName = "@username",
-                    Value = data.Info
+                    Value = model.Info
                 };
                 SqlParameter BIO = new SqlParameter
                 {
                     ParameterName = "@profilebio",
-                    Value = data.Info
+                    Value = model.Info
                 };
-                CallDB(command);
+                command.Parameters.Add(UID);
+                command.Parameters.Add(UNM);
+                command.Parameters.Add(BIO);
+                Utility.Constants.CallDB(command);
             }
         }
 
@@ -217,8 +247,7 @@ namespace LionFishWeb.Controllers
                 }
             }
         }
-
-
+        
         public ActionResult Chat()
         {
             List<string> temp = new List<string>();
@@ -290,18 +319,6 @@ namespace LionFishWeb.Controllers
                     CallDB(command);
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
             // return Index(Json(, JsonRequestBehavior.AllowGet));
         }
 
@@ -396,7 +413,7 @@ namespace LionFishWeb.Controllers
             }
 
         }
-
+        
         #region Helpers
         private IAuthenticationManager AuthenticationManager
         {

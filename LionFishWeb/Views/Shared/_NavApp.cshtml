@@ -5,17 +5,19 @@
     <div id="snb">
         <div id="profile">
             <img src=@Model />
-            <div id="navdrop">
-                @Html.ActionLink("hmmmmmmmmm", "LogOff", "Account", null, new { @class = "navdroplink" })
-                @Html.ActionLink("Calendar", "Calendar", "Calendar", null, new { @class = "navdroplink" })
-                @Html.ActionLink("Notes", "Index", "Note", null, new { @class = "navdroplink" })
-                <hr style="margin:8px 0;"/>
-                @Html.ActionLink("Settings", "Settings", "App", null, new { @class = "navdroplink" })
-                <form method="post" action="@Url.Action("LogOff", "Account")" id="logform" style="display:none;">
-                    @Html.AntiForgeryToken()
-                </form>
-                <a href="" class="navdroplink" onclick="$('#logform').submit(); return false;">Log Out</a>
-            </div>
+			<div id="navdrop">
+				@Html.ActionLink("hmmmmmmmmm", "LogOff", "Account", null, new { @class = "navdroplink" })
+				@Html.ActionLink("Calendar", "Calendar", "Calendar", null, new { @class = "navdroplink" })
+				@Html.ActionLink("Notes", "Index", "Note", null, new { @class = "navdroplink" })
+
+				<hr style="margin:8px 0;" />
+				@Html.ActionLink("Settings", "Settings", "App", null, new { @class = "navdroplink" })
+				@Html.ActionLink("Chat", "chat", "App", routeValues: null, htmlAttributes: new { id = "Chatlink" })
+				<form method="post" action="@Url.Action("LogOff", "Account")" id="logform" style="display:none;">
+					@Html.AntiForgeryToken()
+				</form>
+				<a href="" class="navdroplink" onclick="$('#logform').submit(); return false;">Log Out</a>
+			</div>
         </div>
         <div id="notification"></div>
     </div>

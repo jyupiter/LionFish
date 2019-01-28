@@ -7,6 +7,22 @@ using System.Web;
 
 namespace LionFishWeb.Utility
 {
+	public static class Encoding
+	{
+
+
+		public static string Base64Encode(string plainText)
+		{
+			var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+			return System.Convert.ToBase64String(plainTextBytes);
+		}
+
+		public static string Base64Decode(string base64EncodedData)
+		{
+			var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+			return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+		}
+	}
 	public static class ScopedReferenceMap
 	{
 		private const int Buffer = 32;
@@ -73,5 +89,8 @@ namespace LionFishWeb.Utility
 			//base64 encode the random indirect value to a URL safe transmittable value
 			return HttpServerUtility.UrlTokenEncode(buffer);
 		}
+
+
+
 	}
 }

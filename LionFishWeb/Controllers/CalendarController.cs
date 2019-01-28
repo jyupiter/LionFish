@@ -185,7 +185,7 @@ namespace LionFishWeb.Controllers
 			Save(events, "update", User.Identity.GetUserId());
 
 		}
-
+		
 
 		public static List<Note> GetNotes(string EID)
 		{
@@ -253,8 +253,8 @@ namespace LionFishWeb.Controllers
 				{
 					Event events = new Event();
 					events.ID = results["ID"].ToString();
-					events.Title = results["Title"].ToString();
-					events.Description = results["Description"].ToString();
+					events.Title = Encoding.Base64Decode(results["Title"].ToString());
+					events.Description = Encoding.Base64Decode(results["Description"].ToString());
 					events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
 					events.Start = Convert.ToDateTime(results["Start"].ToString());
 					events.End = Convert.ToDateTime(results["End"].ToString());
@@ -298,8 +298,8 @@ namespace LionFishWeb.Controllers
 					{
 						Event events = new Event();
 						events.ID = results["ID"].ToString();
-						events.Title = results["Title"].ToString();
-						events.Description = results["Description"].ToString();
+						events.Title = Encoding.Base64Decode(results["Title"].ToString());
+						events.Description = Encoding.Base64Decode(results["Description"].ToString());
 						events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
 						events.Start = Convert.ToDateTime(results["Start"].ToString());
 						events.End = Convert.ToDateTime(results["End"].ToString());
@@ -336,8 +336,8 @@ namespace LionFishWeb.Controllers
 				{
 
 					events.ID = results["ID"].ToString();
-					events.Title = results["Title"].ToString();
-					events.Description = results["Description"].ToString();
+					events.Title = Encoding.Base64Decode(results["Title"].ToString());
+					events.Description = Encoding.Base64Decode(results["Description"].ToString());
 					events.AllDay = Convert.ToBoolean(results["AllDay"].ToString());
 					events.Start = Convert.ToDateTime(results["Start"].ToString());
 					events.End = Convert.ToDateTime(results["End"].ToString());
@@ -392,12 +392,12 @@ namespace LionFishWeb.Controllers
 			SqlParameter ETitle = new SqlParameter
 			{
 				ParameterName = "@Title",
-				Value = events.Title
+				Value = Encoding.Base64Encode(events.Title)
 			};
 			SqlParameter EDesc = new SqlParameter
 			{
 				ParameterName = "@Description",
-				Value = events.Description
+				Value = Encoding.Base64Encode(events.Description)
 			};
 			SqlParameter EAllDay = new SqlParameter
 			{

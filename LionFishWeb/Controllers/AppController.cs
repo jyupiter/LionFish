@@ -110,10 +110,11 @@ namespace LionFishWeb.Controllers
         }
 
         // GET: /App/Feedback
-        public ActionResult Feedback()
+        public ActionResult Feedback(FeedbackViewModel model)
         {
             ViewBag.Message = "gib thee knowledge";
-            return View();
+			model.ProfileImg = Utility.Constants.GetProfileImg(User.Identity.GetUserId());
+            return View(model);
         }
 
         // POST: /App/UpdatePrivacy
@@ -275,10 +276,7 @@ namespace LionFishWeb.Controllers
             return View(query2); ;
         }
 
-        public ActionResult feedback()
-        {
-            return View();
-        }
+       
 
         /// <summary>
         /// 

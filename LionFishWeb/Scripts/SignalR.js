@@ -342,10 +342,9 @@
 
 
     })
-    $.connection.myHub.client.feedbackSend = function (feedMe) {
+    $.connection.myHub.client.feedbackSend = function () {
 
-        var resultOld = JSON.parse(feedMe);
-        console.log(resultOld);
+        
 
 
         $("input[name='ratin']:checked").val("");

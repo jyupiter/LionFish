@@ -33,9 +33,12 @@
                 theme: 'snow'
             });
             var rjson = decodeHtml("@Model.Requested.Content");
-            var bjson = rjson.replace(/\\\"/g, '\"');
-            var cjson = bjson.substring(1, bjson.length - 1);
-            editor.setContents($.parseJSON(cjson));
+            if (rjson != null)
+                if (rjson != "") {
+                    var bjson = rjson.replace(/\\\"/g, '\"');
+                    var cjson = bjson.substring(1, bjson.length - 1);
+                    editor.setContents($.parseJSON(cjson));
+                }
             $.ajax({
                 type: "GET",
                 url: "/Note/GetFolderName",

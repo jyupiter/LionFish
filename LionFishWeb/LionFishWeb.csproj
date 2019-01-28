@@ -228,6 +228,7 @@
     <Compile Include="Models\feedback.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\GroupUser.cs" />
     <Compile Include="Models\GroupViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Log.cs" />

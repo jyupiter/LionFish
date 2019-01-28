@@ -6,6 +6,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Nav {
+    @Html.Partial("_NavApp");
+}
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <main id="ss" class="split">

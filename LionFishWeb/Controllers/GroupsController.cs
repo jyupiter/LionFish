@@ -93,7 +93,7 @@ namespace LionFishWeb.Controllers
         public List<Group> Load()
         {
 
-            string commandText = "SELECT * FROM[dbo].[Group] where ID IN (SELECT GroupID FROM[dbo].[GroupUser] where UserID IN (SELECT Id FROM[dbo].[AspNetUsers] where Id = '" + User.Identity.GetUserId() + "') );";
+            string commandText = "SELECT * FROM [dbo].[Group] where ID IN (SELECT GroupID FROM GroupUser where UserID IN (SELECT Id FROM AspNetUsers where Id = '" + User.Identity.GetUserId() + "') );";
             List<Group> groups = new List<Group>();
 
             using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))

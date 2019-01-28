@@ -13,7 +13,7 @@
         }
     });
 
-    $("input").on("keyup", function () {
+    $("#block-sign input").on("keyup", function () {
         var inp = $("#input-sign-password").val();
         var x = zxcvbn(inp).score;
         var v = $(".input-email").val().toLowerCase();

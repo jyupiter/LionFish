@@ -126,6 +126,7 @@ namespace LionFishWeb.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete([Bind(Include = "ID")] Event events)
 		{
+            Debug.WriteLine("events.ID : " + events.ID);
 			Save(events, "delete", User.Identity.GetUserId());
 			return RedirectToAction("Calendar");
 		}
@@ -455,6 +456,7 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "delete")
 			{
+                Debug.WriteLine(events.ID);
 				SqlParameter DEID = new SqlParameter
 				{
 					ParameterName = "@DID",

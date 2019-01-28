@@ -43,23 +43,23 @@ namespace LionFishWeb
 					");
 				Response.End();
 			}
-			else if (ex is SqlException)
-			{
-				Response.Clear();
-				Response.StatusCode = 200;
-				Response.Write(@"
-					<html><head><title>HTML Not Allowed</title>
-					<script language='JavaScript'><!--
-					function back() { history.go(-1); } //--></script></head>
-					<body style='font-family: Arial, Sans-serif;'>
-					<h1><i>Notices your attempt at entering an illegal input</i></h1>
-					<h1>ÒwÓ What's this?</h1>
-					<p>If you're seeing this, you have probably removed the required field from my inputs. Don't do that</p>
-					<p><a href='javascript:back()'>I'm sorry</a></p>
-					</body></html>
-					");
-				Response.End();
-			}
+			//else if (ex is SqlException)
+			//{
+			//	Response.Clear();
+			//	Response.StatusCode = 200;
+			//	Response.Write(@"
+			//		<html><head><title>HTML Not Allowed</title>
+			//		<script language='JavaScript'><!--
+			//		function back() { history.go(-1); } //--></script></head>
+			//		<body style='font-family: Arial, Sans-serif;'>
+			//		<h1><i>Notices your attempt at entering an illegal input</i></h1>
+			//		<h1>ÒwÓ What's this?</h1>
+			//		<p>If you're seeing this, you have probably removed the required field from my inputs. Don't do that</p>
+			//		<p><a href='javascript:back()'>I'm sorry</a></p>
+			//		</body></html>
+			//		");
+			//	Response.End();
+			//}
 		}
 	}
 }

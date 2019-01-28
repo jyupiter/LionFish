@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace LionFishWeb.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
 

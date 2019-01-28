@@ -553,105 +553,31 @@ namespace LionFishWeb
             }
             return buffer.ToString();
         }
-        // sad sad sad
-        public async Task JoinRoom(string roomName)
-        {
-
-            await Groups.Add(Context.ConnectionId, roomName);
-        }
-        // same connection, just showing open groups/pm based on users.
-        // this is so sad alexa play d͇̤̞̦͎͍̻͇͉̘̖ͪ̽̾̄̌̏̅̑ͧ͐̏͋͘ę͙̩̳̺̜̹̝̣̽ͬ́͂͡śͯ̎͒̄ͪ̊ͫ̃͆̄͊͛̓̓͋͏͏̛͔͉͇͖͇͡ͅpͭ̿̓̄̎̾̅͊̐҉̴̛̥̭̞̣̬͉̭͔̠̙̲̯͓a̷̶̢̡̜̻̝͖̥̠̯̮̗͎͓̪̰̯̭͔̗ͥͫ̌ͩ̓̎͐̐c̛͗ͬͯ͒̇̈́ͥͭ̑̆ͩͣ̓̄̐̓͜͜͏̭͚̯͇͔̗͟i͈̰͈̤̤̥̮͍͑̽̾̍̉ͣ̈́͆͗̇̊̽̿̂̚͟͝t̵ͣͩ̉̆̉̒ͬ́̂ͮ̏͑̇͐͒͑͏̴̨̟̫̜̟̪̠̬͎̘̦̻̻̺̦͖̹͓͎͞o̧̧̡̤̘̙̜̖͕̮̻͒ͨ͊̇ͫ͆͑ͪ͂̔ͨ͝
-        public async Task LeaveRoom(string roomName)
-        {
-            await Groups.Remove(Context.ConnectionId, roomName);
-        }
+     
 
 
-
-        //private string Sanitize(string toClean) {
-        //    HashSet<char> removeChars = new HashSet<char>(" ?&^$#@!()+-,:;<>’\'-_*");
-        //    StringBuilder result = new StringBuilder(toClean.Length);
-        //    foreach (char c in toClean)
-        //        if (!removeChars.Contains(c)) // prevent dirty chars
-        //            result.Append(c);
-        //    return result.ToString();
-        //}
-
-        public async Task JoinGroup()
-        {
-            //query for message for pertaining group (PM counted as user self group like linux or whatever)
-            // var query1 = context.Messages.Where(s => s.ID == 123).FirstOrDefault<Message>();
-
-            //fill stack with queried message array or whatever
-
-            //display filled stack
-            await Clients.Caller.JoinGroup();
-        }
+    
+      
         public async Task Hello()
         {
          
                 await Clients.All.hello();
-            }
-
-
-
-
-
-
-
-            //// max200 msg
-            //if (msgpgroup.Count >= 199)
-            //{
-            //    msgpgroup.Dequeue();
-            //    msgpgroup.Enqueue(sJSON);
-            //}
-            //else
-            //{
-            //    msgpgroup.Enqueue(sJSON);
-            //}
-
-            //then somehow yeet msgpgroup into db
-
-
-
-
-
-
-
-
 
         }
-        //public DateTime GetServerDateTime()
-        //{
-        //    return DateTime.Now;
-        //}
 
 
 
-        //SELECT m.GroupID FROM MessageGroups m INNER JOIN Users u ON m.groupID = u.GroupID WHERE u.UserID = "John"
-        // and then yea show the groups and shit
 
 
-        public async Task Mute()
-        {
+        
 
-            //retrieve group database
-            //a cell with a json array showing all muted people.
-            // var query1 = context.Messages.Where(s => s.ID == 123).FirstOrDefault<Message>();
-            //get the results, put into an array of sort.
-            //loop through if muted, <unmute option>
-            //if not <mute option>
-            //<mute> append a name to the array
-            //<unmute> remove the name from the array
 
-            await Clients.Caller.Mute();
-        }
         public async Task ShowGroups()
         {
 
-            using (var context = new ApplicationDbContext())
+            using(var context = new ApplicationDbContext())
             {
-                using (var ctxtransaction = context.Database.BeginTransaction())
+                using(var ctxtransaction = context.Database.BeginTransaction())
                 {
 
 
@@ -670,7 +596,7 @@ namespace LionFishWeb
 
                     var query5 = context.Events.SqlQuery("SELECT * FROM Event").ToList();
                     Debug.Write(query5);
-                    foreach (object o in query5)
+                    foreach(object o in query5)
                     {
                         Debug.Write(o.ToString());
                     }
@@ -680,19 +606,13 @@ namespace LionFishWeb
 
             await Clients.Caller.ShowGroups();
         }
-        public async Task ChangeRoom(string room)
-        {
-
-
-            await Clients.Caller.changeRoom();
-        }
-
+    
         public async Task ListGroup(string uid)
         {
 
-            using (var ctx = new ApplicationDbContext())
+            using(var ctx = new ApplicationDbContext())
             {
-                LionFishWeb.Models.Group[] al = new LionFishWeb.Models.Group[10];
+               Models.Group[] al = new Models.Group[10];
                 var arr = ctx.Groups.SqlQuery("SELECT ID FROM Group WHERE User_Id ='" + uid + "'").ToArray();
 
 
@@ -702,26 +622,29 @@ namespace LionFishWeb
 
 
         }
-
+        public async Task getMessage(string uid)
+        {
+            await Clients.All.getMessage(uid);
+        }
         public async Task feedbackSend(string rating, string message)
         {
             //get current session username
             string encodedR = System.Security.SecurityElement.Escape(rating);
             string encodedM = System.Security.SecurityElement.Escape(message);
             Feedback tmp = new Feedback(encodedR, encodedM);
-            using (var ctx = new ApplicationDbContext())
+            using(var ctx = new ApplicationDbContext())
             {
-                using (var ctxtransaction = ctx.Database.BeginTransaction())
+                using(var ctxtransaction = ctx.Database.BeginTransaction())
                 {
                     try
                     {
                         //somehow get the userID here or smth
                         bool x = HttpContext.Current.User.Identity.IsAuthenticated;
                         var m = HttpContext.Current.User.Identity.GetUserId();
-                        ctx.Database.ExecuteSqlCommand("INSERT INTO Feedback(rate,feedbackMessage,Users_Id) VALUES ("+ encodedR + ",'" + encodedM + "','" + m + "')");
+                        ctx.Database.ExecuteSqlCommand("INSERT INTO Feedback(rate,feedbackMessage,Users_Id) VALUES (" + encodedR + ",'" + encodedM + "','" + m + "')");
                         ctxtransaction.Commit();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         Debug.Write(e);
                         ctxtransaction.Rollback();
@@ -729,16 +652,31 @@ namespace LionFishWeb
                 }
 
             }
-       
-            
+
+
 
             await Clients.Caller.feedbackSend();
         }
 
-    }
 
+
+
+    }
+    //public DateTime GetServerDateTime()
+    //{
+    //    return DateTime.Now;
+    //}
+
+
+
+    //SELECT m.GroupID FROM MessageGroups m INNER JOIN Users u ON m.groupID = u.GroupID WHERE u.UserID = "John"
+    // and then yea show the groups and shit
 
 
 
 }
+
+
+
+
 

@@ -1,30 +1,30 @@
 ﻿@model LionFishWeb.Models.CalendarViewModel
 @{
-	ViewBag.Title = "Events";
+    ViewBag.Title = "Events";
 }
 
 @section Nav {
-	@Html.Partial("_NavApp", Model.ProfileImg);
+    @Html.Partial("_NavApp", Model.ProfileImg);
 }
 <!DOCTYPE html>
 <main>
-	@section Scripts
+    @section Scripts
         {
-		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/jquery-3.3.1.min.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/en-gb.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")"></script>
-		<link rel="stylesheet" href="~/css/calendar.css" type="text/css" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" type="text/css" />
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
-		<link rel="stylesheet" href="~/css/scheduler.min.css" type="text/css" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" type="text/css" />
-		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js")"></script>
-		<script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/1.9.4/scheduler.min.js")"></script>
-		@*<script type="text/javascript" src="@Url.Content("~/scripts/CalendarJS.js")"></script>*@
-		<script>
+        <script type="text/javascript" src="@Url.Content("https://code.jquery.com/jquery-3.3.1.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/en-gb.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://code.jquery.com/ui/1.12.0/jquery-ui.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")"></script>
+        <link rel="stylesheet" href="~/css/calendar.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/scheduler.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" type="text/css" />
+        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/1.9.4/scheduler.min.js")"></script>
+        @*<script type="text/javascript" src="@Url.Content("~/scripts/CalendarJS.js")"></script>*@
+        <script>
 			$(document).ready(function () {
 
 				//var selectedEvent; //Move to controller
@@ -46,7 +46,10 @@
 
 				$("#closePopup").click(function () {
 					$('#popup').css('display', 'none');
-				});
+                });
+                $("#closeLinker").click(function () {
+                    $('#notesLinker').css('display', 'none');
+                });
 				$("#closeEditor").click(function () {
 					$('#editor').css('display', 'none');
 				});
@@ -70,8 +73,10 @@
 				//	$('#editor').css('display', 'none');
 				//});
 				$("#modEvent").click(function () {
-
-					$('#chName').val(eventObj.title);
+                    $('#chID').val(eventObj.id);
+                    console.log("eventObj.id : " + eventObj.id);
+                    $('#chName').val(eventObj.title);
+                    $('#chName2').val(eventObj.id);
 					$('#chColor').val(eventObj.color);
 					$('#chDesc').val(eventObj.description);
 					console.log($('#chStart').val());
@@ -125,17 +130,6 @@
 						$('#createEvent').css('display', 'inline');
 						$("#createEvent").css("position", "absolute");
 					},
-					//customButtons: {
-					//	addEventButton: {
-					//		text: 'add event...',
-					//		click: function () {
-					//			$('#createEvent').css('left', event.pageX);      // <<< use pageX and pageY
-					//			$('#createEvent').css('top', event.pageY);
-					//			$('#createEvent').css('display', 'inline');
-					//			$("#createEvent").css("position", "absolute");
-					//		}
-					//	}
-					//},
 					eventClick: function (calEvent, jsEvent, view) {
 						eventObj = calEvent;
 						//eventObj = $("#calendar").fullCalendar('clientEvents', selectedEvent.id)[0];
@@ -147,7 +141,7 @@
 						var eventNotes = JSON.parse(calEvent.notes);
 						console.log(eventNotes);
 						for (var key in eventNotes) {
-							
+
 							if (eventNotes.hasOwnProperty(key)) {
 								var unJSON = JSON.parse(key)
 								for (var key2 in unJSON) {
@@ -162,7 +156,7 @@
 										//break;
 									}
 								}
-								
+
 							}
 
 						}
@@ -300,146 +294,183 @@
 						revert: true,      // will cause the event to go back to its
 						revertduration: 0  //  original position after the drag
 					});
-				});
+                });
+                console.log("do we have model.id ? " + '@Model.ID' != null)
 				if('@Model.ID' != null) {
-					$('#calendar').fullCalendar('gotoDate', '@Model.DateT');
+                    $('#calendar').fullCalendar('gotoDate', '@Model.DateT');
+                    var calEvent = $("#calendar").fullCalendar('clientEvents', '@Model.ID');
+                    console.log("calEvent.id : " + calEvent.id);
+                    $('#popuptext').text(calEvent.title);
+					//$("#popuptext").append("<p id=\"id\">" + calEvent.id + "</p>");
+					$("#popuptext").append("<p id=\"date\">" + moment(calEvent.start).format('h:mm:ss a') + "</p>");
+					$("#popuptext").append("<p id=\"desc\">" + calEvent.description + "</p>");
+
+					var eventNotes = JSON.parse(calEvent.notes);
+					console.log(eventNotes);
+					for (var key in eventNotes) {
+
+						if (eventNotes.hasOwnProperty(key)) {
+							var unJSON = JSON.parse(key)
+							for (var key2 in unJSON) {
+								console.log("key :" + key);
+								console.log("eventNotes[key] : " + eventNotes[key])
+								console.log("key2 : " + key2);
+								console.log("unJSON[key2] : " + unJSON[key2]);
+								console.log("calEvent.id : " + calEvent.id);
+								if (calEvent.id == unJSON[key2]) {
+									var link = "<span style='cursor:pointer;' class='notesLink' id='" + key2 + "'>" + eventNotes[key] + "</span>";
+									$("#popuptext").append(link);
+									//break;
+								}
+							}
+
+						}
+
+					}
+
+					//$('#popuptext').append(calEvent.id).attr(id="id");
+                    
+					$('#popup').css('left', 500);      // <<< use pageX and pageY
+					$('#popup').css('top', 500);
+					$('#popup').css('display', 'inline');
+					$("#popup").css("position", "absolute");  // <<< also make it absolute!
+					$('#chID').val(eventObj.id);
+
 				}
 
 			});
-		</script>
-	}
+        </script>
+    }
 
 
-	<aside class="split" id="lf">
-		<div id="sb">
-			<div class="tt" style="position:relative;">
-				Calendar
-				<div id="newnf" style="background:mediumslateblue;">+</div>
-			</div>
-			<div class="bc" style="padding:0;overflow:visible;">
-				<div id='external-events'>
-					@using (Html.BeginForm())
-					{
-						@Html.AntiForgeryToken()
+    <aside class="split" id="lf">
+        <div id="sb">
+            <div class="tt" style="position:relative;">
+                Calendar
+                <div id="newnf" style="background:mediumslateblue;">+</div>
+            </div>
+            <div class="bc" style="padding:0;overflow:visible;">
+                <div id='external-events'>
+                    @using(Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
 
-						@Html.Editor("Search", new { htmlAttributes = new { id = "Search" } })
+                        @Html.Editor("Search", new { htmlAttributes = new { id = "Search" } })
 
-						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;">Search Event</button>
-						<button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:orange;">Clear Search</button>
-					}
-					<div id='external-events-listing'>
-						<h4>Imported Events</h4>
+                        <button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:cornflowerblue;">Search Event</button>
+                        <button formaction=@Url.Action("Search") formmethod="post" type="submit" style="padding:5px;background-color:orange;">Clear Search</button>
+                    }
+                    <div id='external-events-listing'>
+                        <h4>Imported Events</h4>
 
-					</div>
-					<p style=" display:none">
-						<input type='checkbox' id='drop-remove' checked='checked' />
+                    </div>
+                    <p style=" display:none">
+                        <input type='checkbox' id='drop-remove' checked='checked' />
 
-					</p>
-				</div>
-			</div>
-		</div>
-	</aside>
-	<section class="split" id="rt">
-		<div id="ct">
-			<div id="swap1">
-				<div class="tt"></div>
-				<div class="bc">
-					<div id='wrap'>
-						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
-							<div id="popuptext">
-
-
-
-
-
-							</div>
-							<button id="addNote">Link Notes</button>
-							<button id="modEvent">Modify event</button>
-
-							<div style="display:none;padding:30px;height:auto;background-color: lightblue;  z-index:9999;" id="notesLinker">
-								@using (Html.BeginForm())
-								{
-									@Html.AntiForgeryToken()
-									<p>
-										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" } })
-									</p>
-									<p>Notes</p>
-
-
-									List<SelectListItem> listItems = new List<SelectListItem>();
-									foreach (KeyValuePair<string, string> note in @Model.Notes)
-									{
-										listItems.Add(new SelectListItem
-										{
-											Text = note.Value,
-											Value = note.Key
-										});
-									}
-									
-									@Html.DropDownList("Notes", new SelectList(listItems, "Value", "Text"), new { htmlAttributes = new { id = "Notes" } })
-									<button formaction=@Url.Action("Note") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Link</button>
-								}
-								<button style="padding:5px;background-color:orange;" id="closeLinker">Close</button>
-							</div>
-
-							<div style="display:none;padding:10px;height:auto;background-color: lightblue;  z-index:9999;" id="editor">
-								@using (Html.BeginForm())
-								{
-									@Html.AntiForgeryToken()
-									<p>
-										@Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" } })
-									</p>
-									<p>Title</p>
-									@Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
-									<p>Color</p>
-									@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
-									<p>Description</p>
-									@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
-									<p>All day?</p>
-									@Html.CheckBox("AllDay", false)
-									<p>Start date</p>
-									@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
-									<p>End date</p>
-									@Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
-									<button formaction=@Url.Action("Publish") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Publish this event</button>
-									<button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
-									<button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
-								}
-								<button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
-							</div>
-							<button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
-						</div>
-						<div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="createEvent">
-							<div id="creatorText"></div>
-							@using (Html.BeginForm())
-							{
-								@Html.AntiForgeryToken()
-								<p>Title</p>
-								@Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
-								<p>Color</p>
-								@Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
-								<p>Description</p>
-								@Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
-								<p>All day?</p>
-								@Html.CheckBox("AllDay", false)
-								<p>Start date</p>
-								@Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
-								<p>End date</p>
-								@Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
-
-								<button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
-							}
-							<button style="padding:5px;background-color:orange;" id="closeCreator">Close</button>
-						</div>
-					</div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <section class="split" id="rt">
+        <div id="ct">
+            <div id="swap1">
+                <div class="tt"></div>
+                <div class="bc">
+                    <div id='wrap'>
+                        <div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="popup">
+                            <div id="popuptext">
 
 
 
-					<div id='calendar' style="z-index:-1"></div>
-					<div style='clear:both'></div>
-				</div>
-			</div>
-		</div>
-	</section>
+
+
+                            </div>
+                            <button id="addNote">Link Notes</button>
+                            <button id="modEvent">Modify event</button>
+
+                            <div style="display:none;padding:30px;height:auto;background-color: lightblue;  z-index:9999;" id="notesLinker">
+                                @using(Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <p>
+                                        @Html.Editor("ID", new { htmlAttributes = new { id = "chID", type = "hidden" } })
+                                    </p>
+                                    <p>Notes</p>
+
+
+                                    List<SelectListItem> listItems = new List<SelectListItem>();
+                                    foreach(KeyValuePair<string, string> note in @Model.Notes)
+                                    {
+                                        listItems.Add(new SelectListItem
+                                        {
+                                            Text = note.Value,
+                                            Value = note.Key
+                                        });
+                                    }
+
+                                    @Html.DropDownList("Notes", new SelectList(listItems, "Value", "Text"), new { htmlAttributes = new { id = "Notes" } })
+                                    <button formaction=@Url.Action("Note") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Link</button>
+                                }
+                                <button style="padding:5px;background-color:orange;" id="closeLinker">Close</button>
+                            </div>
+
+                            <div style="display:none;padding:10px;height:auto;background-color: lightblue;  z-index:9999;" id="editor">
+                                @using(Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Editor("ID", new { htmlAttributes = new { id = "chName2", type = "hidden", required = "required" } })
+                                    <p>Title</p>
+                                    @Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
+                                    <p>Color</p>
+                                    @Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+                                    <p>Description</p>
+                                    @Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
+                                    <p>All day?</p>
+                                    @Html.CheckBox("AllDay", false)
+                                    <p>Start date</p>
+                                    @Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+                                    <p>End date</p>
+                                    @Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+                                    <button formaction=@Url.Action("Publish") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="publish">Publish this event</button>
+                                    <button formaction=@Url.Action("Apply") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Apply</button>
+                                    <button formaction=@Url.Action("Delete") formmethod="post" type="submit" style="padding:5px;background-color:red;" id="deleteDis">Remove Event</button>
+                                }
+                                <button style="padding:5px;background-color:orange;" id="closeEditor">Close</button>
+                            </div>
+                            <button style="padding:5px;background-color:orange;" id="closePopup">Close</button>
+                        </div>
+                        <div style="display:none;padding:10px;background-color: lightblue;  z-index:999;" id="createEvent">
+                            <div id="creatorText"></div>
+                            @using(Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <p>Title</p>
+                                @Html.Editor("Title", new { htmlAttributes = new { id = "chName", required = "required" } })
+                                <p>Color</p>
+                                @Html.TextBox("Color", "#4286f4", new { type = "color", htmlAttributes = new { id = "chColor" } })
+                                <p>Description</p>
+                                @Html.Editor("Description", new { htmlAttributes = new { id = "chDesc" } })
+                                <p>All day?</p>
+                                @Html.CheckBox("AllDay", false)
+                                <p>Start date</p>
+                                @Html.TextBox("Start", "2019-01-01", new { type = "date", htmlAttributes = new { id = "chStart" } })
+                                <p>End date</p>
+                                @Html.TextBox("End", "2019-01-02", new { type = "date", htmlAttributes = new { id = "chEnd" } })
+
+                                <button formaction=@Url.Action("Create") formmethod="post" type="submit" style="padding:5px;background-color:limegreen;" id="applyEdit">Create</button>
+                            }
+                            <button style="padding:5px;background-color:orange;" id="closeCreator">Close</button>
+                        </div>
+                    </div>
+
+
+
+                    <div id='calendar' style="z-index:-1"></div>
+                    <div style='clear:both'></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </main>

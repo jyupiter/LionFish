@@ -13,6 +13,7 @@ namespace LionFishWeb.Models
         public string GroupDesc { get; set; }
         public string GroupImage { get; set; }
         public string Owner_Id { get; set; }
+        public string GroupMessage { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<User> User { get; set; }
@@ -20,11 +21,12 @@ namespace LionFishWeb.Models
         public virtual ICollection<Event> Events { get; set; }
 
         public Group() { }
-        public Group(string GroupName, string GroupDesc, string GroupImage)
+        public Group(string GroupName, string GroupDesc, string GroupImage, string GroupMessage)
         {
-            GroupName = this.GroupName;
-            GroupDesc = this.GroupDesc;
-            GroupImage = this.GroupImage;
+            this.GroupName = GroupName;
+            this.GroupDesc = GroupDesc;
+            this.GroupImage = GroupImage;
+            this.GroupMessage = GroupMessage;
             User = new List<User>();
             ID = generateID();
         }

@@ -80,46 +80,44 @@
             jQuery.ajax({
                 url: "App/sendMessage",
                 type: "POST",
-                async:false,
-                data: {group : room, messageIn = message},
+                async: false,
+                data: { group: room, messageIn = message },
                 cache: false,
                 dataType: "JSON",
-                success: function (data) {
-                    console.log(data);
-
+                success: function (u) {
+                    console.log(u);
+                    $.connection.myHub.Server.getMessage(u);
                 }
             });
-            //DateTime TimeNow = DateTime.now;
-            //  Message newMessage = new Message(uname, message, "test");
-          //  $.connection.myHub.server.hello();
+         
             $("#CharLeft").css("visibility", "hidden");
             //  console.log("username during connection" + username);
             $('#area').val('');
-            $.connection.myHub.Server.getMessage();
+          
         }
     });
 
-    $.connection.myHub.client.getMessage = function () {
-
+    $.connection.myHub.client.getMessage = function (uid) {
+        var dat = {
+            'uid' : uid
+        }
         $.ajax({
             url: "App/updateDB",
             type: "POST",
-            success: function () {
+            data: dat,
+            dataType: 'JSON',
+            success: function (groupM) {
+                var a = JSON.parse(groupM);
+                for (var i = 0; i < a.count; i++) {
 
-
+                    $("#NewMessage").append(a[i].UserName + "\n" + a[i].message);
+                }
             }
 
 
 
         })
     }
-    $("#ShowGroup").on("click", function () {
-
-
-        $.get("/Home/ShowGroup").done(function () {
-            console.log("aaaaaa");
-        });
-
 
     })
     // text counter
@@ -213,17 +211,17 @@
                 console.log(JSmessage);
                 var p = JSON.parse(JSmessage);
                 console.log(p);
-            //    //    var a = JSON.parse(p);
-            //    for (var i = (p.length -1); i > 0; i--) {
-            //            $("#NewMessage").append(p[i].UserName + "<br/>" + p[i].message + "<br/>");
-            //        }
-            //        console.log(p);
-            //        console.log("\n");
-            //}
-            //}
-            //$.post('/Home/ShowGroup', val, function (data) {
-            //    console.log(data);
-            //});
+                //   var a = JSON.parse(p);
+                for (var i = (p.length -1); i > 0; i--) {
+                        $("#NewMessage").append(p[i].UserName + "<br/>" + p[i].message + "<br/>");
+                    }
+                    console.log(p);
+                    console.log("\n");
+            }
+            }
+            $.post('/Home/ShowGroup', val, function (data) {
+                console.log(data);
+            });
 
 
             //$(this).parent().find('input').val(val);
@@ -241,23 +239,19 @@
 
 
         $.post("@Url.Action('ReceiveText', 'App')");
+        $.ajax({
+            type: "POST",
+            url: "App/ReceiveText",
+            success: function (messageList) {
 
-        //filtering here i guess
-        // console.log(JSONMessage);
-     //   console.log("test");
-       // var result = JSON.parse(JSONMessage);
-        //var messageobj = @Html.Raw((Json.Encode(NewMessage)));
-        // Console.Log(messageobj);
-      ///  console.log(result);
-        // console.log(result.target == $("input[name='chatRoom']:checked").val());
+
+            }
+
+
+        });
+     
         if (true /*$("input[name='chatRoom']:checked").val().toString() == result.target*/) {
-            //console.log(result.time);
-
-          //  var newDate = parseJsonDate(result.time);
-            //var newtime = JSON.parse(result.time);
-            // console.log(newtime);
-        //    $('#NewMessage').append("<span id = \"user\" style=\"font-size:8px;\">" + result.user + "</span><br/>" + result.message + "<br/>" + "<span style=\"font-size:8px;\">" + newDate.getHours() + ":" + (newDate.getMinutes() < 10 ? '0' : '') + newDate.getMinutes() + "</span></br>");
-           
+       
 
             {
                 var title = document.title;
@@ -306,17 +300,7 @@
 
     })
 
-    //$("#genData").on("click", function () {
 
-    //    console.log(event);
-    //    console.log("fuck");
-
-
-    //    $.connection.myHub.server.sessionUsername("fuck");
-
-
-
-    //})
 
 
     $.connection.myHub.client.sessionUsername = function () { }
@@ -371,36 +355,6 @@
 
 
     }
-    $("#pop").on("click", function () {
-        var fuck = {
-            Some : "Body"
-        }
-        jQuery.ajax({
-            url: "Home/ShowGroup",
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(fuck),
-            dataType: "json",
-            success: function (jsonmsg) {
-                console.log("success");
-                console.log(jsonmsg);
-                console.log("parsed below");
-                var p = JSON.parse(jsonmsg);
-                console.log(p);
-                console.log(p.length);
-                for (var i = 0; i < p.length; i++) {
-                    $("#NewMessage").append(p[i].message + "    " + p[i].User_Id);
-                    console.log("append");
-                }
-            }
-
-
-
-
-       
-
-        })
-    })
 
 
     $.connection.myHub.client.ListGroup = function (arr) {

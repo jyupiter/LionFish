@@ -247,7 +247,7 @@ namespace LionFishWeb.Controllers
                 }
             }
         }
-        
+      
         public ActionResult Chat()
         {
             List<string> temp = new List<string>();
@@ -262,7 +262,7 @@ namespace LionFishWeb.Controllers
 
                     //var query = context.Messages.Select(p => new { p.ID, p.messages });
 
-                    query2 = context.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%" + User.Identity.GetUserId() + "%')").ToList();
+                    query2 = context.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE ID IN (SELECT ID FROM GroupUser WHERE UserId LIKE '%" + User.Identity.GetUserId() + "%')").ToList();
                     for (int i = 0; i < query2.Count; i++)
                     {
                         temp.Add(query2[i].ID);
@@ -286,7 +286,7 @@ namespace LionFishWeb.Controllers
         /// <param name="data"></param>
         // when sending message
 
-        public void sendMessage(string group, string messageIn)
+        public ActionResult sendMessage(string group, string messageIn)
         {
             string currentUser = User.Identity.GetUserId();
             using (var ctx = new ApplicationDbContext())
@@ -319,18 +319,18 @@ namespace LionFishWeb.Controllers
                     CallDB(command);
                 }
             }
-            // return Index(Json(, JsonRequestBehavior.AllowGet));
+             return Json(currentUser, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult updateDB()
+        public ActionResult updateDB(string uname)
         {
             List<Group> a = new List<Group>();
 
             using (var ctx = new ApplicationDbContext())
             {
-                string uname = User.Identity.GetUserId();
+                
                 var query3 = ctx.Groups.SqlQuery("SELECT * FROM \"Group\" WHERE Group_Id IN (SELECT Group_Id FROM GroupUser WHERE User_Id LIKE '%'" + User.Identity.GetUserId() + "'").ToList();
                 string GroupID = query3[0].ID;
                 a = ctx.Groups.SqlQuery("SELECT * \"Group\" WHERE Group_Id = '" + GroupID + "'").ToList();

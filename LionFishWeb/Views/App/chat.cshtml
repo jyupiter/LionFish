@@ -1,0 +1,134 @@
+﻿@using LionFishWeb.Controllers;
+@using LionFishWeb.Models;
+
+
+@{
+    ViewBag.Title = "Chat";
+}
+
+@section Nav {
+    @Html.Partial("_NavApp");
+}
+
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.4.0.js"></script>
+    <script src='/signalr/js'></script>
+    <script src="~/Scripts/SignalR.js"></script>
+    <script src="~/"></script>
+    <!--<script src="~/Scripts/signalr/hubs"></script>
+    -->
+}
+@{
+
+}
+<main>
+    <section style="position:relative;width:500px;height:600px;padding:15px;overflow-x:visible;overflow-y:scroll;">
+
+        <p id="NewMessage"></p>
+    </section>
+    <section style=" height:80px;width:500px;align-content:center;vertical-align:middle;">
+        <input type="text" style="width:calc(100% - 120px);height:40px;margin:0;max-width:100%;word-wrap: break-word;" id="area" value="" />
+        <input type="button" style="position:absolute;display:inline;width:100px;height:40px;" id="sendText" value="send" />
+
+
+
+        <p style="font-size:10px;visibility:hidden;" id="CharLeft"></p>
+        <!--This bottom to fit into foreach-->
+        <div>
+            <input type="text" id="radio-value" name="radio-value" />
+        </div>
+
+        <!--Ends Here-->
+        @*<input type="button" id="genData" value="genDataa" />
+            <input type="button" value="show Groups" id="ShowGroups">*@
+
+    </section>
+    @{
+
+        //  List<Group> query = (List<Group>)ViewData["query"];
+
+
+
+        @*@for (int i =0; i < Model.Count; i++) {
+                <div height="50px" width="100px">
+                        <span>
+                            @Model[i].GroupName
+                        </span>
+                </div>
+            }*@
+        <input type="button" id="pop" value="awohaiuawe" />
+        <div class="radio-group">
+            @foreach (Group a in Model)
+            {
+                <div class="radio" name="@a.Group_Id" style="display: block;
+-webkit-box-sizing: content-box;
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+float: none;
+z-index: auto;
+width: 300px;
+height: auto;
+position: relative;
+cursor: default;
+opacity: 1;
+top: 0;
+margin: 0;
+padding: 20px;
+overflow: hidden;
+border: none;
+-webkit-border-radius: 14px / 15px 15px 14px 14px;
+border-radius: 14px / 15px 15px 14px 14px;
+font: normal 16px/1 Verdana, Geneva, sans-serif;
+color: rgba(255,255,255,1);
+text-align: center;
+-o-text-overflow: ellipsis;
+text-overflow: ellipsis;
+background: rgba(242,196,196,0.13);
+-webkit-box-shadow: 3px 1px 1px 0 rgba(181,150,150,0.3) ;
+box-shadow: 3px 1px 1px 0 rgba(181,150,150,0.3) ;
+text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+-webkit-transition: none;
+-moz-transition: none;
+-o-transition: none;
+transition: none;
+-webkit-transform: none;
+transform: none;
+-webkit-transform-origin: 50% 50% 0;
+transform-origin: 50% 50% 0;">
+                    <p>@a.Group_Id</p>
+
+                    <p>@a.GroupName</p>
+                </div>
+            }
+        </div>
+
+
+
+
+
+        @*@foreach (var b in
+                list) {
+
+                <span>
+                    @b.GroupName
+                </span>
+                <br/>
+                <span>
+                    @b.Group_Id
+                </span>
+
+            }*@
+
+
+
+    }
+    <section>
+        <br />
+        <div>
+            <input type="button" id="startChat" />
+            <input type="button" id="ShowGroup" />
+            waeeaeae
+        </div>
+        <div>@Html.ActionLink("sadads", "ExpandUsers", "Home", null, new { @class = "button-black" }) </div>
+    </section>
+</main>

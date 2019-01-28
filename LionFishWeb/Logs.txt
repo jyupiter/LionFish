@@ -1,0 +1,787 @@
+
+ --------------------- 
+
+id: Y4ZwhfLgDn_y3Dcx5pWDS6EO1WOxaRTiZb31vNaPTu81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"28ecfef4-6719-4134-a24a-55e3e038c435":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: Y4ZwhfLgDn_y3Dcx5pWDS6EO1WOxaRTiZb31vNaPTu81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"28ecfef4-6719-4134-a24a-55e3e038c435":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: Y4ZwhfLgDn_y3Dcx5pWDS6EO1WOxaRTiZb31vNaPTu81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"Go0S6RyhQfoPiuxZ7rNUjwUe3ouTPt5_Rbwgwed92rk1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: Y4ZwhfLgDn_y3Dcx5pWDS6EO1WOxaRTiZb31vNaPTu81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"Go0S6RyhQfoPiuxZ7rNUjwUe3ouTPt5_Rbwgwed92rk1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: gL4aowksf6ockWbwMuEBxCdjG64iPnZCcw8aWNoEAd01
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"8osHp_Ohe3_LL959yPgjMcy7_ingNcDECN0T52nqlg81":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: gL4aowksf6ockWbwMuEBxCdjG64iPnZCcw8aWNoEAd01
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"8osHp_Ohe3_LL959yPgjMcy7_ingNcDECN0T52nqlg81":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: eZfbaYQQgvRSTwhrfe0Y7g5dLZtl4ixyXmmG2vxjhZ81
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"if4OSG1dNN0cryMvS0O91mL0N3bF-mg_gmV5NroX0iU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: o3GVluul0dhm0Y49mIFlqbJTXlT33pHakPbh5bmiANs1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"qv6JMDgi4LgtJ1ZnnQ9IoiQZCQbHU3DsEFWU4f_2z881":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+
+ --------------------- 
+
+id: M9yYycNY4j67ptNCuMLzkNz4TrpeVI3NGh5uFv6VB5I1
+User: 
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: {"ZeGWEFPvnaotAQiicgo8EEvIhwaSE7v3QMwn13-Q8TU1":"Sonnet 94"}
+
+ --------------------- 
+
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 236fc46e-3a37-4562-a209-cd18fa4cad94
+User: f11e8f4a-22f7-4f12-a398-24b69b2f93ab
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+>>>>> SQL command: SELECT * FROM Event WHERE ID = @UID
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 236fc46e-3a37-4562-a209-cd18fa4cad94
+User: f11e8f4a-22f7-4f12-a398-24b69b2f93ab
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 236fc46e-3a37-4562-a209-cd18fa4cad94
+User: f11e8f4a-22f7-4f12-a398-24b69b2f93ab
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+>>>>> SQL command: SELECT * FROM Event WHERE ID = @UID
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 236fc46e-3a37-4562-a209-cd18fa4cad94
+User: f11e8f4a-22f7-4f12-a398-24b69b2f93ab
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+as
+1b1bd7cf-bc09-4e03-9409-d4108c4bc818
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+Eternally
+8b188c41-cf36-450c-9539-bd2b537f778c
+Deciduously
+f0eae094-46d0-4f78-b2b0-dd9ffcd65bbd
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 236fc46e-3a37-4562-a209-cd18fa4cad94
+User: f11e8f4a-22f7-4f12-a398-24b69b2f93ab
+title: A thing, in a place
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+as
+1b1bd7cf-bc09-4e03-9409-d4108c4bc818
+Sonnet 94
+28ecfef4-6719-4134-a24a-55e3e038c435
+Eternally
+8b188c41-cf36-450c-9539-bd2b537f778c
+Deciduously
+f0eae094-46d0-4f78-b2b0-dd9ffcd65bbd
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 

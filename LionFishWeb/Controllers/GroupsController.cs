@@ -9,6 +9,8 @@ using System.Diagnostics;
 using LionFishWeb.Models;
 
 using static LionFishWeb.Models.GroupViewModels;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace LionFishWeb.Controllers
 {
@@ -124,7 +126,7 @@ namespace LionFishWeb.Controllers
             string named = model.Groups.GroupName;
             string desc = model.Groups.GroupDesc;
             string image = model.Groups.GroupImage;
-            string idd = new Group().generateID();
+            string idd = "" + Guid.NewGuid();
 
             Boolean peekaboo = true;
 

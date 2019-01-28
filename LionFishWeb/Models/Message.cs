@@ -14,12 +14,14 @@ namespace LionFishWeb.Models
         public string message { get; set; }
 
         public string User_Id { get; set; }
+        public string UserName { get; set; }
 
-        public Message(int ID, string message, string User_Id)
+        public Message(int ID, string message, string User_Id, string UserName)
         {
             this.message = message;
             this.ID = ID;
             this.User_Id = User_Id;
+            this.UserName = UserName;
 
         }
         public Message()

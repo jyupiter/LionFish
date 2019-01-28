@@ -93,10 +93,10 @@ namespace LionFishWeb.Controllers
         public List<Group> Load()
         {
 
-            string commandText = "SELECT * FROM[dbo].[Group] where ID IN (SELECT Group_ID FROM[dbo].[UserGroup] where User_Id IN (SELECT Id FROM[dbo].[AspNetUsers] where Id = '" + User.Identity.GetUserId() + "') );";
+            string commandText = "SELECT * FROM[dbo].[Group] where ID IN (SELECT GroupID FROM[dbo].[GroupUser] where UserID IN (SELECT Id FROM[dbo].[AspNetUsers] where Id = '" + User.Identity.GetUserId() + "') );";
             List<Group> groups = new List<Group>();
 
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 dbCommand.CommandType = System.Data.CommandType.Text;
@@ -132,8 +132,8 @@ namespace LionFishWeb.Controllers
             Boolean peekaboo = true;
 
             string commandText = "INSERT INTO [dbo].[Group] (Id, GroupName, GroupDesc, GroupImage,Owner_Id) VALUES ('" + idd + "','" + named + "','" + desc + "','" + image + "','" + User.Identity.GetUserId() + "');";
-            string commandText2 = "INSERT INTO [dbo].[UserGroup] (User_Id, Group_ID) VALUES ('" + User.Identity.GetUserId() + "' , '" + idd + "');";
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            string commandText2 = "INSERT INTO [dbo].[GroupUser] (UserID, GroupID) VALUES ('" + User.Identity.GetUserId() + "' , '" + idd + "');";
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 dbCommand.CommandType = System.Data.CommandType.Text;
@@ -157,13 +157,13 @@ namespace LionFishWeb.Controllers
         }
         public ICollection<User> GetUserListFromGroup(string groupid)
         {
-            string commandText = "SELECT User_Id FROM [dbo].[UserGroup] WHERE Group_ID = '" + groupid + "';";
+            string commandText = "SELECT UserID FROM [dbo].[GroupUser] WHERE GroupID = '" + groupid + "';";
             List<string> userid = new List<string>();
             List<string> usernames = new List<string>();
             List<User> listouser = new List<User>();
             Boolean peekaboo = true;
 
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 dbConnection.Open();
@@ -172,7 +172,7 @@ namespace LionFishWeb.Controllers
                     SqlDataReader reader = dbCommand.ExecuteReader();
                     while(reader.Read())
                     {
-                        userid.Add((string)reader["User_Id"]);
+                        userid.Add((string)reader["UserID"]);
                     }
                 }
                 catch(Exception e) { peekaboo = false; }
@@ -181,7 +181,7 @@ namespace LionFishWeb.Controllers
             {
                 foreach(string usered in userid)
                 {
-                    SqlConnection dbConnection2 = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+                    SqlConnection dbConnection2 = new SqlConnection(Utility.Constants.Conn);
                     string commandText2 = "SELECT * FROM [dbo].[AspNetUsers] WHERE (Id) = '" + usered + "';";
                     SqlCommand dbCommand2 = new SqlCommand(commandText2, dbConnection2);
 
@@ -227,9 +227,9 @@ namespace LionFishWeb.Controllers
             string ReceiveResult = model.search.Search;
             string idd = GetUserIdfromName(ReceiveResult);
             Group grouped = model.group;
-            string commandText2 = "INSERT INTO [dbo].[UserGroup] (User_Id, Group_ID) VALUES ('" + idd + "' , '" + grouped.ID + "');";
+            string commandText2 = "INSERT INTO [dbo].[GroupUser] (UserID, GroupID) VALUES ('" + idd + "' , '" + grouped.ID + "');";
 
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText2, dbConnection))
             {
                 dbCommand.CommandType = System.Data.CommandType.Text;
@@ -250,7 +250,7 @@ namespace LionFishWeb.Controllers
 
             List<string> neo = new List<string>();
 
-            SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn);
             SqlCommand command = new SqlCommand("SELECT (Username) FROM [dbo].[AspNetUsers] WHERE Username LIKE '%" + name + "%';", dbConnection);
             dbConnection.Open();
             try
@@ -277,7 +277,7 @@ namespace LionFishWeb.Controllers
             List<User> StuList = new List<User>();
             if(SearchValue != "")
             {
-                SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+                SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn);
                 SqlCommand command = new SqlCommand("SELECT * FROM [dbo].[AspNetUsers] WHERE Username LIKE '" + SearchValue + "%';", dbConnection);
                 //command.Parameters.Add("@UserName", SqlDbType.NVarChar);
                 //command.Parameters["@UserName"].Value = SearchValue;
@@ -325,7 +325,7 @@ namespace LionFishWeb.Controllers
                 commandText = "UPDATE [dbo].[Group] SET GroupDesc = '" + data + "' WHERE ID ='" + grouped + "';";
             }
 
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 dbConnection.Open();
@@ -350,7 +350,7 @@ namespace LionFishWeb.Controllers
             List<Group> groups = new List<Group>();
             GroupsViewModel model = new GroupsViewModel();
 
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 dbCommand.CommandType = System.Data.CommandType.Text;
@@ -389,7 +389,7 @@ namespace LionFishWeb.Controllers
         public ActionResult UpdateGroupDesc(Group group)
         {
             string commandText = "UPDATE [dbo].[Group] SET GroupDesc = '" + group.GroupDesc + "');";
-            using(SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using(SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn))
             using(SqlCommand dbCommand = new SqlCommand(commandText, dbConnection))
             {
                 try
@@ -408,7 +408,7 @@ namespace LionFishWeb.Controllers
         public string GetUserIdfromName(string username)
         {
             string potato = "";
-            SqlConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            SqlConnection dbConnection = new SqlConnection(Utility.Constants.Conn);
             SqlCommand command = new SqlCommand("SELECT (Id) FROM [dbo].[AspNetUsers] WHERE Username ='" + username + "';", dbConnection);
             dbConnection.Open();
             try

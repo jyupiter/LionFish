@@ -1803,3 +1803,30 @@ First of a kind
 0f6c9cb9-7608-446e-bf3f-cdfda2694780
 Updating event!
 >>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 
+---------- Calendar() called, Starting calendar app! ----------
+>>>>> SQL command: SELECT * FROM Event WHERE UserID = @user
+~~~~~~~~~~ Loading private events ~~~~~~~~~~
+
+ --------------------- 
+
+id: 1c2ffe39-c41d-40ff-b606-8d56e71c0c68
+User: 84d99d7a-8280-41f6-b5ac-2eb1fb37d06c
+title: Events
+desc: At a certain time
+start: 12/31/2018 04:00 PM
+End: 01/01/2019 04:00 PM
+Notes: 
+
+ --------------------- 
+
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+First of a kind
+0f6c9cb9-7608-446e-bf3f-cdfda2694780
+~~~~~~~~~~ Loading public events ~~~~~~~~~~
+>>>>> SQL command: SELECT * FROM Event
+>>>>> SQL command: SELECT * FROM Event WHERE ID = @UID
+~~~~~~~~~~ Getting Notes ~~~~~~~~~~
+First of a kind
+0f6c9cb9-7608-446e-bf3f-cdfda2694780
+Updating event!
+>>>>> SQL command: UPDATE Event SET Title =  @Title , Description =  @Description , AllDay =  @AllDay , "start" =  @start , "end "=  @end , Color =  @Color , UserID =  @User  WHERE ID =  @DID 

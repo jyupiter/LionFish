@@ -15,7 +15,7 @@
 
     $("input").on("keyup", function () {
         var inp = $("#input-sign-password").val();
-        var x = zxcvbn(inp);
+        var x = zxcvbn(inp).score;
         var v = $(".input-email").val().toLowerCase();
         var r = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
         if (x >= 2 && r.test(v) && v.length > 0)

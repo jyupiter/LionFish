@@ -2,6 +2,16 @@
     ViewBag.Title = "Home Page";
 }
 
+@section Nav {
+    @Html.Partial("_NavHome");
+}
+
+@Styles.Render("~/Content/tippy.css")
+
+@Scripts.Render("~/Scripts/Index.js")
+@Scripts.Render("~/Scripts/zxcvbn.js")
+@Scripts.Render("~/Scripts/tippy.js")
+
 <main>
     <section id="huge" class="sect-index">
         <h1>Organize your life<span style="color:#EDA831;">.</span></h1>

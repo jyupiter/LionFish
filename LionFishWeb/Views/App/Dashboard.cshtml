@@ -1,7 +1,40 @@
-﻿
+﻿@model LionFishWeb.Models.DashboardViewModel
+
 @{
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2>
+@section Nav {
+    @Html.Partial("_NavApp", Model.ProfileImg);
+}
 
+<script>
+    $(function () {
+        function clock() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            if (s < 10) {
+                s = "0" + s;
+            }
+            $("h1").text(h + " : " + m + " : " + s);
+            setTimeout(function () { clock() }, 500);
+        }
+
+        clock();
+    });
+</script>
+<main>
+    <div id="imperfection">
+        <h1>Hello, </h1>
+        <h2>Let's get started.</h2>
+        <div>
+            @Html.ActionLink("Calendar", "Calendar", "Calendar", null, new { @class = "button button-blue" })
+            @Html.ActionLink("Notes", "Index", "Note", null, new { @class = "button button-blue" })
+            @Html.ActionLink("Groups", "Dashboard", "App", null, new { @class = "button button-blue" })
+            <hr>
+            @Html.ActionLink("Have feedback?", "Feedback", "App", null, new { @class = "navdroplink" })
+        </div>
+    </div>
+</main>

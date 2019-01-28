@@ -1,13 +1,32 @@
 ﻿$(function () {
 
+    $(".notifclose").on("click", function () {
+        $(this).parent().hide();
+    });
+
     $(".input-email").on("keyup", function () {
         $('span.error-invalid-email').hide();
-        var v = $(this).val();
+        var v = $(this).val().toLowerCase();
         var r = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
         if (!r.test(v) && v.length > 0) {
             $(this).after('<span class="error error-invalid-email">Invalid email!</span>');
         }
     });
+
+    $("input").on("keyup", function () {
+        var inp = $("#input-sign-password").val();
+        var x = zxcvbn(inp);
+        var v = $(".input-email").val().toLowerCase();
+        var r = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        if (x >= 2 && r.test(v) && v.length > 0)
+            enableBtn();
+    });
+
+    function enableBtn() {
+        $("#submit-sign").removeAttr("disabled");
+        $("#submit-sign").addClass("button-blue");
+        $("#submit-sign").removeClass("button-gray");
+    }
 
     function intToZXC(i) {
         var res = [];

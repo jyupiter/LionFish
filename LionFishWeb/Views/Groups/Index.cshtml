@@ -1,0 +1,134 @@
+﻿@using LionFishWeb.Models
+@model LionFishWeb.Models.GroupViewModels.GroupsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<main id="ss" class="split">
+
+    <div><span class="button" /></div>
+    @foreach(var group in Model.Grouped)
+    {
+        <div class="db-v-split-group" id=@group.ID>
+            <div class="db-h-split">
+                <div class=" h-header">
+                    @group.GroupName
+                </div>
+                <div class="h-body">
+                    <label for="groupdesc+@group.ID">Description</label>
+                    <p>@group.GroupDesc</p>
+
+                    @foreach(var member in group.User)
+                    {
+                        <div>@member.UserName</div>
+                    }
+
+
+                    @using(Html.BeginForm("Group", "Groups", group, FormMethod.Post))
+                    {
+                        <input type="submit" id="submit-log" class="button-blue" value="Go to Group" />
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+    <div style="position:absolute; z-index: 1; width:100%; height:100%; overflow:auto; background-color:rgb(0,0,0); background-color:rgba(0,0,0,0.4); z-index:999;" id="popout">
+
+        <span style="color:#aaa; float:right; font-size:14px; font-weight:bold;" id="closepoppy">Close</span>
+        <div style="background-color:#a4bcd0; margin:15% auto; margin-left:15%; margin-right:15%; padding:20px; border: 3px solid #a4bcd0">
+            @using(Html.BeginForm("Index", "Groups", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "" })
+                <div>
+                    @Html.EditorFor(model => model.Groups.GroupName, new { htmlAttributes = new { id = "input-field", @class = "input-field", placeholder = "Group Name" } })
+                </div>
+                <div>
+                    @Html.EditorFor(model => model.Groups.GroupDesc, new { htmlAttributes = new { id = "input-field", @class = "input-field", placeholder = "Enter a Description here!" } })
+                </div>
+                <div>
+                    @Html.EditorFor(model => model.Groups.GroupImage, new { htmlAttributes = new { id = "input-field", @class = "input-field", placeholder = "GIMME YOUR IMAGE" } })
+                </div>
+                <div>
+                    <input type="submit" id="submit-log" class="button-blue" value="CreateaGroup">
+                </div>
+            }
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+        $('#closepoppy').click(function () {
+            $('#popout').css('display', 'none');
+            $().css()
+        });
+
+        window.onclick = function (event) {
+            if (event.target == popout) {
+                popout.style.display = "none";
+            }
+        }
+    </script>
+    <div class="db-v-split-group">
+        <div class="db-h-split">
+            <div class="h-header">Template Group Stuff</div>
+            <div class="h-body">
+                <div class="button" id="rektbutton" style="position:inherit; margin:auto; padding:10px;"></div>
+                <script>
+                    $('#rektbutton').click(function () {
+                        $('#popout').show();
+                    });</script>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        $('document').ready(function ()
+        {
+            $('#popout').hide();
+        })
+
+            $("#invitepls").on("click", "", function () {
+                var InviteValue = $("#searchy").val();
+
+                $.ajax({
+                    type: "post",
+                    url: "/Groups/InviteMembers?ReceiveResult=" + InviteValue,
+                    contentType: "html",
+                });
+            })
+
+
+        $('#closepoppy').click(function () {
+            $('#popout').show;
+        });
+
+        window.onclick = function (event) {
+            if (event.target == popout) {
+                popout.style.display = "none";
+            }
+        }
+
+
+
+            var listofGroups = @Html.Raw(Json.Encode(ViewData["Groups"])); //dying code
+
+
+
+    </script>
+</main>
+

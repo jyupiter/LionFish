@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,7 +6,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LionFishWeb.Models;
-using LionFishWeb.Utility;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Diagnostics;
+using System.Data.SqlClient;
 
 namespace LionFishWeb.Controllers
 {
@@ -53,23 +54,32 @@ namespace LionFishWeb.Controllers
             }
         }
 
-        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if(User.Identity.GetUserId() == null)
+            {
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
+            return RedirectToAction("Dashboard", "App");
         }
-
-        //
+        
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            var response = Request["g-recaptcha-response"];
+            string secretKey = "6LcPQ30UAAAAABFqqSAazpaMGWObvP6lCuSZggbR";
+            var client = new WebClient();
+            var r = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            var obj = JObject.Parse(r);
+            var status = (bool)obj.SelectToken("success");
+
+            if (!ModelState.IsValid || !status)
             {
                 return View(model);
             }
@@ -86,13 +96,11 @@ namespace LionFishWeb.Controllers
                 }
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction(returnUrl);
+                    return RedirectToAction("Dashboard", "App");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -103,8 +111,7 @@ namespace LionFishWeb.Controllers
                     return View(model);
             }
         }
-
-        //
+        
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
@@ -116,8 +123,7 @@ namespace LionFishWeb.Controllers
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
-        //
+        
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -128,11 +134,7 @@ namespace LionFishWeb.Controllers
             {
                 return View(model);
             }
-
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
+            
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
@@ -146,16 +148,14 @@ namespace LionFishWeb.Controllers
                     return View(model);
             }
         }
-
-        //
+        
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
-
-        //
+        
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -164,29 +164,49 @@ namespace LionFishWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(Utility.Constants.ZXCVBN(model.Password) < 2)
+                {
+                    ViewBag.Message = "Password too weak.";
+                    return View(model);
+                }
                 var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //  Comment the following line to prevent log in until the user is confirmed.
-                    // await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-                    // Send an email with this link
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
+                    
+                    Folder f = new Folder();
+                    SqlCommand command = new SqlCommand(
+                        "INSERT INTO Folder (ID, Name, UserID)" +
+                        "VALUES (@id, @name, @userid)");
+                    SqlParameter FID = new SqlParameter
+                    {
+                        ParameterName = "@id",
+                        Value = f.ID
+                    };
+                    SqlParameter NME = new SqlParameter
+                    {
+                        ParameterName = "@name",
+                        Value = f.Name
+                    };
+                    SqlParameter UID = new SqlParameter
+                    {
+                        ParameterName = "@userid",
+                        Value = user.Id
+                    };
+                    command.Parameters.Add(FID);
+                    command.Parameters.Add(NME);
+                    command.Parameters.Add(UID);
+                    Utility.Constants.CallDB(command);
 
-                    // return RedirectToAction("Index", "Home");
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed before you can log in.";
-
                     return View(model);
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //
+        
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
@@ -196,18 +216,16 @@ namespace LionFishWeb.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            return View(result.Succeeded ? "Login" : "Error");
         }
-
-        //
+        
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
-
-        //
+        
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
@@ -226,24 +244,20 @@ namespace LionFishWeb.Controllers
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);		
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //
+        
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
-
-        //
+        
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
@@ -251,7 +265,6 @@ namespace LionFishWeb.Controllers
             return code == null ? View("Error") : View();
         }
 
-        //
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
@@ -276,16 +289,14 @@ namespace LionFishWeb.Controllers
             AddErrors(result);
             return View();
         }
-
-        //
+        
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
         }
-
-        //
+        
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
@@ -295,8 +306,7 @@ namespace LionFishWeb.Controllers
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
-
-        //
+        
         // GET: /Account/SendCode
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
@@ -310,8 +320,7 @@ namespace LionFishWeb.Controllers
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
-        //
+        
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
@@ -330,8 +339,7 @@ namespace LionFishWeb.Controllers
             }
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
-
-        //
+        
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
@@ -360,8 +368,7 @@ namespace LionFishWeb.Controllers
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
-
-        //
+        
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
@@ -398,8 +405,7 @@ namespace LionFishWeb.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
-        //
+        
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -408,8 +414,7 @@ namespace LionFishWeb.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
-
-        //
+        
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()

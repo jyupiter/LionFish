@@ -1,0 +1,422 @@
+﻿#creator {
+    position: fixed;
+    margin: auto;
+    top: -200px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    width: 400px;
+    height: 300px;
+    z-index:999999;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.4);
+    display:none;
+}
+
+#actcreate {
+    margin: 15px 0 0 0;
+}
+
+#actcreate a {
+    float:right;
+}
+
+.cancel {
+    color: #000;
+    margin:0 5px 0 0;
+}
+
+.cancel:hover {
+    color: #fff;
+}
+
+.split {
+    position:relative;
+}
+
+#lf {
+    width: 300px;
+}
+
+#rt {
+    width: calc(100% - 300px);
+    padding-left: 0;
+}
+
+#op {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    width: 130px;
+    height: 50px;
+    background: #555;
+}
+
+#sb, #ct {
+    position:relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+#sb {
+    position:relative;
+    background: #444;
+}
+
+#ned {
+    padding: 0 !important;
+}
+
+#ned, #editor, .ql-editor {
+    position: relative;
+    border: 0;
+    min-height: 300px;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+    padding: 5px 2px;
+}
+
+.ql-toolbar.ql-snow {
+    border: 0 solid #fff!important;
+    background:#eee;
+}
+
+.tt {
+    width: 100%;
+    height: 42px;
+    padding: 10px 15px;
+    background: #dadada;
+    color: #111;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#rt .tt {
+    padding:1px 18px;
+}
+
+#rt .tt input {
+    padding:0 5px;
+    max-width:250px;
+}
+
+#lf .tt {
+    background-color:#111;
+    color:#eee;
+}
+
+#lf .stt {
+    background: #555;
+    color: #eee;
+}
+
+#newnf {
+    position: absolute;
+    width: auto;
+    height: 42px;
+    top: 0;
+    right: 0;
+    padding: 7px 18px;
+    text-align: center;
+    background-color: salmon;
+    color:#fff;
+    cursor:pointer;
+}
+
+#newnfc {
+    position: absolute;
+    background: salmon;
+    width:150px;
+    height:auto;
+    right: 0;
+    top:42px;
+    text-align:left;
+    display:none;
+    z-index:999;
+}
+
+.newfco {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.newfco:hover {
+    background:#c7c7c7;
+}
+
+.stt {
+    width: 100%;
+    height: 40px;
+    padding: 10px 15px;
+    background: #f4f4f4;
+    color: #888;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.bc {
+    padding: 30px;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+#sb .bc {
+    position: relative;
+    height: calc(100% - 82px);
+}
+
+.bcinfo {
+    background:#fafafa;
+    float:left;
+    clear:both;
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    font-family:consolas;
+    border:1px dashed #ccc;
+}
+
+.pc {
+    font-size: 16px;
+    width: 240px;
+    padding: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor:pointer;
+    color:#fff;
+}
+
+.pc:not(:last-child) {
+    border-bottom: 1px solid #888;
+}
+
+.pc:first-child {
+    padding-top: 0;
+}
+
+.pc:last-child {
+    padding-bottom: 0;
+}
+
+#prv, #nprv {
+    float: left;
+}
+
+#prv {
+    position:relative;
+    margin-right: 20px;
+    width: 100px;
+    height: 100px;
+    background: #eee;
+    border-radius: 100%;
+    overflow:hidden;
+    text-align:center;
+}
+
+#prv img {
+    display:block;
+    width: 100px;
+    height:100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+label[for=upimg] {
+    position: absolute;
+    top: 38%;
+    left: 34%;
+    padding:3px 5px;
+    border-radius:4px;
+    border:1px solid #888;
+    z-index: 999999;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    background: #000;
+    color:#fff;
+    cursor: pointer;
+    opacity:0;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+#prv:hover + label[for=upimg], #upimg:hover + label[for=upimg],
+#prv img:hover + label[for=upimg], label[for=upimg]:hover {
+    opacity: 1;
+}
+
+#upimg {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#nprv {
+    width: calc(100% - 120px);
+    height: 100%;
+}
+
+#nme, #bio, #email, #currentp, #newp {
+    display: block;
+    max-width: 100%;
+}
+
+#nme, #bio, #email {
+    background: #fff;
+    border:none;
+}
+
+#currentp, #newp {
+    max-width:250px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+#email {
+    width: 250px;
+}
+
+.show-password {
+    position: absolute;
+    bottom: 29%;
+    right: 250px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #aaa;
+    cursor: pointer;
+}
+
+#nme {
+    height: 20px;
+    min-width: 150px;
+    margin-bottom: 20px;
+}
+
+#bio {
+    min-width: 100%;
+    resize:none;
+}
+
+.editable {
+    border: 1px solid #ccc!important;
+    border-radius:4px;
+    padding:3px;
+}
+
+.switch {
+    float:left;
+    position: relative;
+    width: 45px;
+    height: 20px;
+    clear:left;
+    margin:0 10px 10px 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 34px;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: darkseagreen;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px darkseagreen;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.swides {
+    float:left;
+    clear:right;
+    font-size:14px;
+    line-height:1.4em;
+}
+
+.e {
+    width: 10px;
+    height: 15px;
+    margin: 0 0 0 5px;
+    font-size:11px;
+    text-transform:uppercase;
+    color: palevioletred;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.show-password {
+    position: absolute;
+    bottom: 36%;
+    right: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #aaa;
+    cursor: pointer;
+}
+
+#swap1 .bc {
+    text-align:center;
+    font-size:16px;
+    padding-top:50px;
+}
+
+#swap2 {
+    display:none;
+}
+
+.defrost {
+    color:royalblue;
+    cursor:pointer;
+}
+
+#save-out {
+    float: right;
+    margin: 10px 10px 0 0;
+    font-size: 14px;
+    font-weight: normal;
+}

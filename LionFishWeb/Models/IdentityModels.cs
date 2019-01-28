@@ -13,10 +13,13 @@ namespace LionFishWeb.Models
         public ApplicationDbContext() : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-        
+
         public DbSet<Note> Notes { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Folder> Folders { get; set; }
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

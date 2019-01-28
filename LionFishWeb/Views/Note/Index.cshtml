@@ -1,0 +1,175 @@
+﻿@model LionFishWeb.Models.NoteFolderViewModel
+
+@{
+    ViewBag.Title = "Notes";
+}
+
+@section Nav {
+    @Html.Partial("_NavApp", Model.ProfileImg);
+}
+
+@Scripts.Render("~/Scripts/Note.js")
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+@if(Model.Requested != null)
+{
+    <script>
+        $(document).ready(function () {
+            function decodeHtml(html) {
+                var txt = document.createElement("textarea");
+                txt.innerHTML = html;
+                return txt.value;
+            }
+            $("#swap1").hide();
+            $("#swap2").show();
+            $("#ntitle").val("@Model.Requested.Title");
+            $("#selected").removeClass();
+            $("#selected").addClass("@Model.Requested.ID");
+            $("#ned").remove();
+            $("#swap2 .stt").after("<div id='ned' class='bc'><div id='editor' data-dirty='false'></div></div>");
+            var editor = new Quill('#editor', {
+                placeholder: 'Type anything...',
+                theme: 'snow'
+            });
+            var rjson = decodeHtml("@Model.Requested.Content");
+            var bjson = rjson.replace(/\\\"/g, '\"');
+            var cjson = bjson.substring(1, bjson.length - 1);
+            editor.setContents($.parseJSON(cjson));
+            $.ajax({
+                type: "GET",
+                url: "/Note/GetFolderName",
+                data: { ID: "@Model.Requested.FolderID" },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result1) {
+                    $("#note-folder").text(result1);
+                },
+                error: function (response) { }
+            });
+            if ("@Model.Requested.EventID" != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Note/GetEventTitle",
+                    data: { ID: "@Model.Requested.EventID" },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result2) {
+                        $("#note-event").text(result2);
+                        $("#note-event").removeClass();
+                        $("#note-event").addClass("@Model.Requested.EventID");
+                    },
+                    error: function (response) { }
+                });
+            } else {
+                $("#note-event").text("Not linked from an event");
+            }
+			$("#note-event").on("click", function () {
+				console.log(posting);
+                $.post('/Calendar/SetEventByID',
+                    {
+                        id: $(this).attr("class")
+                    }, function () { });
+
+            });
+        });
+    </script>
+}
+
+<main>
+    <div id="creator">
+        <div class="tt" style="position:relative;">Add</div>
+        <div class="stt">Details</div>
+        <div class="bc">
+            <input type="text" placeholder="Eg.: For school" />
+            <select>
+                @if(Model.FVM.Folders != null)
+                {
+                    if(Model.FVM.Folders.Count > 0)
+                    {
+                        foreach(var folder in Model.FVM.Folders)
+                        {
+                            <option>@folder.Name</option>
+                        }
+                    }
+                }
+            </select>
+            <div id="actcreate">
+                <a id="create" class="button button-blue">Create</a>
+                <a class="button cancel">Cancel</a>
+            </div>
+        </div>
+    </div>
+    <aside class="split" id="lf">
+        <div id="sb">
+            <div class="tt" style="position:relative;">
+                Notes
+                <div id="newnf">
+                    +
+                    <div id="newnfc">
+                        <div class="newfco newnote">Note</div>
+                        <div class="newfco newfolder">Folder</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bc" style="padding:0;">
+                @if(Model.FVM.Folders != null)
+                {
+                    if(Model.FVM.Folders.Count > 0)
+                    {
+                        foreach(var folder in Model.FVM.Folders)
+                        {
+                            <div class="stt">@folder.Name</div>
+
+                            if(Model.NVM.Notes != null)
+                            {
+                                if(Model.NVM.Notes.Count > 0)
+                                {
+                                    foreach(var note in Model.NVM.Notes)
+                                    {
+                                        if(note.FolderID == folder.ID)
+                                        {
+                                            <div id=@note.ID class="pc">@note.Title</div>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </aside>
+    <section class="split" id="rt">
+        <div id="ct">
+            <div id="swap1">
+                <div class="tt"></div>
+                <div class="bc">
+                    <span style="font-size:30px;">🌿</span> <br />
+                    <span style="font-size:24px;font-weight:bold;">No note selected yet.</span><br />
+                    <hr />
+                    <span class="defrost newnote">Create a note</span>
+                    |
+                    <span class="defrost newfolder">Create a folder</span>
+                </div>
+            </div>
+            <div id="swap2">
+                <div class="tt">
+                    <input id="selected" type="hidden" class="empty" data-content="" />
+                    <input id="ntitle" type="text" placeholder="Title" />
+                    <a id="save" class="button button-blue" style="float:right;margin:5px 0 0 0;">Save</a>
+                    <span id="save-out">Saved</span>
+                </div>
+                <div class="stt">
+                    <span id="note-folder" style="margin-left:2px;"></span>
+                    |
+                    <span id="note-event" style="cursor:pointer;color:navy;">No event linked</span>
+                </div>
+                <div id="ned" class="bc">
+                    <div id="editor" data-dirty="false"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <input type="hidden" id="hold" />
+</main>

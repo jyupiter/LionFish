@@ -3,16 +3,41 @@
     ViewBag.Title = "Register";
 }
 
+@section Nav {
+    @Html.Partial("_NavHome");
+}
+
+@Scripts.Render("~/Scripts/Index.js")
+
 <main>
+    @if(@Html.ValidationSummary(true, "", new { @class = "" }) != null)
+    {
+        <div class="notifbar">
+            <div class="notifmsg">
+                @Html.ValidationSummary(true, "", new { @class = "" })
+            </div>
+            <div class="notifclose">Close</div>
+        </div>
+    }
+    else if(ViewBag.Message != null)
+    {
+        <div class="notifbar">
+            <div class="notifmsg">
+                @ViewBag.Message
+            </div>
+            <div class="notifclose">Close</div>
+        </div>
+    }
+
     <section id="logsign">
         <div class="ungriddy">
             <div id="block-sign" class="block-logsign">
                 <h1>Get started with a new account<span style="color:#EDA831;">.</span></h1>
                 <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "", role = "form" }))
+                @using(Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ValidationSummary("", new { @class = "" })
+                    @ViewBag.Text
                     <div>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { id = "input-sign-email", @class = "input-email", placeholder = "Email address" } })
                         @Html.ValidationMessageFor(model => model.Email)
@@ -22,7 +47,7 @@
                         <div class="show-password hide">Show</div>
                     </div>
                     <div>
-                        <input type="submit" id="submit-sign" class="button-blue" value="Register">
+                        <input type="submit" id="submit-sign" class="button-gray" value="Register" disabled>
                     </div>
                 }
             </div>

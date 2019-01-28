@@ -10,19 +10,19 @@ namespace LionFishWeb.Models
     public class Note
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
 
+        public string FolderID { get; set; }
         public string UserID { get; set; }
-        public int EventID { get; set; }
+        public string EventID { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual Event Event { get; set; }
-
-        public Note(User user)
+        public Note()
         {
-            UserID = user.Id;
+            Title = "New note";
+            Content = "";
+            ID = "" + Guid.NewGuid();
         }
     }
 }

@@ -351,7 +351,7 @@ namespace LionFishWeb.Controllers
                 SqlCommand command = new SqlCommand(
                     "UPDATE Note " +
                     "SET Title = @title, Content = @content " +
-                    "WHERE ID= @id");
+                    "WHERE ID = @id");
                 SqlParameter NID = new SqlParameter
                 {
                     ParameterName = "@id",
@@ -370,7 +370,26 @@ namespace LionFishWeb.Controllers
                 command.Parameters.Add(NID);
                 command.Parameters.Add(TTL);
                 command.Parameters.Add(CTT);
-                Debug.WriteLine(model.ID.GetDirectReference() + model.Title + model.Content);
+                Utility.Constants.CallDB(command);
+            }
+        }
+
+        // POST: /Note/DeleteNote
+        [HttpPost]
+        [AllowAnonymous]
+        public void DeleteNote(UpdateNoteViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                SqlCommand command = new SqlCommand(
+                    "DELETE FROM Note " +
+                    "WHERE ID = @id");
+                SqlParameter NID = new SqlParameter
+                {
+                    ParameterName = "@id",
+                    Value = model.ID.GetDirectReference()
+                };
+                command.Parameters.Add(NID);
                 Utility.Constants.CallDB(command);
             }
         }

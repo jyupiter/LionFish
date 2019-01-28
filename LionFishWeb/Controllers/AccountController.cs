@@ -79,7 +79,7 @@ namespace LionFishWeb.Controllers
             var obj = JObject.Parse(r);
             var status = (bool)obj.SelectToken("success");
 
-            if (!ModelState.IsValid || !status)
+            if (!ModelState.IsValid /* || !status*/)
             {
                 return View(model);
             }

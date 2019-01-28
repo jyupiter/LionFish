@@ -107,13 +107,6 @@
             success: function (result) {
                 $("#ntitle").val($(passed.target).text());
                 changeSelectedNote(result);
-                if (result.Content != "") {
-                    var rjson = decodeHtml(result.Content);
-                    var bjson = rjson.replace(/\\\"/g, '\"');
-                    var cjson = bjson.substring(1, bjson.length - 1);
-                    quill.setContents($.parseJSON(cjson));
-                }
-
                 $.ajax({
                     type: "GET",
                     url: "/Note/GetFolderName",
@@ -125,6 +118,12 @@
                     },
                     error: function (response) { }
                 });
+                if (result.Content != "") {
+                    var rjson = decodeHtml(result.Content);
+                    var bjson = rjson.replace(/\\\"/g, '\"');
+                    var cjson = bjson.substring(1, bjson.length - 1);
+                    quill.setContents($.parseJSON(cjson));
+                }
                 $("#note-event").removeClass();
                 $("#note-event").text("No event linked");
                 if (result.EventID != null) {
@@ -218,5 +217,17 @@
                 ID: $(this).attr("class")
             }, function () { });
         window.location.replace("/Calendar/Calendar");
+    });
+
+    $("#delete").on("click", function () {
+        $("#swap1").show();
+        $("#swap2").hide();
+        var sel = $("#selected").attr("class");
+        $.post('/Note/DeleteNote',
+            {
+                ID: sel
+            }, function () { });
+        $("#selected").attr("class", "empty");
+        window.location.reload();
     });
 });

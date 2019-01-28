@@ -45,9 +45,9 @@ namespace LionFishWeb
 			}
 			else if (ex is SqlException)
 			{
-				Response.Clear();
-				Response.StatusCode = 200;
-				Response.Write(@"
+                Response.Clear();
+                Response.StatusCode = 200;
+                Response.Write(@"
 					<html><head><title>HTML Not Allowed</title>
 					<script language='JavaScript'><!--
 					function back() { history.go(-1); } //--></script></head>
@@ -58,8 +58,8 @@ namespace LionFishWeb
 					<p><a href='javascript:back()'>I'm sorry</a></p>
 					</body></html>
 					");
-				Response.End();
-			}
+                Response.End();
+            }
 		}
 	}
 }

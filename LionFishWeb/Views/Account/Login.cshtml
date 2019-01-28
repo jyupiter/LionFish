@@ -24,7 +24,6 @@
         <div class="ungriddy">
             <div id="block-log" class="block-logsign">
                 <h1>Existing user? Log in<span style="color:#EDA831;">.</span></h1>
-                <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
                 @using(Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
                 {
                     @Html.AntiForgeryToken()

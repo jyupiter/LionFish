@@ -21,7 +21,7 @@ namespace LionFishWeb.Models
         public Note()
         {
             Title = "New note";
-            Content = "\"{\"ops\": [{\"insert\": \"\n\"}]}\"";
+            Content = "\"{\\\"ops\\\":[{\\\"insert\\\":\\\"\\\\n\"}]}\"";
             ID = "" + Guid.NewGuid();
         }
     }

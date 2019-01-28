@@ -28,6 +28,11 @@ namespace LionFishWeb.Models
         public string Content { get; set; }
     }
 
+    public class DeleteNoteViewModel
+    {
+        public string ID { get; set; }
+    }
+
     public class NoteViewModel {
         public List<Note> Notes { get; set; }
     }

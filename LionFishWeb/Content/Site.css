@@ -600,3 +600,15 @@ input[type=text], input[type=email], input[type=password], select {
     background:#fff;
     cursor:pointer;
 }
+
+.fixcont {
+    position: fixed;
+    margin: auto;
+    top: -200px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 300px;
+    z-index: 999999;
+}

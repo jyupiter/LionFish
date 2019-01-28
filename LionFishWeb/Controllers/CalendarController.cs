@@ -63,6 +63,7 @@ namespace LionFishWeb.Controllers
 			{
 				DebugEvents(events);
 				events.ID = events.ID.GetIndirectReference();
+				//events.UserID = User.Identity.GetUserId();
 			}
 
 			ViewData["EventsPublic"] = listOfEvents;
@@ -176,6 +177,11 @@ namespace LionFishWeb.Controllers
 		{
 			string json = new JavaScriptSerializer().Serialize(stuff);
 			Event events = JsonConvert.DeserializeObject<Event>(json);
+			Debug.WriteLine(events.Start);
+			Debug.WriteLine(events.End);
+			if (events.End ==Convert.ToDateTime("1/1/ 0001 12:00:00 AM")) { 
+				events.End = events.Start;
+			}
 			Save(events, "update", User.Identity.GetUserId());
 
 		}
@@ -365,6 +371,13 @@ namespace LionFishWeb.Controllers
 		{
 			string start = events.Start.ToString("MM/dd/yyyy hh:mm tt");
 			string end = events.End.ToString("MM/dd/yyyy hh:mm tt");
+			Debug.WriteLine(end);
+			Debug.WriteLine(events.End.ToString("MM/dd/yyyy hh:mm tt"));
+			Debug.WriteLine("end == events.End.ToString(\"MM / dd / yyyy hh: mm tt\") : " + events.End.ToString("MM/dd/yyyy hh:mm tt") == "01 / 01 / 0001 12:00 AM");
+			if (events.End.ToString("MM/dd/yyyy hh:mm tt") == "01 / 01 / 0001 12:00 AM")
+			{
+				end = start;
+			}
 			SqlParameter user = new SqlParameter
 			{
 				ParameterName = "@User",
@@ -419,6 +432,7 @@ namespace LionFishWeb.Controllers
 
 			if (mode == "create")
 			{
+				
 				SqlCommand cmd = new SqlCommand(
 				"INSERT INTO Event (ID,Title,Description,AllDay,\"start\",\"end\",Color,UserID,\"Public\") VALUES ( @ID ,@Title ,@Description,@AllDay,@start ,@end , @Color , @User , 'False')"
 				);
@@ -435,6 +449,9 @@ namespace LionFishWeb.Controllers
 			}
 			else if (mode == "update")
 			{
+				Debug.WriteLine(events.Title);
+				Debug.WriteLine(start);
+				Debug.WriteLine(end);
 				SqlParameter DEID = new SqlParameter
 				{
 					ParameterName = "@DID",
@@ -490,6 +507,7 @@ namespace LionFishWeb.Controllers
 
 		public static void CallDB(SqlCommand command)
 		{
+			try { 
 			using (SqlConnection conn = new SqlConnection(Utility.Constants.Conn))
 			{
 				Logging.Log(">>>>> SQL command: " + command.CommandText);
@@ -498,7 +516,11 @@ namespace LionFishWeb.Controllers
 				command.ExecuteNonQuery();
 				conn.Close();
 			}
-
+			}
+			catch(Exception e)
+			{
+				Debug.WriteLine(e);
+			}
 		}
 
 		#region Helpers
